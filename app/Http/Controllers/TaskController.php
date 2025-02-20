@@ -293,7 +293,6 @@ class TaskController extends Controller
                         } else {
                             Log::info('Notifications are disabled; event not triggered.');
                         }
-
                     } else {
                         $this->response = ["sts" => 2, "message" => "Please try again"];
                     }
@@ -836,16 +835,62 @@ class TaskController extends Controller
         }
     }
 
-    function officesTaskPerformance()
+    function count_task()
     {
-        $created_by = session('user_id');
-        $data = DB::select("SELECT u.full_name fullName, COALESCE (tbl1.task_count,0) totalCount
-                            FROM tbl_users u
-                            LEFT JOIN (
-                                SELECT fk_user_id, COUNT(*) AS task_count
-                                FROM tbl_task_user_map 
-                                GROUP BY fk_user_id
-                            ) tbl1 ON u.user_id = tbl1.fk_user_id");
+        $created_by = session('level_id');
+        $data = DB::select("SELECT 
+                                         u.full_name, 
+                                        COALESCE(tbl1.total_count, 0) AS total_count,
+                                        COALESCE(tbl1.viewed, 0) AS viewed,
+                                        COALESCE(tbl1.not_viewed, 0) AS not_viewed,
+                                        COALESCE(tbl1.completed, 0) AS completed 
+                                   FROM tbl_users u
+                                   LEFT JOIN (
+                                                 SELECT 
+                                                     tum.fk_user_id, 
+                                                     COUNT(*) AS total_count,
+                                                     SUM(CASE WHEN tum.is_viewed = 1 THEN 1 ELSE 0 END) AS viewed,
+                                                     SUM(CASE WHEN tum.is_viewed = 0 THEN 1 ELSE 0 END) AS not_viewed,
+                                                     SUM(CASE WHEN t.status = 'C' THEN 1 ELSE 0 END) AS completed 
+                                                 FROM tbl_task_user_map tum
+                                                 LEFT JOIN tbl_task t ON tum.fk_task_id = t.task_id  
+                                                 GROUP BY tum.fk_user_id
+                                             ) tbl1 ON u.user_id = tbl1.fk_user_id
+                                    WHERE u.user_id !=$created_by ");
         return $data;
+    }
+
+
+
+
+
+    public function delay_date()
+    {
+
+
+        $delay_data = DB::select("SELECT t.task_id,
+	t.title,
+	t.entry_date,
+	t.due_date,
+	COALESCE(cmt.created_datetime, 'Task Not Submitted') submitted_date,
+	case 
+	when DATEDIFF(cmt.created_datetime,t.due_date) < 0 then 'No Delay'
+	when DATEDIFF(cmt.created_datetime,t.due_date) IS NULL then 'Not Completed'
+	ELSE DATEDIFF(cmt.created_datetime,t.due_date)
+	END AS difference_in_days
+	FROM tbl_task t left JOIN 
+	(SELECT max(created_datetime) created_datetime, fk_task_id FROM tbl_task_reply_trs 
+	GROUP BY fk_task_id
+	) cmt
+	ON t.task_id=cmt.fk_task_id");
+        return $delay_data;
+    }
+
+    public function user_rating()
+    {
+
+        $rating_data = DB::select("");
+
+        return $rating_data;
     }
 }

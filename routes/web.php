@@ -18,10 +18,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\FileMgmtController;
 use App\Http\Controllers\MasterController;
+
 require base_path('routes/channels.php');
-Route::match(['get', 'post'],'broadcasting/auth/{userId?}', [CustomBroadcastController::class, 'authenticate']);
+Route::match(['get', 'post'], 'broadcasting/auth/{userId?}', [CustomBroadcastController::class, 'authenticate']);
 Route::get('notifications-test', function () {
-    $notification = NotificationService::createNotification(Session::get("user_id"), "Notification","Login",route('notifications.index'), ['message' => 'You have a new message!']);
+    $notification = NotificationService::createNotification(Session::get("user_id"), "Notification", "Login", route('notifications.index'), ['message' => 'You have a new message!']);
     event(new NotificationSent($notification));
 });
 Route::get('cache_clear', [Controller::class, 'getArtisanCommand']);
@@ -39,13 +40,13 @@ Route::get('generate-captcha/{length}', [UtilController::class, 'generateCaptcha
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 //admin routes
 
-Route::middleware([\App\Http\Middleware\AuthenticateUser::class.':0'])->group(function () {
+Route::middleware([\App\Http\Middleware\AuthenticateUser::class . ':0'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('task-view', [DashboardController::class, 'tasksView'])->name('task_view');
     Route::get('task-overview', [DashboardController::class, 'tasksOverView'])->name('task_overview');
     Route::match(['get', 'post'], 'task-add', [DashboardController::class, 'tasksAdd'])->name('task_add');
-    Route::match(['get'],'task-status', [DashboardController::class, 'taskStatus'])->name('task_status');
-    Route::match(['get','post'], 'task-details', [DashboardController::class, 'taskDetails'])->name('task_details');
+    Route::match(['get'], 'task-status', [DashboardController::class, 'taskStatus'])->name('task_status');
+    Route::match(['get', 'post'], 'task-details', [DashboardController::class, 'taskDetails'])->name('task_details');
     Route::get('get-docs-list', [DashboardController::class, 'getDocsList']);
     Route::get('sb-request-list', [DashboardController::class, 'getSBRequestList'])->name('sb_request_list');
     Route::get('task-allocate', [DashboardController::class, 'taskAllocate'])->name('task_allocate');
@@ -55,17 +56,17 @@ Route::middleware([\App\Http\Middleware\AuthenticateUser::class.':0'])->group(fu
 
     Route::match(['post'], 'task-insert', [TaskController::class, 'tasksInsert'])->name('task_insert');
     Route::match(['post'], 'task-reply', [TaskController::class, 'taskReply'])->name('task_reply');
-    Route::match(['get','post'],'task-reply-list/{task_id}', [TaskController::class, 'taskReplyList'])->name('task_reply_list');
-    Route::match(['get','post'],'task-history', [TaskController::class, 'taskHistory'])->name('task-history');
-    Route::match(['get','post'], 'task-close', [TaskController::class, 'taskClose'])->name('task_close');
+    Route::match(['get', 'post'], 'task-reply-list/{task_id}', [TaskController::class, 'taskReplyList'])->name('task_reply_list');
+    Route::match(['get', 'post'], 'task-history', [TaskController::class, 'taskHistory'])->name('task-history');
+    Route::match(['get', 'post'], 'task-close', [TaskController::class, 'taskClose'])->name('task_close');
     Route::match(['post'], 'task-update', [TaskController::class, 'tasksUpdate'])->name('task_update');
-    Route::match(['get','post'], 'task-send-back', [TaskController::class, 'taskSendBack'])->name('task_send_back');
-    Route::match(['get','post'], 'task-sb-change-status', [TaskController::class, 'taskSBChangeStatus'])->name('task_sb_change_status');
+    Route::match(['get', 'post'], 'task-send-back', [TaskController::class, 'taskSendBack'])->name('task_send_back');
+    Route::match(['get', 'post'], 'task-sb-change-status', [TaskController::class, 'taskSBChangeStatus'])->name('task_sb_change_status');
     Route::post('user-task-allocate', [TaskController::class, 'userTaskAllocate'])->name('user_task_allocate');
     Route::post('offices-task-report-ajax', [TaskController::class, 'officesTaskReportAjax'])->name('offices_task_report_ajax');
     Route::post('attach-supporting-docs', [TaskController::class, 'attachSupportingDocs'])->name('attach_supporting_docs');
     Route::post('delete_task_file', [TaskController::class, 'deleteTaskFile'])->name('delete_task_file');
-    Route::match(['get','post'], 'task-reopen', [TaskController::class, 'taskReopen'])->name('task_reopen');
+    Route::match(['get', 'post'], 'task-reopen', [TaskController::class, 'taskReopen'])->name('task_reopen');
 
     //TL Review routes
     Route::get('tl-new', [ReviewController::class, 'index'])->name('tl_new');
@@ -90,17 +91,19 @@ Route::middleware([\App\Http\Middleware\AuthenticateUser::class.':0'])->group(fu
 
     // Performance routes
 
-    Route::get('performance/count-tasks',[PerformanceController::class, 'count_tasks'])->name('count_tasks');
-    Route::get('performance/ratings',[PerformanceController::class, 'rating'])->name('rating');
+    Route::get('performance/count-tasks', [PerformanceController::class, 'count_tasks'])->name('count_tasks');
+    Route::get('performance/ratings', [PerformanceController::class, 'rating'])->name('rating');
     Route::get('performance/delay', [PerformanceController::class, 'delay'])->name('delay');
-    Route::post('/offices-task-Performance', [TaskController::class, 'officesTaskPerformance'])->name('user_task_performance');
+    Route::post('/user_count_task', [TaskController::class, 'count_task'])->name('user_count_task');
+    Route::post('/task_delay_date', [TaskController::class, 'delay_date'])->name('task_delay_date');
+    Route::post('/user_rating', [TaskController::class, 'user_rating'])->name('user_rating');
 
     // s3 testing
     // Route::get('/test-s3', [UtilController::class, 'test_s3']);
 });
 
-Route::middleware([\App\Http\Middleware\AuthenticateUser::class.':0_3'])->group(function () {
-    Route::match(['get','post'],'change-password', [AuthController::class, 'changePassword'])->name('change-password');
+Route::middleware([\App\Http\Middleware\AuthenticateUser::class . ':0_3'])->group(function () {
+    Route::match(['get', 'post'], 'change-password', [AuthController::class, 'changePassword'])->name('change-password');
     // typeahead
     Route::get('init-typeahead', [MasterController::class, 'initTypeahead'])->name('init_typeahead');
 
@@ -137,9 +140,9 @@ Route::middleware([\App\Http\Middleware\AuthenticateUser::class.':0_3'])->group(
     Route::get('get-header-detail', [\App\Http\Controllers\LettersController::class, 'get_header_detail']);
 });
 
-Route::get('getDesignations', [\App\Http\Controllers\MasterController::class,'getDesignations'])->name('getDesignations');
-Route::get('checkOrCreateDesignation', [\App\Http\Controllers\MasterController::class,'checkOrCreateDesignation'])->name('checkOrCreateDesignation');
-Route::get('getDepartments', [\App\Http\Controllers\MasterController::class,'getDepartments'])->name('getDepartments');
+Route::get('getDesignations', [\App\Http\Controllers\MasterController::class, 'getDesignations'])->name('getDesignations');
+Route::get('checkOrCreateDesignation', [\App\Http\Controllers\MasterController::class, 'checkOrCreateDesignation'])->name('checkOrCreateDesignation');
+Route::get('getDepartments', [\App\Http\Controllers\MasterController::class, 'getDepartments'])->name('getDepartments');
 
 Route::get('language/{locale}', function ($locale) {
     if (!in_array($locale, ['en', 'hi'])) {

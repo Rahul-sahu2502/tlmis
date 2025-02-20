@@ -5,4 +5,4 @@
     <?php echo e($slot); ?>
 
 </section>
-<?php /**PATH C:\xampp\htdocs\laravel_projects\TLMIS original code\TLMIS\vendor\laravel\framework\src\Illuminate\Foundation\Providers/../resources/exceptions/renderer/components/card.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\wamp64\www\php\vectreProjects\tlmis\vendor\laravel\framework\src\Illuminate\Foundation\Providers/../resources/exceptions/renderer/components/card.blade.php ENDPATH**/ ?>

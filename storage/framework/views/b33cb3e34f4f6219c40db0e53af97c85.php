@@ -8,57 +8,26 @@
     <div class=card id=tasksList>
         <div class="card-header border-0">
             <div class="d-flex align-items-center">
-                <h5 class="card-title mb-0 flex-grow-1">Task Status</h5>
+                <h5 class="card-title mb-0 flex-grow-1">Task List / <small> कार्य सूची</small></h5>
+                <?php if(Session::get('level_id') == "1"): ?>
+                <div class=flex-shrink-0>
+                    <div class="d-flex flex-wrap gap-2">
+                        <a href="<?php echo e(route('task_add')); ?>" class="btn btn-danger add-btn"><i
+                                class="ri-add-line align-bottom me-1"></i>Add New</a>
+                    </div>
+                </div>
+                <?php endif; ?>
             </div>
         </div>
-        <div class="card-body border border-dashed border-end-0 border-start-0" <?php if($search==4): ?> style='display:none' <?php endif; ?> >
-            <form>
+        <div class="card-body border border-dashed border-end-0 border-start-0">
+            <form id="search_form">
                 <div class="row g-3">
                     <div class="col-xxl-3 col-sm-12">
                         <label>Task title</label>
                         <div class=search-box>
                             <input type=text id="title" class="form-control search bg-light border-light"
-                                placeholder="Search for tasks">
+                                placeholder="Search for tasks" >
                             <i class="ri-search-line search-icon"></i>
-                        </div>
-                    </div>
-                    <div class="col-xxl-3 col-sm-4" <?php if($search!=1): ?> style='display:none' <?php endif; ?>>
-                        <div class=input-light>
-                            <label>Task status</label>
-                            <select class=form-control data-choices data-choices-search-false
-                                name=choices-single-default id=idStatus>
-                                <option value="" disabled selected>Select</option>
-                                <option value="0">All</option>
-                                <option value="I">Inprogress</option>
-                                <option value="C">Completed</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-xxl-3 col-sm-4" <?php if($search!=1): ?> style='display:none' <?php endif; ?>>
-                        <div class=input-light>
-                            <label>Priority</label>
-                            <select name="priority_id" id="priority" class="form-control" required>
-                                <option value=""  disabled selected>Select</option>
-                                <option value="0">All</option>
-                                <?php $__currentLoopData = $task_priority; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <option value="<?php echo e($value->task_priority_id); ?>">
-                                        <?php echo e($value->priority); ?></option>
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-xxl-3 col-sm-4" <?php if($search!=1): ?> style='display:none' <?php endif; ?>>
-                        <div class=input-light>
-                            <label>Task Category</label>
-                            <select name="category" id="category" required
-                                    class="form-control">
-                                <option value="" disabled selected>Select</option>
-                                <option value="0">सभी</option>
-                                <?php $__currentLoopData = $task_category; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $value): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <option value="<?php echo e($value->task_category_id); ?>">
-                                        <?php echo e($value->category); ?></option>
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                            </select>
                         </div>
                     </div>
                     <div class="col-xxl-2 col-sm-4">
@@ -73,19 +42,15 @@
                             id=to_date data-provider=flatpickr data-date-format="d M, Y"
                             data-range-date=true placeholder="Select date range">
                     </div>
-                    <div class="col-xxl-3 col-sm-4" <?php if($search!=2): ?> style='display:none' <?php endif; ?> >
+                    <div class="col-xxl-3 col-sm-4">
                         <div class=input-light>
-                            <label>Days</label>
-                            <?php
-                                $current_date = date('Y-m-d');
-                            ?>
+                            <label>Task status</label>
                             <select class=form-control data-choices data-choices-search-false
-                                name=choices-single-default id=days>
-                                <option value="">Select</option>
-                                <option value="7">7 Days</option>
-                                <option value="15">15 Days</option>
-                                <option value="30">30 days</option>
-                                <option value="m30">Less 30 days</option>
+                                name=choices-single-default id=idStatus>
+                                <option value>Select</option>
+                                <option value="0">All</option>
+                                <option value="I">Inprogress</option>
+                                <option value="C">Completed</option>
                             </select>
                         </div>
                     </div>
@@ -106,6 +71,7 @@
                 </div>
             </form>
         </div>
+
         <div class=card-body>
             <div class="table-responsive table-card mb-4">
                 <table class="table align-middle table-nowrap datatable mb-0" id=tasksTable>
@@ -116,13 +82,13 @@
                             <th class=sort data-sort=client_name>Offices</th>
                             <th class=sort data-sort=entry_date>Task Entry Date</th>
                             <th class=sort data-sort=due_date>Task Due Date</th>
-                            <th class=sort data-sort=created_date>Task Creation Date</th>
                             <th class=sort data-sort=status>Status</th>
                             <th class=sort data-sort=priority>Priority</th>
-                            <th>View</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody id="tBody" class="list form-check-all">
+                        <!-- Labels Example -->
                     </tbody>
                 </table>
             </div>
@@ -153,7 +119,6 @@
 <script src="<?php echo e(asset('assets/libs/datatable/jszip.min.js')); ?>"></script>
 <script src="<?php echo e(asset('assets/libs/datatable/pdfmake.min.js')); ?>"></script>
 <script src="<?php echo e(asset('assets/libs/datatable/vfs_fonts.js')); ?>"></script>
-
 <script>
     $(jQuery).ready(function() {
         $('.datatable').DataTable({
@@ -163,11 +128,10 @@
                 search: "Search:",
             },
         });
-
-        let search={'sts':'<?php echo e($sts); ?>','d':'<?php echo e($dept); ?>'};
+        let search={};
         $('#filter').click(function(){
             let sts=false;
-            search={'sts':'<?php echo e($sts); ?>','d':'<?php echo e($dept); ?>'};
+            search={};
             if($("#idStatus").val()!=""){
                 search['sts'] = $("#idStatus").val();
                 sts=true;
@@ -176,36 +140,20 @@
                 search['var'] = $("#title").val();
                 sts=true;
             }
-            if($("#days").val()!=""){
-                search['days']=$("#days").val()
-                sts=true;
-            }else{
-                if($("#from_date").val()!=""){
-                    search['fdate'] = $("#from_date").val();
-                    sts=true;
-                }
-                if($("#to_date").val()!=""){
-                    search['tdate'] = $("#to_date").val();
-                    sts=true;
-                }
-            }
-
-            if($("#priority").val()!=""){
-                search['priority'] = $("#priority").val();
+            if($("#from_date").val()!=""){
+                search['fdate'] = $("#from_date").val();
                 sts=true;
             }
-            if($("#category").val()!=""){
-                search['category'] = $("#category").val();
+            if($("#to_date").val()!=""){
+                search['tdate'] = $("#to_date").val();
                 sts=true;
             }
-
             if(sts){
                 get_task_list(search);
             }
         });
         $("#reset").click(function(){
-            if($("#idStatus").val()!=""||$("#title").val()!=""|| $("#from_date").val()!=""
-            ||$("#to_date").val()!="" ||$("#days").val()!=""||$("#priority").val()!="" || $("#category").val()!=""){
+            if($("#idStatus").val()!=""||$("#title").val()!=""|| $("#from_date").val()!="" ||$("#to_date").val()!=""){
                 $('select').val('');
                 $("input").val('');
                 get_task_list();
@@ -215,7 +163,7 @@
             $("#to_date").val('');
             $("#to_date").attr('min', $(this).val());
         });
-        get_task_list(search);
+        get_task_list();
         const level_id = <?php echo e(Session::get('level_id')); ?>;
         function get_task_list(sData={}){
             $('.datatable').DataTable().destroy();
@@ -231,7 +179,6 @@
                     $('#loader').show();
                 },
                 success: function(response) {
-                    $('#loader').hide();
                     $('#tBody').html('');
                     response.forEach((value, index) => {
                         let sts = "Inprogress";
@@ -254,9 +201,11 @@
                         const statusBadge = `<span class="badge bg-${color}-subtle text-${color} text-uppercase">${sts}</span>`;
                         const priorityBadge = `<span class="badge bg-${value.fk_task_priority_id === 1 ? "success" : "danger"} text-uppercase">${value.priority}</span>`;
 
-                        const viewButton = `<a class="btn btn-info btn-xm" title="View" href="/task-overview?var=${btoa(value.task_id)}"><i class="ri-eye-line"></i></a>`;
+                        const viewButton = `<a class="btn btn-info btn-xm" title="View" href="/task-overview?var=${btoa(value.task_id)}&v=${value.is_viewed}"><i class="ri-eye-line"></i></a>`;
 
-                        // const editButton = level_id == '1' && value.status !== "C" && value.is_replied == "N"?`<a class="btn btn-primary btn-xm" title="Edit" href="/task-details?var=${btoa(value.task_id)}"><i class="ri-edit-2-fill"></i></a>`: '';
+                        const editButton = level_id == '1' && value.status != "C" && value.is_replied =="N"?`<a class="btn btn-primary btn-xm" title="Edit" href="/task-details?var=${btoa(value.task_id)}"><i class="ri-edit-2-fill"></i></a>`: '';
+
+                        const reopenButton = level_id == '1' && value.status == "C"?`<button class="btn btn-warning btn-xm reopen" type="button" title="Reopen" value="${btoa(value.task_id)}">Reopen</button>`: '';
 
                         const row = `
                             <tr>
@@ -265,10 +214,9 @@
                                 <td class="client_name">${departments}</td>
                                 <td class="entry_date">${new Date(value.entry_date).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' })}</td>
                                 <td class="due_date">${new Date(value.due_date).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' })}</td>
-                                <td class="created_date"> ${value.created_date}</td>
                                 <td class="status">${statusBadge}</td>
                                 <td class="priority">${priorityBadge}</td>
-                                <td>${viewButton}</td>
+                                <td>${viewButton} ${editButton} ${reopenButton}</td>
                             </tr>
                         `;
 
@@ -291,8 +239,85 @@
                 },
             });
         }
+
+        $(document).on("click", ".reopen", function() {
+            let id = $(this).val();
+            SwalWithCustomSettings.fire({
+                title: 'Task Reopen',
+                input: 'textarea',
+                inputPlaceholder: 'Type your remark here...',
+                // inputValue: 'Default message',
+                inputAttributes: {
+                    'aria-label': 'Type your remark here'
+                },
+                showCancelButton: true,
+                confirmButtonText: 'Submit',
+                cancelButtonText: 'Cancel',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "<?php echo e(route('task_reopen')); ?>", // Route to the controller
+                        type: "post",
+                        headers: {
+                            'X-CSRF-TOKEN': "<?php echo e(csrf_token()); ?>"
+                        },
+                        data: {
+                            'id': id,
+                            'remark': result.value
+                        },
+                        success: function(response) {
+                            let sts = response.sts;
+                            let icon = "";
+                            let msg = "";
+                            if (sts == 1) {
+                                icon = "hrtsficn.json";
+                                msg = "Task reopened successfully";
+                                swal_alert(icon, msg,1);
+                                // location.reload();
+                            } else if (sts == 2) {
+                                icon = "azxkyjta.json";
+                                msg = "Please try again";
+                                swal_alert(icon, msg,2);
+                            }
+                        },
+                        error: function(xhr) {
+                            console.log(xhr.responseText);
+                        },
+                    });
+                } else if (result.isDismissed) {
+                    console.log('Closed without submission');
+                }
+            });
+        });
+        function swal_alert(icon, msg, sts) {
+            SwalWithCustomSettings.fire({
+                html: `<div class="mt-3">
+            <lord-icon
+                src="https://cdn.lordicon.com/${icon}"
+                trigger="loop"
+                colors="primary:#f06548,secondary:#f7b84b"
+                style="width:120px;height:120px">
+            </lord-icon>
+            <div class="mt-4 pt-2 fs-15">
+                <h4>${msg}</h4>
+            </div>
+            </div>`,
+                showCancelButton: true,
+                showConfirmButton: false,
+                customClass: {
+                    cancelButton: "btn btn-primary w-xs mb-1"
+                },
+                cancelButtonText: "Ok",
+                showCloseButton: false,
+            }).then((result) => {
+                // Check if 'Ok' was clicked and status equals 1
+                if (sts === 1 && result.dismiss === Swal.DismissReason.cancel) {
+                    get_task_list();
+                }
+            });
+        }
     });
 </script>
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('layouts.layout_admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\laravel_projects\TLMIS original code\TLMIS\resources\views/tasks/reports/task_status.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.layout_admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\wamp64\www\php\vectreProjects\tlmis\resources\views/tasks/view.blade.php ENDPATH**/ ?>
