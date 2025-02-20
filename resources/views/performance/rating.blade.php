@@ -72,8 +72,7 @@
                                     <td class="tasks_name">${value.title}</td>
                                      <td class="total text-center"><b>${new Date(value.entry_date).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' })}</b></td>
                                      <td class="total text-center"><b>${new Date(value.due_date).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' })}</b></td>                                                        
-                                    <td class="total text-center"><b>${value.submitted_date}</b></td>
-                                    <td class="total text-center"><b>${value.difference_in_days}</b></td>
+                                   
                                     
                         </tr>
                             `;
