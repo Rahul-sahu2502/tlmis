@@ -251,3 +251,4 @@
 #60 C:\\wamp64\\www\\php\\vectreProjects\\tlmis\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(23): require_once('C:\\\\wamp64\\\\www\\\\p...')
 #61 {main}
 "} 
+[2025-02-20 18:22:17] development.INFO: Language switched {"requested_locale":"hi","session_locale":"hi","app_locale":"hi","config_locale":"hi"} 
