@@ -835,38 +835,12 @@ class TaskController extends Controller
         }
     }
 
-    function count_task()
-    {
-        $created_by = session('level_id');
-        $data = DB::select("SELECT 
-                                         u.full_name, 
-                                        COALESCE(tbl1.total_count, 0) AS total_count,
-                                        COALESCE(tbl1.viewed, 0) AS viewed,
-                                        COALESCE(tbl1.not_viewed, 0) AS not_viewed,
-                                        COALESCE(tbl1.completed, 0) AS completed 
-                                   FROM tbl_users u
-                                   LEFT JOIN (
-                                                 SELECT 
-                                                     tum.fk_user_id, 
-                                                     COUNT(*) AS total_count,
-                                                     SUM(CASE WHEN tum.is_viewed = 1 THEN 1 ELSE 0 END) AS viewed,
-                                                     SUM(CASE WHEN tum.is_viewed = 0 THEN 1 ELSE 0 END) AS not_viewed,
-                                                     SUM(CASE WHEN t.status = 'C' THEN 1 ELSE 0 END) AS completed 
-                                                 FROM tbl_task_user_map tum
-                                                 LEFT JOIN tbl_task t ON tum.fk_task_id = t.task_id  
-                                                 GROUP BY tum.fk_user_id
-                                             ) tbl1 ON u.user_id = tbl1.fk_user_id
-                                    WHERE u.user_id !=$created_by ");
-        return $data;
-    }
-
-
-
 
 
     public function delay_date()
     {
-
+        // $search = [];
+        // $dataData = $this->taskListDetails(session('user_id'), 0, 0, $search);
 
         $delay_data = DB::select("SELECT t.task_id,
 	t.title,
@@ -882,11 +856,49 @@ class TaskController extends Controller
 	(SELECT max(created_datetime) created_datetime, fk_task_id FROM tbl_task_reply_trs 
 	GROUP BY fk_task_id
 	) cmt
-	ON t.task_id=cmt.fk_task_id");
+	ON t.task_id=cmt.fk_task_id where t.created_by=".session('user_id'));
         return $delay_data;
     }
 
-    public function user_rating()
+
+
+    function count_task()
+    {
+        $created_by = session('level_id');
+        $data = DB::select("SELECT 
+    u.full_name, 
+    COALESCE(tbl1.total_count, 0) AS total_count,
+    COALESCE(tbl1.viewed, 0) AS viewed,
+    COALESCE(tbl1.not_viewed, 0) AS not_viewed,
+    COALESCE(tbl1.completed, 0) AS completed,
+    COALESCE(tbl1.distinct_replies, 0) AS distinct_replies
+FROM tbl_users u
+LEFT JOIN (
+    SELECT 
+        tum.fk_user_id,
+        GROUP_CONCAT(DISTINCT tum.fk_task_id) AS assigned_task,
+        COUNT(DISTINCT t.task_id) AS total_count,
+        SUM(DISTINCT CASE WHEN tum.is_viewed = 1 THEN 1 ELSE 0 END) AS viewed,
+        SUM(DISTINCT CASE WHEN tum.is_viewed = 0 THEN 1 ELSE 0 END) AS not_viewed,
+        SUM(DISTINCT CASE WHEN t.status = 'C' THEN 1 ELSE 0 END) AS completed,
+        COUNT(DISTINCT CASE WHEN reply.created_by = tum.fk_user_id 
+                           THEN tum.fk_task_id 
+                           ELSE NULL END) AS distinct_replies
+    FROM tbl_task_user_map tum
+    LEFT JOIN tbl_task t ON tum.fk_task_id = t.task_id
+    LEFT JOIN tbl_task_reply_trs reply ON tum.fk_task_id = reply.fk_task_id
+    GROUP BY tum.fk_user_id
+) tbl1 ON u.user_id = tbl1.fk_user_id
+LEFT JOIN tbl_user_map ul on u.user_id=ul.fk_user_id
+WHERE ul.fk_level_id != $created_by");
+        return $data;
+    }
+
+
+
+
+
+       public function user_rating()
     {
 
         $rating_data = DB::select("");

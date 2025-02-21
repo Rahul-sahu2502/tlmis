@@ -69,7 +69,9 @@
                 console.log(data);
                 $('#tBody').html('');
                 data.forEach((value, index) => {
-                    let inprogress = value.viewed - value.completed;
+                    // console.log();
+                    let inprogress = value.distinct_replies;
+                    let pending =value.total_count - ( Number(value.completed) + Number(inprogress));
                     const row = `
                         <tr>
                                     <td>${index + 1}</td>
@@ -77,7 +79,7 @@
                                     <td class="total text-center"><b>${value.total_count}</b></td>
                                     <td class="total text-center"><b>${value.completed}</b></td>
                                     <td class="total text-center"><b>${inprogress}</b></td>
-                                    <td class="total text-center"><b>${value.not_viewed}</b></td>
+                                    <td class="total text-center"><b>${pending}</b></td>
                                     
                         </tr>
                             `;
