@@ -977,8 +977,7 @@ class TaskController extends Controller
 
     public function user_take_rating(Request $request)
     {
-
-        // $request->final_rating;
-        // dd()
+        dd($request->final_rating);
+     
     }
 }
