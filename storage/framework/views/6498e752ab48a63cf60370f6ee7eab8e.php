@@ -14,8 +14,9 @@
                             <tr>
                                 <th class=sort data-sort=id>S.No.</th>
                                 <th class=sort data-sort=client_name>User Name</th>
-                                <th class=sort data-sort=entry_date>Total Task</th>
-                                <th class=sort data-sort=due_date>Average Rating</th>
+                                <th class=sort data-sort=client_name>Total Task</th>
+                                <th class=sort data-sort=client_name>Average Rating</th>
+                                <th class=sort data-sort=client_name>Give Rating</th>
                             </tr>
                         </thead>
                         <tbody id="tBody">
@@ -41,35 +42,38 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
     integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<!-- <div>
-    <h1>Hello Delay </h1>
-</div> -->
+
 
 <script>
     $(document).ready(function() {
         $.ajax({
-            url: "<?php echo e(route('task_delay_date')); ?>",
+            url: "<?php echo e(route('show_user_rating')); ?>",
             type: "POST",
             headers: {
                 'X-CSRF-TOKEN': "<?php echo e(csrf_token()); ?>"
             },
-            success: function(delay_data) {
-                console.log('dealy data = ', delay_data);
+            success: function(rating_data) {
+                console.log('rating data = ', rating_data);
                 $('#tBody').html('');
-                delay_data.forEach((value, index) => {
+                rating_data.forEach((value, index) => {
 
-                    if (value.submitted_date == null) {
-                        var task_submit_date = 'Task Not Submitted';
-                    } else {
-                        task_submit_date = value.submitted_date;
-                    }
+                    // if (value.submitted_date == null) {
+                    //     var task_submit_date = 'Task Not Submitted';
+                    // } else {
+                    //     task_submit_date = value.submitted_date;
+                    // }
+                    var rating = '⭐⭐⭐';
+                    const viewButton = `<a class="btn btn-info btn-xm" title="View" href="/performance/give-ratings?var=${btoa(value.user_id)}"><i class="ri-eye-line"></i></a>`;
+
+
                     const row = `
                         <tr>
                                     <td>${index + 1}</td>
-                                    <td class="tasks_name">${value.title}</td>
-                                     <td class="total text-center"><b>${new Date(value.entry_date).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' })}</b></td>
-                                     <td class="total text-center"><b>${new Date(value.due_date).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' })}</b></td>                                                        
-                                   
+                                    <td class="tasks_name">${value.full_name}</td>
+                                    <td class="tasks_name">${value.total_task}</td>
+                                    <td class="tasks_name">${rating}</td>
+                                     <td>${viewButton}</td>
+                                    
                                     
                         </tr>
                             `;

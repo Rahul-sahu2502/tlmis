@@ -308,7 +308,7 @@
                                                                 <a href="{{route('count_tasks')}}" class=nav-link active data-key=t-analytics>{{ __('word.no_of_tasks') }}</a>
                                                             </li>
                                                             <li class=nav-item>
-                                                                <a href="{{route('rating')}}" class=nav-link active data-key=t-analytics>{{ __('word.rating') }}</a>
+                                                                <a href="{{route('rating_page')}}" class=nav-link active data-key=t-analytics>{{ __('word.rating') }}</a>
                                                             </li>
                                                         </ul>
                                                     </div>

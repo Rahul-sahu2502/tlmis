@@ -856,7 +856,7 @@ class TaskController extends Controller
 	(SELECT max(created_datetime) created_datetime, fk_task_id FROM tbl_task_reply_trs 
 	GROUP BY fk_task_id
 	) cmt
-	ON t.task_id=cmt.fk_task_id where t.created_by=".session('user_id'));
+	ON t.task_id=cmt.fk_task_id where t.created_by=" . session('user_id'));
         return $delay_data;
     }
 
@@ -865,44 +865,111 @@ class TaskController extends Controller
     function count_task()
     {
         $created_by = session('level_id');
-        $data = DB::select("SELECT 
-    u.full_name, 
-    COALESCE(tbl1.total_count, 0) AS total_count,
-    COALESCE(tbl1.viewed, 0) AS viewed,
-    COALESCE(tbl1.not_viewed, 0) AS not_viewed,
-    COALESCE(tbl1.completed, 0) AS completed,
-    COALESCE(tbl1.distinct_replies, 0) AS distinct_replies
-FROM tbl_users u
-LEFT JOIN (
-    SELECT 
-        tum.fk_user_id,
-        GROUP_CONCAT(DISTINCT tum.fk_task_id) AS assigned_task,
-        COUNT(DISTINCT t.task_id) AS total_count,
-        SUM(DISTINCT CASE WHEN tum.is_viewed = 1 THEN 1 ELSE 0 END) AS viewed,
-        SUM(DISTINCT CASE WHEN tum.is_viewed = 0 THEN 1 ELSE 0 END) AS not_viewed,
-        SUM(DISTINCT CASE WHEN t.status = 'C' THEN 1 ELSE 0 END) AS completed,
-        COUNT(DISTINCT CASE WHEN reply.created_by = tum.fk_user_id 
-                           THEN tum.fk_task_id 
-                           ELSE NULL END) AS distinct_replies
-    FROM tbl_task_user_map tum
-    LEFT JOIN tbl_task t ON tum.fk_task_id = t.task_id
-    LEFT JOIN tbl_task_reply_trs reply ON tum.fk_task_id = reply.fk_task_id
-    GROUP BY tum.fk_user_id
-) tbl1 ON u.user_id = tbl1.fk_user_id
-LEFT JOIN tbl_user_map ul on u.user_id=ul.fk_user_id
-WHERE ul.fk_level_id != $created_by");
-        return $data;
+        $count_data = DB::select("SELECT DISTINCT u.full_name, coalesce(tbl1.total_count,0) total_task, 
+        COALESCE(count_completed,0) total_completed,coalesce(tbl2.total_reply,0) no_of_reply FROM tbl_users u 
+                             INNER JOIN  tbl_user_map tum ON u.user_id=tum.fk_user_id and tum.fk_level_id!=1
+                         LEFT JOIN 
+                (SELECT fk_user_id, COUNT(fk_task_id) total_count, sum(case when t.status='C' then 1 ELSE 0 END )
+                 count_completed FROM tbl_task_user_map tum 
+                 inner JOIN tbl_task t ON tum.fk_task_id= t.task_id GROUP BY fk_user_id)tbl1
+                 ON u.user_id=tbl1.fk_user_id
+                 left JOIN
+                (SELECT created_by, COUNT(DISTINCT fk_task_id) total_reply FROM tbl_task_reply_trs  
+                 GROUP BY created_by)tbl2
+                ON u.user_id=tbl2.created_by");
+        return $count_data;
     }
 
 
 
 
 
-       public function user_rating()
+    public function show_user_rating()
     {
-
-        $rating_data = DB::select("");
+        //need to update query for select rating stars to show
+        $created_by = session('level_id');
+        $rating_data = DB::select("SELECT DISTINCT u.user_id,  
+                                                        u.full_name, 
+                                                        COALESCE(tbl1.total_count, 0) AS total_task
+                                          FROM tbl_users u
+                                          LEFT JOIN tbl_user_map tum ON u.user_id = tum.fk_user_id AND tum.fk_level_id != 1
+                                          LEFT JOIN (
+                                                    SELECT 
+                                                       fk_user_id, 
+                                                       COUNT(fk_task_id) AS total_count 
+                                                     FROM tbl_task_user_map 
+                                                     GROUP BY fk_user_id
+                                                   ) tbl1 ON u.user_id = tbl1.fk_user_id
+                                          LEFT JOIN tbl_user_map AS um ON um.fk_user_id = u.user_id
+                                          WHERE um.fk_level_id != $created_by");
 
         return $rating_data;
     }
+
+
+
+
+
+    // get user_id and based on this output ussser's task name list and status
+
+
+    public function user_task_rating(Request $request)
+    {
+
+        if (isset($request->id) && !empty($request->id) && is_numeric(base64_decode(urldecode($request->id)))) {
+            $userId = base64_decode(urldecode($request->id)); // Decode the ID safely
+            $created_by = session('user_id');
+
+
+            //need to update query for update rating stars of user
+
+
+            $user_task_list = DB::select("SELECT 
+                                                       map.map_id,
+                                                       map.fk_user_id, 
+                                                       map.fk_task_id,
+                                                       task.title AS title, 
+                                                       task.status AS status,
+                                                       task.entry_date AS entry_date,
+                                                       task.due_date AS due_date,
+                                                       coalesce(task.closed_date,0) AS submit_date,
+                                                       COALESCE(tbl2.total_reply, 0) AS total_reply,
+                                                       COALESCE(tbl2.replied_tasks, 0) AS replied_tasks,
+                                                    CASE 
+                                                        WHEN FIND_IN_SET(map.fk_task_id, tbl2.replied_tasks) > 0 THEN 'yes'
+                                                        ELSE 'no'
+                                                        END AS replied_status,
+                                                    CASE 
+                                                        WHEN FIND_IN_SET(map.map_id, tbl3.sendbacks_tasks) > 0 THEN 'yes'
+                                                        ELSE 'no'
+                                                        END AS sendback_status
+                                                    FROM tbl_task_user_map AS map
+                                                    INNER JOIN tbl_task AS task 
+                                                        ON map.fk_task_id = task.task_id
+                                                    LEFT JOIN (
+                                                        SELECT 
+                                                            COUNT(DISTINCT reply.fk_task_id) AS total_reply,
+                                                            GROUP_CONCAT(DISTINCT reply.fk_task_id) AS replied_tasks,
+                                                            reply.created_by
+                                                        FROM tbl_task_reply_trs reply
+                                                        WHERE reply.created_by = $userId
+                                                        GROUP BY reply.created_by
+                                                    ) tbl2
+                                                   ON map.fk_user_id = tbl2.created_by
+                                                    LEFT JOIN (
+                                                        SELECT 
+                                                            GROUP_CONCAT(DISTINCT sendback.fk_map_id) AS sendbacks_tasks
+                                                        FROM tbl_task_send_back_trs sendback
+                                                    ) tbl3
+                                                     ON map.fk_user_id = tbl2.created_by
+                                                    WHERE map.fk_user_id = $userId");
+
+            return response()->json($user_task_list);
+        } else {
+
+            return response()->json(['error' => 'Invalid or missing user ID'], 400);
+        }
+    }
+
+    public function user_take_rating(Request $request) {}
 }
