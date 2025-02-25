@@ -771,7 +771,7 @@ class TaskController extends Controller
         }
         return response()->json($this->response);
     }
-    
+
     function attachSupportingDocs(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -937,12 +937,12 @@ class TaskController extends Controller
                                                        COALESCE(tbl2.total_reply, 0) AS total_reply,
                                                        COALESCE(tbl2.replied_tasks, 0) AS replied_tasks,
                                                     CASE 
-                                                        WHEN FIND_IN_SET(map.fk_task_id, tbl2.replied_tasks) > 0 THEN 'yes'
-                                                        ELSE 'no'
+                                                        WHEN FIND_IN_SET(map.fk_task_id, tbl2.replied_tasks) > 0 THEN 'Yes'
+                                                        ELSE 'No'
                                                         END AS replied_status,
                                                     CASE 
-                                                        WHEN FIND_IN_SET(map.map_id, tbl3.sendbacks_tasks) > 0 THEN 'yes'
-                                                        ELSE 'no'
+                                                        WHEN FIND_IN_SET(map.map_id, tbl3.sendbacks_tasks) > 0 THEN 'Yes'
+                                                        ELSE 'No'
                                                         END AS sendback_status
                                                     FROM tbl_task_user_map AS map
                                                     INNER JOIN tbl_task AS task 
@@ -974,6 +974,7 @@ class TaskController extends Controller
 
     public function user_take_rating(Request $request) {
 
-        
+        // $request->final_rating;
+        // dd()
     }
 }

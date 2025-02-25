@@ -9,7 +9,7 @@
                 <div class="d-flex align-items-center">
                     <h5 class="card-title mb-0 flex-grow-1" title="Date After task Due Date Count As Delay Days "> Task Delay Count / कार्य विलंब गणना</h5>
                 </div>
-                <br> 
+                <br>
                 <span class="badge border border-secondary text-secondary" style="font-size: 12px;">
                     <b>Note :</b> If a task is completed after its due date, the extra days are calculated as a delay.
                     / यदि कोई कार्य अपनी नियत तारीख के बाद पूरा होता है, तो अतिरिक्त दिन देरी के रूप में गणना किए जाते हैं।</span>
