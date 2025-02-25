@@ -251,6 +251,9 @@
 #60 C:\\wamp64\\www\\php\\vectreProjects\\tlmis\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(23): require_once('C:\\\\wamp64\\\\www\\\\p...')
 #61 {main}
 "} 
+<<<<<<< HEAD
+[2025-02-20 18:22:17] development.INFO: Language switched {"requested_locale":"hi","session_locale":"hi","app_locale":"hi","config_locale":"hi"} 
+=======
 [2025-02-20 17:33:21] development.ERROR: Undefined variable $search {"userId":2,"exception":"[object] (ErrorException(code: 0): Undefined variable $search at C:\\wamp64\\www\\php\\vectreProjects\\tlmis\\app\\Http\\Controllers\\TaskController.php:869)
 [stacktrace]
 #0 C:\\wamp64\\www\\php\\vectreProjects\\tlmis\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\HandleExceptions.php(256): Illuminate\\Foundation\\Bootstrap\\HandleExceptions->handleError(2, 'Undefined varia...', 'C:\\\\wamp64\\\\www\\\\p...', 869)
@@ -1079,3 +1082,4 @@
 #53 C:\\wamp64\\www\\php\\vectreProjects\\tlmis\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(23): require_once('C:\\\\wamp64\\\\www\\\\p...')
 #54 {main}
 "} 
+>>>>>>> 400fd184f23e08698117a688d9e63f5ae476a019
