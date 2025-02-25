@@ -309,7 +309,7 @@
                                                                 <a href="<?php echo e(route('count_tasks')); ?>" class=nav-link active data-key=t-analytics><?php echo e(__('word.no_of_tasks')); ?></a>
                                                             </li>
                                                             <li class=nav-item>
-                                                                <a href="<?php echo e(route('rating')); ?>" class=nav-link active data-key=t-analytics><?php echo e(__('word.rating')); ?></a>
+                                                                <a href="<?php echo e(route('rating_page')); ?>" class=nav-link active data-key=t-analytics><?php echo e(__('word.rating')); ?></a>
                                                             </li>
                                                         </ul>
                                                     </div>

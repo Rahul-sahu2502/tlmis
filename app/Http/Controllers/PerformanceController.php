@@ -10,7 +10,7 @@ class PerformanceController extends Controller
     {
         $data['title'] = 'Count Task';
         $data['page_title'] = 'count_task';
-        return view('performance.count_task',$data);
+        return view('performance.count_task', $data);
     }
     public function rating()
     {
@@ -23,5 +23,12 @@ class PerformanceController extends Controller
         $data['title'] = 'Performance Delay';
         $data['page_title'] = 'Performance Delay';
         return view('performance.delay', $data);
+    }
+    public function give_rating_page()
+    {
+        // $data['var']= $req->var;
+        $data['title'] = 'User Task Rating';
+        $data['page_title'] = 'Give User Task Rating ';
+        return view('performance.user_task_rating', $data);
     }
 }
