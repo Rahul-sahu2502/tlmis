@@ -1,7 +1,4 @@
-@extends('layouts.layout_admin')
-
-
-@section('content')
+<?php $__env->startSection('content'); ?>
     <div class=row>
         <div class=col-lg-12>
             <div class=card id=tasksList>
@@ -37,57 +34,48 @@
                                     <th class=sort data-sort=client_name>Click for Rating</th>
                                 </tr>
 
-                        </thead>
-                        <tbody id="tBody">
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody id="tBody">
+                            </tbody>
+                        </table>
 
-                    {{-- bootstrap default behaviour change, reason : model interation was disable --}}
-                    <style>
-                        .modal {
-                            z-index: 1055 !important;
-                            pointer-events: auto !important;
-                        }
+                        
+                        <style>
+                            .modal {
+                                z-index: 1055 !important;
+                                pointer-events: auto !important;
+                            }
 
-                        .modal-backdrop {
-                            z-index: 1050 !important;
-                        }
+                            .modal-backdrop {
+                                z-index: 1050 !important;
+                            }
+                        </style>
 
-
-                        .emoji {
-                            cursor: pointer;
-                            font-size: 2rem;
-                            transition: color 0.2s;
-                        }
-
-                        .selected {
-                            color: yellow !important;
-                        }
-                    </style>
-
-
-                    <!-- Varying modal content -->
-                    <div id="myModal" class="modal fade" aria-labelledby="myModalLabel">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="myModalLabel">Rate User !</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <div id="basic-rater" dir="ltr" class="d-flex justify-content-center gap-2">
-                                        <input type="hidden" id="starValue" value="0">
-
-                                        <i class="ri ri-emotion-sad-line text-secondary fs-1 emoji" data-value="1"></i> <!-- Very Bad 😭 -->
-                                        <i class="ri ri-emotion-unhappy-line text-secondary fs-1 emoji" data-value="2"></i> <!-- Bad 😢 -->
-                                        <i class="ri ri-emotion-normal-line text-secondary fs-1 emoji" data-value="3"></i> <!-- Neutral 😐 -->
-                                        <i class="ri ri-emotion-happy-line text-secondary fs-1 emoji" data-value="4"></i> <!-- Happy 😃 -->
-                                        <i class="ri ri-emotion-laugh-line text-secondary fs-1 emoji" data-value="5"></i> <!-- Very Happy 😊 -->
+                        <!-- Varying modal content -->
+                        <div id="myModal" class="modal fade" aria-labelledby="myModalLabel">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="myModalLabel">Rate User !</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <!-- Star Rating System -->
+                                        <div id="basic-rater" dir="ltr" class="d-flex justify-content-center gap-2">
+                                            <input type="hidden" id="starValue" value="0">
+                                            <i class="ri ri-star-fill text-secondary fs-1" data-value="1"></i>
+                                            <i class="ri ri-star-fill text-secondary fs-1" data-value="2"></i>
+                                            <i class="ri ri-star-fill text-secondary fs-1" data-value="3"></i>
+                                            <i class="ri ri-star-fill text-secondary fs-1" data-value="4"></i>
+                                            <i class="ri ri-star-fill text-secondary fs-1" data-value="5"></i>
+                                        </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary" onclick="submitRating()">Submit Rating</button>
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary" onclick="submitRating()">Submit
+                                            Rating</button>
                                     </div>
                                 </div><!-- /.modal-content -->
                             </div><!-- /.modal-dialog -->
@@ -98,50 +86,52 @@
             </div>
         </div>
     </div>
-    @endsection
-    @section('scripts')
-    <script src="{{asset('assets/libs/list.js/list.min.js')}}"></script>
-    <script src="{{asset('assets/libs/list.pagination.js/list.pagination.min.js')}}"></script>
-    <script src="{{asset('assets/libs/datatable/jquery.dataTables.min.js')}}"></script>
-    <script src="{{asset('assets/libs/datatable/dataTables.buttons.min.js')}}"></script>
-    <script src="{{asset('assets/libs/datatable/buttons.flash.min.js')}}"></script>
-    <script src="{{asset('assets/libs/datatable/buttons.html5.min.js')}}"></script>
-    <script src="{{asset('assets/libs/datatable/buttons.print.min.js')}}"></script>
-    <script src="{{asset('assets/libs/datatable/jszip.min.js')}}"></script>
-    <script src="{{asset('assets/libs/datatable/pdfmake.min.js')}}"></script>
-    <script src="{{asset('assets/libs/datatable/vfs_fonts.js')}}"></script>
-    <script src="{{asset('assets/css/icons.min.css')}}"></script>
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('scripts'); ?>
+    <script src="<?php echo e(asset('assets/libs/list.js/list.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('assets/libs/list.pagination.js/list.pagination.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('assets/libs/datatable/jquery.dataTables.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('assets/libs/datatable/dataTables.buttons.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('assets/libs/datatable/buttons.flash.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('assets/libs/datatable/buttons.html5.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('assets/libs/datatable/buttons.print.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('assets/libs/datatable/jszip.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('assets/libs/datatable/pdfmake.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('assets/libs/datatable/vfs_fonts.js')); ?>"></script>
+    <script src="<?php echo e(asset('assets/css/icons.min.css')); ?>"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             //get user_id from url
             let params = new URLSearchParams(window.location.search);
             let user_id = params.get("var"); // Replace 'key' with the actual parameter name
             console.log('this is get user_id = ', user_id);
 
             if (user_id == null) {
-                window.location.href = "{{ route('rating_page') }}";
+                window.location.href = "<?php echo e(route('rating_page')); ?>";
             }
             $.ajax({
-                url: "{{ route('user_task_rating') }}",
+                url: "<?php echo e(route('user_task_rating')); ?>",
                 type: "POST",
                 headers: {
-                    'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                    'X-CSRF-TOKEN': "<?php echo e(csrf_token()); ?>"
                 },
                 data: {
 
                     id: user_id
                 },
-                success: function(user_task_list) {
+                success: function (user_task_list) {
                     console.log('user_task_list = ', user_task_list);
                     $('#tBody').html('');
 
                     if (user_task_list.length > 0) {
                         user_task_list.forEach((value, index) => {
+                            console.log('user_task_list_after condtion = ', value);
+                            console.log(Date(value.submit_date));
 
                             var modalButton = '';
 
@@ -150,11 +140,13 @@
                             // this is for check that if task is completed so what about the rating status
                             if (value.status === 'C') {
 
-                                if (value.replied_status === 'No' && value.sendback_status === 'No') {
+                                if (value.replied_status === 'no' && value.sendback_status === 'no') {
                                     rating_view = "No Rating";
-                                } else if (value.replied_status === 'No' && value.sendback_status === 'Yes') {
+                                } else if (value.replied_status === 'no' && value.sendback_status === 'yes') {
                                     rating_view = "Send Back";
-                                } else if (value.replied_status === 'Yes' || value.sendback_status === 'Yes') {
+                                }
+
+                                else if (value.replied_status === 'yes' || value.sendback_status === 'yes') {
 
                                     if (new Date(value.submit_date) > new Date(value.due_date)) {
                                         rating_view = 'click_for_rating'; //late submission && Manual_rating
@@ -178,11 +170,19 @@
                                     }
                                 }
                             } else if (value.status === 'I') {
-                                if (value.replied_status === 'No' && value.sendback_status === 'Yes') {
+                                if (value.replied_status === 'no' && value.sendback_status === 'yes') {
                                     rating_view = "Send Back";
                                 }
                             }
 
+                            // // this is for manually rating system #myModal
+                            // if (rating_view === 'click_for_rating') {
+                            //     modalButton = `
+                            //                     <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#myModal"> <i class="ri-eye-line"></i></button>
+                            //                     `;
+                            // }else{
+                            //     modalButton = "Done";
+                            // }
 
                             const row = `
                                                           <tr>
@@ -190,7 +190,7 @@
                                                              <td class="tasks_name">${value.title}</td>
                                                              <td class="tasks_name">${value.status}</td>  
                                                               <td class="total text-center"><b>${new Date(value.due_date).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' })}</b></td>
-                                                             <td class="tasks_name">${new_submit_date}</td> 
+                                                              <td class="total text-center"><b>${new Date(value.submit_date).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' })}</b></td>
                                                              <td class="tasks_name">${value.replied_status}</td> 
                                                              <td > ${rating_view}</td>
                                                              <td>${modalButton}</td>
@@ -203,101 +203,12 @@
                         $('#tBody').append('<tr><td colspan="5">No tasks found</td></tr>');
                     }
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     console.error('Error:', xhr.responseText);
                     $('#tBody').html('<tr><td colspan="5">Error loading tasks</td></tr>');
                 }
             });
         });
     </script>
-
-
-    <script>
-        const emojis = document.querySelectorAll(".emoji");
-        let selectedRating = 0;
-
-        emojis.forEach(emoji => {
-            emoji.addEventListener("click", function() {
-                selectedRating = this.getAttribute("data-value");
-                document.getElementById("starValue").value = selectedRating;
-
-                // Remove 'selected' class from all emojis
-                emojis.forEach(e => e.classList.remove("selected"));
-
-                // Highlight clicked emoji
-                this.classList.add("selected");
-            });
-        });
-
-        function submitRating() {
-            const ratingValue = document.getElementById("starValue").value;
-            if (ratingValue === "0") {
-                // alert("Please select a rating before submitting!");
-                Swal.fire({
-                    // title: "The Internet?",
-                    text: "Please select a rating before submitting!",
-                    icon: "warning"
-                });
-                return;
-            }
-            console.log("Selected Rating:", ratingValue);
-            // alert("You rated: " + ratingValue);
-            // window.location.href = "";
-
-            // Close modal if it's open
-            document.querySelector('[data-bs-dismiss="modal"]').click();
-
-            // $.ajax({
-            //     url: "{{ route('user_take_rating') }}",
-            //     method: "POST",
-            //     data: {
-            //         final_rating: ratingValue
-            //     },
-            //     success: function(data) {
-            //         console.log(data);
-            //     },
-            //     error: function(xhr, status, error) {
-            //         console.error('Error:', xhr.responseText);
-            //     }
-
-            // })
-
-        }
-    </script>
-
-
-    <!-- <script>
-        const emojis = document.querySelectorAll(".emoji");
-        let selectedRating = 0;
-
-        emojis.forEach(emoji => {
-            emoji.addEventListener("click", function() {
-                selectedRating = this.getAttribute("data-value");
-                document.getElementById("starValue").value = selectedRating;
-
-                // Remove 'selected' class from all emojis
-                emojis.forEach(e => e.classList.remove("selected"));
-
-                // Highlight clicked emoji
-                this.classList.add("selected");
-            });
-        });
-
-        function submitRating() {
-            const ratingValue = document.getElementById("starValue").value;
-            if (ratingValue === "0") {
-                // alert("Please select a rating before submitting!");
-                Swal.fire({
-                    // title: "The Internet?",
-                    text: "Please select a rating before submitting!",
-                    icon: "warning"
-                });
-                return;
-            }
-
-            //Send Rating for submit in database through ajax
-
-        }
-    </script> -->
-
-    @endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.layout_admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\laravel_projects\TLMIS original code\TLMIS\resources\views/performance/user_task_rating.blade.php ENDPATH**/ ?>

@@ -1,7 +1,4 @@
-@extends('layouts.layout_admin')
-
-
-@section('content')
+<?php $__env->startSection('content'); ?>
     <div class=row>
         <div class=col-lg-12>
             <div class=card id=tasksList>
@@ -42,18 +39,18 @@
             </div>
         </div>
     </div>
-@endsection
-@section('scripts')
-<script src="{{asset('assets/libs/list.js/list.min.js')}}"></script>
-<script src="{{asset('assets/libs/list.pagination.js/list.pagination.min.js')}}"></script>
-<script src="{{asset('assets/libs/datatable/jquery.dataTables.min.js')}}"></script>
-<script src="{{asset('assets/libs/datatable/dataTables.buttons.min.js')}}"></script>
-<script src="{{asset('assets/libs/datatable/buttons.flash.min.js')}}"></script>
-<script src="{{asset('assets/libs/datatable/buttons.html5.min.js')}}"></script>
-<script src="{{asset('assets/libs/datatable/buttons.print.min.js')}}"></script>
-<script src="{{asset('assets/libs/datatable/jszip.min.js')}}"></script>
-<script src="{{asset('assets/libs/datatable/pdfmake.min.js')}}"></script>
-<script src="{{asset('assets/libs/datatable/vfs_fonts.js')}}"></script>
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('scripts'); ?>
+<script src="<?php echo e(asset('assets/libs/list.js/list.min.js')); ?>"></script>
+<script src="<?php echo e(asset('assets/libs/list.pagination.js/list.pagination.min.js')); ?>"></script>
+<script src="<?php echo e(asset('assets/libs/datatable/jquery.dataTables.min.js')); ?>"></script>
+<script src="<?php echo e(asset('assets/libs/datatable/dataTables.buttons.min.js')); ?>"></script>
+<script src="<?php echo e(asset('assets/libs/datatable/buttons.flash.min.js')); ?>"></script>
+<script src="<?php echo e(asset('assets/libs/datatable/buttons.html5.min.js')); ?>"></script>
+<script src="<?php echo e(asset('assets/libs/datatable/buttons.print.min.js')); ?>"></script>
+<script src="<?php echo e(asset('assets/libs/datatable/jszip.min.js')); ?>"></script>
+<script src="<?php echo e(asset('assets/libs/datatable/pdfmake.min.js')); ?>"></script>
+<script src="<?php echo e(asset('assets/libs/datatable/vfs_fonts.js')); ?>"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
     integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -62,10 +59,10 @@
 <script>
     $(document).ready(function() {
         $.ajax({
-            url: "{{route('show_user_rating')}}",
+            url: "<?php echo e(route('show_user_rating')); ?>",
             type: "POST",
             headers: {
-                'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                'X-CSRF-TOKEN': "<?php echo e(csrf_token()); ?>"
             },
             success: function(rating_data) {
                 console.log('rating data = ', rating_data);
@@ -98,4 +95,5 @@
         })
     });
 </script>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.layout_admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\laravel_projects\TLMIS original code\TLMIS\resources\views/performance/rating.blade.php ENDPATH**/ ?>
