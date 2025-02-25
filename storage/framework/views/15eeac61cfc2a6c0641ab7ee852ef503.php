@@ -18,6 +18,7 @@
                                 <th class=sort data-sort=due_date>Task Due Date</th>
                                 <th class=sort data-sort=submit_date>Submit Date</th>
                                 <th class=sort data-sort=delay_date>Total Delay (days)</th>
+                                <th>Action</th>
 
                             </tr>
                         </thead>
@@ -56,12 +57,16 @@
             headers: {
                 'X-CSRF-TOKEN': "<?php echo e(csrf_token()); ?>"
             },
-            success: function(delay_data) {
+            success: function(response) {
+                let delay_data = response;
+                // console.log( response[1]);
+
                 console.log('dealy data = ', delay_data);
                 $('#tBody').html('');
                 delay_data.forEach((value, index) => {
 
-                   
+                    const viewButton = `<a class="btn btn-info btn-xm" title="View" href="/task-overview?var=${btoa(value.task_id)}"><i class="ri-eye-line"></i></a>`;
+
                     const row = `
                         <tr>
                                     <td>${index + 1}</td>
@@ -70,7 +75,7 @@
                                      <td class="total text-center"><b>${new Date(value.due_date).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' })}</b></td>                                                        
                                     <td class="total text-center"><b>${value.submitted_date}</b></td>
                                     <td class="total text-center"><b>${value.difference_in_days}</b></td>
-                                    
+                                     <td>${viewButton}</td>
                         </tr>
                             `;
                     $('#tBody').append(row);

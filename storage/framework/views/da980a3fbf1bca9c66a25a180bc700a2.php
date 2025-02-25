@@ -40,52 +40,62 @@
     </div>
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('scripts'); ?>
-    <script src="<?php echo e(asset('assets/libs/list.js/list.min.js')); ?>"></script>
-    <script src="<?php echo e(asset('assets/libs/list.pagination.js/list.pagination.min.js')); ?>"></script>
-    <script src="<?php echo e(asset('assets/libs/datatable/jquery.dataTables.min.js')); ?>"></script>
-    <script src="<?php echo e(asset('assets/libs/datatable/dataTables.buttons.min.js')); ?>"></script>
-    <script src="<?php echo e(asset('assets/libs/datatable/buttons.flash.min.js')); ?>"></script>
-    <script src="<?php echo e(asset('assets/libs/datatable/buttons.html5.min.js')); ?>"></script>
-    <script src="<?php echo e(asset('assets/libs/datatable/buttons.print.min.js')); ?>"></script>
-    <script src="<?php echo e(asset('assets/libs/datatable/jszip.min.js')); ?>"></script>
-    <script src="<?php echo e(asset('assets/libs/datatable/pdfmake.min.js')); ?>"></script>
-    <script src="<?php echo e(asset('assets/libs/datatable/vfs_fonts.js')); ?>"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <!-- <div>
-                                        <h1>Hello Count </h1>
-                                    </div> -->
+        <script src="<?php echo e(asset('assets/libs/list.js/list.min.js')); ?>"></script>
+        <script src="<?php echo e(asset('assets/libs/list.pagination.js/list.pagination.min.js')); ?>"></script>
+        <script src="<?php echo e(asset('assets/libs/datatable/jquery.dataTables.min.js')); ?>"></script>
+        <script src="<?php echo e(asset('assets/libs/datatable/dataTables.buttons.min.js')); ?>"></script>
+        <script src="<?php echo e(asset('assets/libs/datatable/buttons.flash.min.js')); ?>"></script>
+        <script src="<?php echo e(asset('assets/libs/datatable/buttons.html5.min.js')); ?>"></script>
+        <script src="<?php echo e(asset('assets/libs/datatable/buttons.print.min.js')); ?>"></script>
+        <script src="<?php echo e(asset('assets/libs/datatable/jszip.min.js')); ?>"></script>
+        <script src="<?php echo e(asset('assets/libs/datatable/pdfmake.min.js')); ?>"></script>
+        <script src="<?php echo e(asset('assets/libs/datatable/vfs_fonts.js')); ?>"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+            integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <!-- <div>
+                                            <h1>Hello Count </h1>
+                                        </div> -->
 
+    <<<<<<< HEAD
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             $.ajax({
                 url: "<?php echo e(route('user_count_task')); ?>",
                 type: "POST",
                 headers: {
                     'X-CSRF-TOKEN': "<?php echo e(csrf_token()); ?>"
                 },
-                success: function (data) {
+                success: function(data) {
                     console.log(data);
                     $('#tBody').html('');
                     data.forEach((value, index) => {
-                        let inprogress = value.viewed - value.completed;
+                        // console.log();
+                        if(value.distinct_replies=='0'){
+                            var inprogress = value.distinct_replies;
+                        }else{
+                            inprogress = value.distinct_replies-Number(value.completed);
+                        }
+                        let pending =value.total_count - ( Number(value.completed) + Number(inprogress));
                         const row = `
-                                                            <tr>
-                                                                        <td>${index + 1}</td>
-                                                                        <td class="tasks_name">${value.full_name}</td>
-                                                                        <td class="total text-center"><b>${value.total_count}</b></td>
-                                                                        <td class="total text-center"><b>${value.completed}</b></td>
-                                                                        <td class="total text-center"><b>${inprogress}</b></td>
-                                                                        <td class="total text-center"><b>${value.not_viewed}</b></td>
+                            <tr>
+                                        <td>${index + 1}</td>
+                                        <td class="tasks_name">${value.full_name}</td>
+                                        <td class="total text-center"><b>${value.total_count}</b></td>
+                                        <td class="total text-center"><b>${value.completed}</b></td>
+                                        <td class="total text-center"><b>${inprogress}</b></td>
+                                        <td class="total text-center"><b>${pending}</b></td>
 
-                                                            </tr>
-                                                                `;
+                            </tr>
+                                `;
                         $('#tBody').append(row);
                     });
                 }
             })
         });
     </script>
+    =======
+
+    >>>>>>> 0c789255c5f245f3e41d93e95b555d4580c11bd9
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.layout_admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\laravel_projects\TLMIS original code\TLMIS\resources\views/performance/count_task.blade.php ENDPATH**/ ?>

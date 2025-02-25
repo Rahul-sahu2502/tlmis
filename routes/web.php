@@ -91,11 +91,11 @@ Route::middleware([\App\Http\Middleware\AuthenticateUser::class . ':0'])->group(
 
     // Performance routes
 
+    Route::get('performance/delay', [PerformanceController::class, 'delay'])->name('delay');
     Route::get('performance/count-tasks', [PerformanceController::class, 'count_tasks'])->name('count_tasks');
     Route::get('performance/ratings', [PerformanceController::class, 'rating'])->name('rating');
-    Route::get('performance/delay', [PerformanceController::class, 'delay'])->name('delay');
-    Route::post('/user_count_task', [TaskController::class, 'count_task'])->name('user_count_task');
     Route::post('/task_delay_date', [TaskController::class, 'delay_date'])->name('task_delay_date');
+    Route::post('/user_count_task', [TaskController::class, 'count_task'])->name('user_count_task');
     Route::post('/user_rating', [TaskController::class, 'user_rating'])->name('user_rating');
 
     // s3 testing
