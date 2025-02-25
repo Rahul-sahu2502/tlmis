@@ -6,6 +6,18 @@
                     <div class="d-flex align-items-center">
                         <h5 class="card-title mb-0 flex-grow-1"> User Task Ratings / उपयोगकर्ता कार्य रेटिंग</h5>
                     </div>
+                    <a class="mt-2" type="button" data-bs-toggle="collapse" data-bs-target="#detailsToggleDiv" aria-expanded="false"
+                        aria-controls="toggleDiv">See Details./ विवरण देखें</a>
+                    <br>
+                    <span class="badge border border-secondary text-secondary collapse  w-100" id="detailsToggleDiv"
+                        style="font-size: 0.8rem; text-align: left;">
+                        <b>Note :</b>
+                        <ol class="text-break">
+                            <li class="mt-2">The admin can give a rating manually by clicking the action button./प्रशासक एक्शन बटन पर क्लिक करके मैन्युअल रूप से रेटिंग दे सकता है।</li>
+                            <li class="mt-1">Once you rate, you can't change the rating afterward./ एक बार रेटिंग देने के बाद, आप उसे बदल नहीं सकते।</li>
+                            <li class="mt-1">You can only rate those tasks that are completed with some delay./आप केवल उन्हीं कार्यों को रेट कर सकते हैं जो कुछ देरी से पूरे किए गए हों।</li>
+                        </ol>
+                    </span>
                 </div>
                 <div class=card-body>
                     <div class="table-responsive table-card mb-4">
@@ -18,7 +30,7 @@
                                     <th class=sort data-sort=due_date>Task Due Date</th>
                                     <th class=sort data-sort=submit_date>Task Submit Date</th>
                                     <th class=sort data-sort=client_name>Reply Status</th>
-                                    <th class=sort data-sort=client_name>Click for Rating</th>
+                                    <th class=sort data-sort=client_name>Rating Status</th>
                                     <th class=sort data-sort=client_name>Click for Rating</th>
                                 </tr>
 
@@ -60,8 +72,10 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary" onclick="submitRating()">Submit Rating</button>
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary" onclick="submitRating()">Submit
+                                            Rating</button>
                                     </div>
                                 </div><!-- /.modal-content -->
                             </div><!-- /.modal-dialog -->
@@ -119,12 +133,11 @@
                             console.log('user_task_list_after condtion = ', value);
                             console.log(Date(value.submit_date));
 
-                            const modalButton = `
-                                            <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#myModal"> <i class="ri-eye-line"></i></button>
-                                            `;
+                            var modalButton = '';
 
 
                             var rating_view = 'Incomplete task';
+                            // this is for check that if task is completed so what about the rating status
                             if (value.status === 'C') {
 
                                 if (value.replied_status === 'no' && value.sendback_status === 'no') {
@@ -137,7 +150,9 @@
 
                                     if (new Date(value.submit_date) > new Date(value.due_date)) {
                                         rating_view = 'click_for_rating'; //late submission && Manual_rating
-
+                                        modalButton = `
+                                                <button type="button" class="btn btn-warning " data-bs-toggle="modal" data-bs-target="#myModal"> <i class="ri-star-fill"></i></button>
+                                                `;
 
                                     } else if (new Date(value.submit_date) <= new Date(value.due_date)) {
                                         console.log("true");
@@ -160,18 +175,26 @@
                                 }
                             }
 
+                            // // this is for manually rating system #myModal
+                            // if (rating_view === 'click_for_rating') {
+                            //     modalButton = `
+                            //                     <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#myModal"> <i class="ri-eye-line"></i></button>
+                            //                     `;
+                            // }else{
+                            //     modalButton = "Done";
+                            // }
 
                             const row = `
-                                                      <tr>
-                                                         <td>${index + 1}</td>
-                                                         <td class="tasks_name">${value.title}</td>
-                                                         <td class="tasks_name">${value.status}</td>  
-                                                          <td class="total text-center"><b>${new Date(value.due_date).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' })}</b></td>
-                                                          <td class="total text-center"><b>${new Date(value.submit_date).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' })}</b></td>
-                                                         <td class="tasks_name">${value.replied_status}</td> 
-                                                         <td > ${rating_view}</td>
-                                                         <td>${modalButton}</td>
-                                                      </tr>`;
+                                                          <tr>
+                                                             <td>${index + 1}</td>
+                                                             <td class="tasks_name">${value.title}</td>
+                                                             <td class="tasks_name">${value.status}</td>  
+                                                              <td class="total text-center"><b>${new Date(value.due_date).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' })}</b></td>
+                                                              <td class="total text-center"><b>${new Date(value.submit_date).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' })}</b></td>
+                                                             <td class="tasks_name">${value.replied_status}</td> 
+                                                             <td > ${rating_view}</td>
+                                                             <td>${modalButton}</td>
+                                                          </tr>`;
 
 
                             $('#tBody').append(row);

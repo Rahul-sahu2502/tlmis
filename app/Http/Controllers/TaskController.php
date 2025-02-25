@@ -866,18 +866,21 @@ class TaskController extends Controller
     function count_task()
     {
         $created_by = session('level_id');
-        $count_data = DB::select("SELECT DISTINCT u.full_name, coalesce(tbl1.total_count,0) total_task, 
-        COALESCE(count_completed,0) total_completed,coalesce(tbl2.total_reply,0) no_of_reply FROM tbl_users u 
-                             INNER JOIN  tbl_user_map tum ON u.user_id=tum.fk_user_id and tum.fk_level_id!=1
-                         LEFT JOIN 
-                (SELECT fk_user_id, COUNT(fk_task_id) total_count, sum(case when t.status='C' then 1 ELSE 0 END )
-                 count_completed FROM tbl_task_user_map tum 
-                 inner JOIN tbl_task t ON tum.fk_task_id= t.task_id GROUP BY fk_user_id)tbl1
-                 ON u.user_id=tbl1.fk_user_id
-                 left JOIN
-                (SELECT created_by, COUNT(DISTINCT fk_task_id) total_reply FROM tbl_task_reply_trs  
-                 GROUP BY created_by)tbl2
-                ON u.user_id=tbl2.created_by");
+        $count_data = DB::select("SELECT DISTINCT
+                                            u.full_name, 
+                                            coalesce(tbl1.total_count,0) total_task, 
+                                            COALESCE(count_completed,0) total_completed,
+                                            coalesce(tbl2.total_reply,0) no_of_reply FROM tbl_users u 
+                                                INNER JOIN  tbl_user_map tum ON u.user_id=tum.fk_user_id and tum.fk_level_id!=1
+                                         LEFT JOIN 
+                                             (SELECT fk_user_id, COUNT(fk_task_id) total_count, sum(case when t.status='C' then 1 ELSE 0 END )
+                                                count_completed FROM tbl_task_user_map tum 
+                                                inner JOIN tbl_task t ON tum.fk_task_id= t.task_id GROUP BY fk_user_id)tbl1
+                                                 ON u.user_id=tbl1.fk_user_id
+                                                left JOIN
+                                                (SELECT created_by, COUNT(DISTINCT fk_task_id) total_reply FROM tbl_task_reply_trs  
+                                                 GROUP BY created_by)tbl2
+                                                ON u.user_id=tbl2.created_by");
         return $count_data;
     }
 
