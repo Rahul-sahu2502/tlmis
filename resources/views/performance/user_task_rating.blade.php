@@ -22,6 +22,7 @@
                                 <th class=sort data-sort=submit_date>Task Submit Date</th>
                                 <th class=sort data-sort=client_name>Reply Status</th>
                                 <th class=sort data-sort=client_name>Click for Rating</th>
+                                <th class=sort data-sort=client_name>Click for Rating</th>
                             </tr>
 
                         </thead>
@@ -146,11 +147,11 @@
 
                 if ( user_task_list.length > 0) {
                     user_task_list.forEach((value, index) => {
-                        console.log('user_task_list_after condtion = ', value);
-                        // const modalButton = `
-                        // <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalgrid">
-                        //     <i class="ri-eye-line"></i>
-                        // </button>`;
+                        console.log('user_task_list_after condtion = ', user_task_list);
+                        const modalButton = `
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalgrid">
+                            <i class="ri-eye-line"></i>
+                        </button>`;
                         // <td>${modalButton}</td>
 
                         var rating_view = '';
@@ -187,7 +188,8 @@
                                       <td class="total text-center"><b>${new Date(value.due_date).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' })}</b></td>
                                       <td class="total text-center"><b>${new Date(value.submit_date).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' })}</b></td>
                                      <td class="tasks_name">${value.replied_status}</td> 
-                                     <td class="tasks_name"> </td>
+                                     <td class="tasks_name">${rating_view} </td>
+                                       <td>${modalButton}</td>
                                   </tr>`;
 
 

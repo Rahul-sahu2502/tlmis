@@ -771,6 +771,7 @@ class TaskController extends Controller
         }
         return response()->json($this->response);
     }
+    
     function attachSupportingDocs(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -846,10 +847,10 @@ class TaskController extends Controller
 	t.title,
 	t.entry_date,
 	t.due_date,
-	COALESCE(cmt.created_datetime, 'Task Not Submitted') submitted_date,
+	COALESCE(cmt.created_datetime, 'Inprocess') submitted_date,
 	case 
 	when DATEDIFF(cmt.created_datetime,t.due_date) < 0 then 'No Delay'
-	when DATEDIFF(cmt.created_datetime,t.due_date) IS NULL then 'Not Completed'
+	when DATEDIFF(cmt.created_datetime,t.due_date) IS NULL then 'Inprocess'
 	ELSE DATEDIFF(cmt.created_datetime,t.due_date)
 	END AS difference_in_days
 	FROM tbl_task t left JOIN 
@@ -971,5 +972,8 @@ class TaskController extends Controller
         }
     }
 
-    public function user_take_rating(Request $request) {}
+    public function user_take_rating(Request $request) {
+
+        
+    }
 }
