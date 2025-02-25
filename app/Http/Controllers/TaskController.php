@@ -975,7 +975,8 @@ class TaskController extends Controller
         }
     }
 
-    public function user_take_rating(Request $request) {
+    public function user_take_rating(Request $request)
+    {
 
         // $request->final_rating;
         // dd()

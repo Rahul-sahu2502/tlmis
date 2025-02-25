@@ -183,6 +183,26 @@
                                 }
                             }
 
+                            // // this is for manually rating system #myModal
+                            // if (rating_view === 'click_for_rating') {
+                            //     modalButton = `
+                            //                     <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#myModal"> <i class="ri-eye-line"></i></button>
+                            //                     `;
+                            // }else{
+                            //     modalButton = "Done";
+                            // }
+
+                            var new_submit_date = '';
+
+                            if (value.submit_date === '0') {
+                                new_submit_date = '0'; 
+                            } else if (!isNaN(Date.parse(value.submit_date))) {
+                                new_submit_date = `${new Date(value.submit_date).toLocaleDateString('en-US', { 
+                                             day: '2-digit', 
+                                             month: 'short', 
+                                             year: 'numeric' 
+                                         })}`;
+                            }
 
                             const row = `
                                                           <tr>
