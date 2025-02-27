@@ -73,6 +73,11 @@
                     'X-CSRF-TOKEN': "{{ csrf_token() }}"
                 },
                 success: function (response) {
+
+                    // start direct entry_date
+                        
+                    // end direct entry
+
                     let delay_data = response;
 
 

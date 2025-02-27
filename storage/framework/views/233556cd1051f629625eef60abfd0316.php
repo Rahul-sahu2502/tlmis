@@ -233,4 +233,4 @@ chart.render();
 </script>
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('layouts.layout_admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\wamp64\www\php\vectreProjects\tlmis\resources\views/dashboard/index.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.layout_admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\laravel_projects\TLMIS original code\TLMIS\resources\views/dashboard/index.blade.php ENDPATH**/ ?>
