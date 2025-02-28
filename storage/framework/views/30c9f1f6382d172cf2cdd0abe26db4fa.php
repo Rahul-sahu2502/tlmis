@@ -368,4 +368,4 @@
     <div class=sidebar-background></div>
 </div>
 <div class=vertical-overlay></div>
-<?php /**PATH C:\wamp64\www\php\vectreProjects\tlmis\resources\views/layouts/partials/menu.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\xampp\htdocs\laravel_projects\TLMIS original code\TLMIS\resources\views/layouts/partials/menu.blade.php ENDPATH**/ ?>

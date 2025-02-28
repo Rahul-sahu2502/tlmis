@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
+use function Symfony\Component\Clock\now;
 
 class UserController extends Controller
 {
@@ -40,7 +41,7 @@ class UserController extends Controller
                 $query->where('fk_level_id', '>', Session::get('level_id'));
             })
             ->get();
-        return view('users.hierarchy', compact('title','page_title', 'page_subtitle', 'users', 'levels'));
+        return view('users.hierarchy', compact('title', 'page_title', 'page_subtitle', 'users', 'levels'));
     }
     function viewUser()
     {
@@ -124,20 +125,24 @@ class UserController extends Controller
             }
 
             $pass_keys = (new UtilController())->create_password('tlmis@2024');
-            if (tbl_users::where('mobile', $request->mobile)
-                ->when($request->existing_user_id > 0, function ($query) use ($request) {
-                    return $query->where('user_id', '!=', $request->existing_user_id);
-                })
-                ->exists()) {
+            if (
+                tbl_users::where('mobile', $request->mobile)
+                    ->when($request->existing_user_id > 0, function ($query) use ($request) {
+                        return $query->where('user_id', '!=', $request->existing_user_id);
+                    })
+                    ->exists()
+            ) {
                 return response()->json(['success' => false, 'message' => 'User with this mobile number already exists']);
             }
 
             if ($request->has('email') && !empty($request->email)) {
-                if (tbl_users::where('email', $request->email)
-                    ->when($request->existing_user_id > 0, function ($query) use ($request) {
-                        return $query->where('user_id', '!=', $request->existing_user_id);
-                    })
-                    ->exists()) {
+                if (
+                    tbl_users::where('email', $request->email)
+                        ->when($request->existing_user_id > 0, function ($query) use ($request) {
+                            return $query->where('user_id', '!=', $request->existing_user_id);
+                        })
+                        ->exists()
+                ) {
                     return response()->json(['success' => false, 'message' => 'User with this email address already exists']);
                 }
             }
@@ -198,7 +203,7 @@ class UserController extends Controller
                                         ]);
                                     }
                                 }
-                                tbl_user_map::where('fk_user_id',$user->user_id)->update([
+                                tbl_user_map::where('fk_user_id', $user->user_id)->update([
                                     'fk_designation_id' => $fk_designation_id,
                                     'fk_level_id' => $request->fk_level_id,
                                     'update_by' => Session::get('user_id'),
@@ -242,7 +247,7 @@ class UserController extends Controller
                         'salt' => $pass_keys['salt'],
                         'is_active' => 1
                     ]);
-                    $user->username = 'TL-'.config('custom.for_user_creation').'-'. str_pad($user->user_id, 5, '0', STR_PAD_LEFT); // Pads the ID to 5 digits
+                    $user->username = 'TL-' . config('custom.for_user_creation') . '-' . str_pad($user->user_id, 5, '0', STR_PAD_LEFT); // Pads the ID to 5 digits
                     $user->save();
 
                     if ($user) {
@@ -284,9 +289,12 @@ class UserController extends Controller
         $data['page_title'] = "login_log";
         $data['page_subtitle'] = "Login Log";
         $data['loginRecords'] = log_tbl_login::with(
-            ['relatedUser.userMaps.department', // Ensure the department relationship is loaded
+            [
+                'relatedUser.userMaps.department', // Ensure the department relationship is loaded
                 'relatedUser.levels',
-                'relatedUser.designations'])
+                'relatedUser.designations'
+            ]
+        )
             ->whereHas('relatedUser.userMaps', function ($query) {
                 $query->where('fk_level_id', '!=', Session::get("level_id"));
                 $query->where('is_active', '=', 1);
@@ -346,7 +354,7 @@ class UserController extends Controller
         $data['levels'] = GetDataUtility::getLevels();
         $data['users'] = tbl_users::with([
             'userMaps' => function ($query) {
-                $query->whereIn('is_active', [0,1]);
+                $query->whereIn('is_active', [0, 1]);
                 $query->where('fk_level_id', '!=', Session::get("level_id"));
                 $query->where('fk_level_id', '>', Session::get('level_id'));
             },
@@ -357,7 +365,7 @@ class UserController extends Controller
             ->where('is_active', 1)
             ->where('user_id', '!=', Session::get('user_id'))
             ->whereHas('userMaps', function ($query) {
-                $query->whereIn('is_active', [0,1]);
+                $query->whereIn('is_active', [0, 1]);
                 $query->where('fk_level_id', '!=', Session::get("level_id"));
                 $query->where('fk_level_id', '>', Session::get('level_id'));
                 //$query->where('fk_level_id', Session::get('level_id')+1);
@@ -408,5 +416,109 @@ class UserController extends Controller
         }
 
         return view('users.transfer-user', $data);
+    }
+
+    public function addRating(Request $request)
+    {
+        // Validate request data
+        $validator = Validator::make($request->all(), [
+            'final_rating' => 'required|numeric|min:1|max:5',
+            'user_map_id' => 'required|integer|exists:tbl_task_user_map,map_id'
+        ]);
+
+        // If validation fails, return errors
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Validation failed',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        // Check if rating already exists for this map_id
+        $existingRating = DB::table('tbl_users_rating')
+            ->where('fk_tu_map_id', $request->user_map_id)
+            ->exists();
+
+        if ($existingRating) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Rating already submitted for this user.',
+            ], 409); // HTTP 409 Conflict
+        }
+
+        // Prepare data for insertion
+        $data = [
+            'rating' => $request->final_rating,
+            'fk_tu_map_id' => $request->user_map_id,
+            'created_at' => now(),
+            'created_ip' => $request->ip()
+        ];
+
+        try {
+            // Insert rating into database
+            DB::table('tbl_users_rating')->insert($data);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Rating inserted successfully',
+                'data' => $data
+            ], 201);
+        } catch (\Exception $e) {
+            // Log the error for debugging
+            Log::error('Error inserting rating: ' . $e->getMessage());
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Failed to insert rating. Please try again later.'
+            ], 500);
+        }
+    }
+
+
+    // this function is use for direct input the rating 5, check the condition that the task is completed or not if completed then check that there is no delay.
+    public function directEntry()
+    {
+        $data = DB::select("SELECT 
+                                        tr.created_by AS user_id, 
+                                        tr.fk_task_id AS task_id, 
+                                        tr.created_datetime AS last_comment, 
+                                        tbl1.due_date AS due_date,
+                                        tbl1.status AS status
+                                    FROM tbl_task_reply_trs tr
+                                    JOIN tbl_task tbl1 
+                                       ON tr.fk_task_id = tbl1.task_id
+                                    WHERE tbl1.status = 'C'
+                                    AND tr.created_datetime = (
+                                       SELECT MAX(created_datetime) 
+                                       FROM tbl_task_reply_trs 
+                                       WHERE fk_task_id = tbl1.task_id 
+                                       AND created_by = tr.created_by)"
+                            );
+
+
+        if (!empty($data)) {
+            foreach ($data as $row) {
+                $due_date = strtotime($row->due_date); // Convert to UNIX timestamp
+                $last_comment = strtotime($row->last_comment); // Convert to UNIX timestamp
+
+                if ($last_comment > $due_date) {
+                    $diff_seconds = $last_comment - $due_date; // Only count if delayed
+                    $diff_days = floor($diff_seconds / (60 * 60 * 24)); // Convert to days
+                } else {
+                    $diff_days = 0; // No delay if on or before due date
+                    DB::table('tbl_users_rating')->insert([
+                        'fk_user_id' => $row->user_id,
+                        'fk_task_id' => $row->task_id,
+                        'rating' => 5,
+                        'created_ip' => request()->ip(), // Get the user's IP address
+                        'created_at' => now() // Current timestamp
+                    ]);
+                }
+                echo "User ID: {$row->user_id}, Task ID: {$row->task_id}, Delay: {$diff_days} days <br>";
+
+            }
+        }
+        dd($data);
     }
 }

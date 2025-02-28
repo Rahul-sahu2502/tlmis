@@ -4,6 +4,7 @@ use App\Events\NotificationSent;
 use App\Http\Controllers\CustomBroadcastController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PerformanceController;
+use App\Http\Controllers\UserController;
 use App\Services\NotificationService;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\App;
@@ -100,10 +101,13 @@ Route::middleware([\App\Http\Middleware\AuthenticateUser::class . ':0'])->group(
     Route::post('/user_count_task', [TaskController::class, 'count_task'])->name('user_count_task');
     Route::post('/user_rating', [TaskController::class, 'show_user_rating'])->name('show_user_rating');
     Route::post('/user_task_rating', [TaskController::class, 'user_task_rating'])->name('user_task_rating');
-    Route::post('/user_take_rating', [TaskController::class, 'user_take_rating'])->name('user_take_rating');
+    Route::get('/user_take_rating', [TaskController::class, 'user_take_rating'])->name('user_take_rating');
+    Route::post('/user/rating', [UserController::class,'addRating'])->name('insert_rating');
 
     // s3 testing
     // Route::get('/test-s3', [UtilController::class, 'test_s3']);
+
+    Route::get('/run-function', [UserController::class, 'directEntry']);
 });
 
 Route::middleware([\App\Http\Middleware\AuthenticateUser::class . ':0_3'])->group(function () {

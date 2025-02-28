@@ -36,4 +36,4 @@ $configLocale = config('app.locale');
     color: #4a5568;
 }
 </style>
-<?php /**PATH C:\wamp64\www\php\vectreProjects\tlmis\resources\views/components/language-switcher.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\xampp\htdocs\laravel_projects\TLMIS original code\TLMIS\resources\views/components/language-switcher.blade.php ENDPATH**/ ?>

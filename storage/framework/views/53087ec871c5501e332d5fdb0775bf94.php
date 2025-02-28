@@ -70,6 +70,11 @@
                     'X-CSRF-TOKEN': "<?php echo e(csrf_token()); ?>"
                 },
                 success: function (response) {
+
+                    // start direct entry_date
+                        
+                    // end direct entry
+
                     let delay_data = response;
 
 

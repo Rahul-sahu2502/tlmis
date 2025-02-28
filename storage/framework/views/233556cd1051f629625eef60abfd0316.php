@@ -236,4 +236,9 @@
     chart.render();
 </script>
 <?php $__env->stopSection(); ?>
+<<<<<<< HEAD:storage/framework/views/562834231472d84b5614bc836c80a0b1.php
 <?php echo $__env->make('layouts.layout_admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\wamp64\www\php\vectreProjects\tlmis\resources\views/dashboard/index.blade.php ENDPATH**/ ?>
+=======
+
+<?php echo $__env->make('layouts.layout_admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\laravel_projects\TLMIS original code\TLMIS\resources\views/dashboard/index.blade.php ENDPATH**/ ?>
+>>>>>>> 353a849a8ef1163f9d8cc8a2a462ea1596d5b5d4:storage/framework/views/233556cd1051f629625eef60abfd0316.php

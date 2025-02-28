@@ -5,4 +5,4 @@
             <a target="_blank" href="https://vectre.in"><img src="<?php echo e(asset('assets/images/vectre.png')); ?>" height="18"></a>
         </p>
     </div>
-</div><?php /**PATH C:\wamp64\www\php\vectreProjects\tlmis\resources\views/layouts/partials/copy.blade.php ENDPATH**/ ?>
+</div><?php /**PATH C:\xampp\htdocs\laravel_projects\TLMIS original code\TLMIS\resources\views/layouts/partials/copy.blade.php ENDPATH**/ ?>

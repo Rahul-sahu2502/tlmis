@@ -59,4 +59,4 @@
 </body>
 
 </html>
-<?php /**PATH C:\wamp64\www\php\vectreProjects\tlmis\resources\views/layouts/layout_admin.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\xampp\htdocs\laravel_projects\TLMIS original code\TLMIS\resources\views/layouts/layout_admin.blade.php ENDPATH**/ ?>
