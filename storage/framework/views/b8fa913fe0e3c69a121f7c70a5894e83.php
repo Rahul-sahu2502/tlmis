@@ -10,4 +10,6 @@
 <link rel="stylesheet" href="<?php echo e(asset('assets/libs/select2/select2.min.css')); ?>">
 <link href="<?php echo e(asset('assets/css/app.min.css')); ?>" rel=stylesheet type=text/css />
 <link href="<?php echo e(asset('assets/css/custom.min.css')); ?>" rel=stylesheet type=text/css />
-<?php /**PATH C:\wamp64\www\php\vectreProjects\tlmis\resources\views/layouts/partials/header.blade.php ENDPATH**/ ?>
+
+<!-- Layout config Js -->
+<script src="<?php echo e(asset('assets/js/layout.js')); ?>"></script><?php /**PATH C:\wamp64\www\php\vectreProjects\tlmis\resources\views/layouts/partials/header.blade.php ENDPATH**/ ?>

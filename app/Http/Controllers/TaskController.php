@@ -840,24 +840,29 @@ class TaskController extends Controller
 
     public function delay_date()
     {
-        // $search = [];
-        // $dataData = $this->taskListDetails(session('user_id'), 0, 0, $search);
 
-        $delay_data = DB::select("SELECT t.task_id,
-	t.title,
-	t.entry_date,
-	t.due_date,
-	COALESCE(cmt.created_datetime, 'Inprocess') submitted_date,
-	case 
-	when DATEDIFF(cmt.created_datetime,t.due_date) < 0 then 'No Delay'
-	when DATEDIFF(cmt.created_datetime,t.due_date) IS NULL then 'Inprocess'
-	ELSE DATEDIFF(cmt.created_datetime,t.due_date)
-	END AS difference_in_days
-	FROM tbl_task t left JOIN 
-	(SELECT max(created_datetime) created_datetime, fk_task_id FROM tbl_task_reply_trs 
-	GROUP BY fk_task_id
-	) cmt
-	ON t.task_id=cmt.fk_task_id where t.created_by=" . session('user_id'));
+
+        $delay_data = DB::select("SELECT 
+    t.task_id,
+    t.title,
+    t.entry_date,
+    t.due_date,
+    t.status,
+    COALESCE(cmt.created_datetime, 'Inprocess') AS submitted_date,
+    CASE 
+        WHEN t.status != 'C' THEN 'Inprocess'
+        WHEN DATEDIFF(cmt.created_datetime, t.due_date) < 0 THEN 'No Delay'
+        ELSE DATEDIFF(cmt.created_datetime, t.due_date)
+    END AS difference_in_days
+FROM tbl_task t
+LEFT JOIN (
+    SELECT 
+        fk_task_id, 
+        MAX(created_datetime) AS created_datetime
+    FROM tbl_task_reply_trs 
+    GROUP BY fk_task_id
+) cmt ON t.task_id = cmt.fk_task_id
+WHERE t.created_by =" . session('user_id'));
         return $delay_data;
     }
 
@@ -929,44 +934,62 @@ class TaskController extends Controller
 
 
             $user_task_list = DB::select("SELECT 
-                                                       map.map_id,
-                                                       map.fk_user_id, 
-                                                       map.fk_task_id,
-                                                       task.title AS title, 
-                                                       task.status AS status,
-                                                       task.entry_date AS entry_date,
-                                                       task.due_date AS due_date,
-                                                       coalesce(task.closed_date,0) AS submit_date,
-                                                       COALESCE(tbl2.total_reply, 0) AS total_reply,
-                                                       COALESCE(tbl2.replied_tasks, 0) AS replied_tasks,
-                                                    CASE 
-                                                        WHEN FIND_IN_SET(map.fk_task_id, tbl2.replied_tasks) > 0 THEN 'Yes'
-                                                        ELSE 'No'
-                                                        END AS replied_status,
-                                                    CASE 
-                                                        WHEN FIND_IN_SET(map.map_id, tbl3.sendbacks_tasks) > 0 THEN 'Yes'
-                                                        ELSE 'No'
-                                                        END AS sendback_status
-                                                    FROM tbl_task_user_map AS map
-                                                    INNER JOIN tbl_task AS task 
-                                                        ON map.fk_task_id = task.task_id
-                                                    LEFT JOIN (
-                                                        SELECT 
-                                                            COUNT(DISTINCT reply.fk_task_id) AS total_reply,
-                                                            GROUP_CONCAT(DISTINCT reply.fk_task_id) AS replied_tasks,
-                                                            reply.created_by
-                                                        FROM tbl_task_reply_trs reply
-                                                        WHERE reply.created_by = $userId
-                                                        GROUP BY reply.created_by
-                                                    ) tbl2
-                                                   ON map.fk_user_id = tbl2.created_by
-                                                    LEFT JOIN (
-                                                        SELECT 
-                                                            GROUP_CONCAT(DISTINCT sendback.fk_map_id) AS sendbacks_tasks
-                                                        FROM tbl_task_send_back_trs sendback
-                                                    ) tbl3
-                                                     ON map.fk_user_id = tbl2.created_by
-                                                    WHERE map.fk_user_id = $userId");
+    map.map_id,
+    map.fk_user_id, 
+    map.fk_task_id,
+    task.title AS title, 
+    task.status AS status,
+    task.entry_date AS entry_date,
+    task.due_date AS due_date,
+    COALESCE(task.closed_date, 0) AS task_close_date,
+    COALESCE(tbl2.total_reply, 0) AS total_reply,
+    COALESCE(tbl2.replied_tasks, 0) AS replied_tasks,
+    COALESCE(tbl_last_reply.last_cmt_date, 0) AS submit_date, -- Last comment date column
+    COALESCE(tbl_rating.rating, NULL) AS task_rating, -- Added rating column
+    CASE 
+        WHEN FIND_IN_SET(map.fk_task_id, tbl2.replied_tasks) > 0 THEN 'Yes'
+        ELSE 'No'
+    END AS replied_status,
+    CASE 
+        WHEN FIND_IN_SET(map.map_id, tbl3.sendbacks_tasks) > 0 THEN 'Yes'
+        ELSE 'No'
+    END AS sendback_status
+FROM tbl_task_user_map AS map
+INNER JOIN tbl_task AS task 
+    ON map.fk_task_id = task.task_id
+LEFT JOIN (
+    SELECT 
+        reply.created_by,
+        reply.fk_task_id,
+        COUNT(DISTINCT reply.fk_task_id) AS total_reply,
+        GROUP_CONCAT(DISTINCT reply.fk_task_id) AS replied_tasks
+    FROM tbl_task_reply_trs reply
+    WHERE reply.created_by = $userId
+    GROUP BY reply.created_by, reply.fk_task_id
+) tbl2 ON map.fk_user_id = tbl2.created_by AND map.fk_task_id = tbl2.fk_task_id
+LEFT JOIN (
+    SELECT 
+        fk_map_id,
+        GROUP_CONCAT(DISTINCT fk_map_id) AS sendbacks_tasks
+    FROM tbl_task_send_back_trs
+    GROUP BY fk_map_id
+) tbl3 ON map.map_id = tbl3.fk_map_id -- Corrected join based on fk_map_id
+LEFT JOIN (
+    SELECT 
+        reply.created_by,
+        reply.fk_task_id,
+        MAX(reply.created_datetime) AS last_cmt_date -- Fetching last comment date
+    FROM tbl_task_reply_trs reply
+    GROUP BY reply.created_by, reply.fk_task_id
+) tbl_last_reply ON map.fk_user_id = tbl_last_reply.created_by AND map.fk_task_id = tbl_last_reply.fk_task_id
+LEFT JOIN (
+    SELECT 
+        rating.fk_task_id,
+        rating.fk_user_id,
+        rating.rating
+    FROM tbl_users_rating rating
+) tbl_rating ON map.fk_user_id = tbl_rating.fk_user_id AND map.fk_task_id = tbl_rating.fk_task_id -- Added rating join
+WHERE map.fk_user_id = $userId");
 
             return response()->json($user_task_list);
         } else {
@@ -974,10 +997,11 @@ class TaskController extends Controller
             return response()->json(['error' => 'Invalid or missing user ID'], 400);
         }
     }
-
     public function user_take_rating(Request $request)
     {
+
+        // $request->final_rating;
         dd($request->final_rating);
-     
+        //  dd($request->all());
     }
 }

@@ -253,67 +253,12 @@
                 return;
             }
             console.log("Selected Rating:", ratingValue);
-            // Close modal if it's open
+
+            // Close modal if it's open && Disable Rating btn
             document.querySelector('[data-bs-dismiss="modal"]').click();
             document.querySelector('#ratingBtn').disabled = true;
 
 
-
-            // $.ajax({
-            //     url: "<?php echo e(route('user_take_rating')); ?>",
-            //     method: "POST",
-            //     data: {
-            //         final_rating: ratingValue
-            //     },
-            //     success: function(data) {
-            //         console.log(data);
-            //     },
-            //     error: function(xhr, status, error) {
-            //         console.error('Error:', xhr.responseText);
-            //     }
-
-            // })
-
-
-            // let formData = new FormData(this);
-            // let token = $('input[name="_token"]').val();
-
-
-            $.ajax({
-                url: "<?php echo e(route('user_take_rating')); ?>",
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                data: {
-                    final_rating: ratingValue
-                },
-                success: function(response) {
-                    if (response.status === 'success') {
-                        Swal.fire({
-                            icon: "success",
-                            title: response.message,
-                            showConfirmButton: false,
-                            timer: 2000
-                        });
-
-                        $('#ratingForm')[0].reset();
-                        //   window.location.href = "<?php echo e(route('rating_page')); ?>";
-                    } else {
-                        Swal.fire({
-                            icon: "error",
-                            title: response.error,
-                            showConfirmButton: true,
-                            // timer: 1500
-                        });
-                    }
-                },
-                // error: function(error) {
-                //     console.log(error)
-                // }
-            });
-
-            return false;
 
 
         }
