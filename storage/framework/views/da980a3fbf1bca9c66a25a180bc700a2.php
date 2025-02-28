@@ -12,17 +12,16 @@
                         <h5 class="card-title mb-0 flex-grow-1">User Task Status / उपयोगकर्ता कार्य स्थिति</h5>
 
                     </div>
-                    <a class="mt-2" type="button" data-bs-toggle="collapse" data-bs-target="#detailsToggleDiv"
-                        aria-expanded="false" aria-controls="toggleDiv">See Details./ विवरण देखें</a>
+                    
                     <br>
-                    <span class="badge border border-secondary text-secondary collapse  w-100" id="detailsToggleDiv"
+                    <span class="badge border border-secondary text-secondary w-100" id="detailsToggleDiv"
                         style="font-size: 0.8rem; text-align: left;">
                         <b>Note :</b>
                         <ol class="text-break">
-                            <li class="mt-2">How many tasks are assigned to each individual user./प्रत्येक उपयोगकर्ता को
+                            <li class="mt-2 text-wrap">How many tasks are assigned to each individual user./प्रत्येक उपयोगकर्ता को
                                 कितने कार्य सौंपे गए हैं</li>
-                            <li class="mt-1">The total number of completed tasks./कुल पूरे किए गए कार्यों की संख्या</li>
-                            <li class="mt-1">How many tasks have been replied to by a user./उपयोगकर्ता द्वारा कितने कार्यों
+                            <li class="mt-1 text-wrap">The total number of completed tasks./कुल पूरे किए गए कार्यों की संख्या</li>
+                            <li class="mt-1 text-wrap">How many tasks have been replied to by a user./उपयोगकर्ता द्वारा कितने कार्यों
                                 का उत्तर दिया गया है|</li>
                         </ol>
                     </span>
