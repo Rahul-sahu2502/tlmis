@@ -10,3 +10,6 @@
 <link rel="stylesheet" href="{{ asset('assets/libs/select2/select2.min.css') }}">
 <link href="{{asset('assets/css/app.min.css')}}" rel=stylesheet type=text/css />
 <link href="{{asset('assets/css/custom.min.css')}}" rel=stylesheet type=text/css />
+
+<!-- Layout config Js -->
+<script src="{{asset('assets/js/layout.js')}}"></script>

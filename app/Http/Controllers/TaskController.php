@@ -446,7 +446,7 @@ class TaskController extends Controller
             if ($sts) {
                 $sts = DB::table('tbl_task_reopen_trs')->where('fk_task_id', $task_id)->whereNull('closed_by')->update($closed_data);
                 $this->response = ["sts" => 1, "message" => "Successfully Closed",];
-                
+
                 // check the task completion or delay. based on this insert rating.
                 dispatch(function () use ($task_id) {
                     $UserController = new UserController();
@@ -844,7 +844,6 @@ class TaskController extends Controller
     }
 
 
-
     public function delay_date()
     {
 
@@ -952,9 +951,9 @@ WHERE tum.fk_level_id IS NOT NULL "
             $userName = GetDataUtility::getUserName($userId);
 
 
-            
 
-// this query returns all the task details of users. 
+
+            // this query returns all the task details of users. 
             $user_task_list = DB::select("SELECT 
                                                      map.map_id,
                                                      map.fk_user_id, 
@@ -1013,13 +1012,12 @@ WHERE tum.fk_level_id IS NOT NULL "
                                                      ) tbl_rating ON map.fk_user_id = tbl_rating.fk_user_id AND map.fk_task_id = tbl_rating.fk_task_id 
                                                      WHERE map.fk_user_id = $userId");
 
-            return response()->json([$user_task_list,$userName]);
+            return response()->json([$user_task_list, $userName]);
         } else {
 
             return response()->json(['error' => 'Invalid or missing user ID'], 400);
         }
     }
-
     public function user_take_rating(Request $request)
     {
         $rating = $request->final_rating;
