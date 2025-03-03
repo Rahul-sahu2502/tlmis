@@ -69,6 +69,8 @@ class PerformanceController extends Controller
                                          GROUP BY u.full_name, tbl1.total_count, tbl1.count_completed, tbl2.total_reply
                                  ");
 
+
+
         // Encode the data as JSON before passing to the view
         $data = [
             'title' => 'Count Task',
