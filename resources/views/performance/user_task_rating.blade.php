@@ -2,121 +2,121 @@
 
 
 @section('content')
-<div class=row>
-    <div class=col-lg-12>
-        <div class=card id=tasksList>
-            <div class="card-header border-0">
-                <div class="d-flex align-items-center">
-                    <h5 class="card-title mb-0 flex-grow-1" id="userTitle"> User Task Ratings / उपयोगकर्ता कार्य रेटिंग
-                    </h5>
+    <div class=row>
+        <div class=col-lg-12>
+            <div class=card id=tasksList>
+                <div class="card-header border-0">
+                    <div class="d-flex align-items-center">
+                        <h5 class="card-title mb-0 flex-grow-1" id="userTitle"> User Task Ratings / उपयोगकर्ता कार्य रेटिंग
+                        </h5>
+                    </div>
+                    {{-- <a class="mt-2" type="button" data-bs-toggle="collapse" data-bs-target="#detailsToggleDiv"
+                            aria-expanded="false" aria-controls="toggleDiv">See Details./ विवरण देखें</a> --}}
+                    <br>
+                    <span class="badge border border-secondary text-secondary w-100" id="detailsToggleDiv"
+                        style="font-size: 0.8rem; text-align: left;">
+                        <b>Note :</b>
+                        <ol class="text-break">
+                            <li class="mt-2 lh-base text-wrap">The admin can give a rating manually by clicking the action
+                                button./प्रशासक
+                                एक्शन बटन पर क्लिक करके मैन्युअल रूप से रेटिंग दे सकता है।</li>
+                            <li class="mt-1 lh-base text-wrap">Once you rate, you can't change the rating afterward./ एक बार रेटिंग
+                                देने के
+                                बाद, आप उसे बदल नहीं सकते।</li>
+                            <li class="mt-1 lh-base text-wrap">You can only rate those tasks that are completed with some delay./आप
+                                केवल
+                                उन्हीं कार्यों को रेट कर सकते हैं जो कुछ देरी से पूरे किए गए हों।</li>
+                            <li class="mt-1 lh-base text-wrap">Users who send back the task will not receive a rating./
+                                जो उपयोगकर्ता कार्य वापस भेजते हैं उन्हें रेटिंग प्राप्त नहीं होगी।</li>
+                        </ol>
+                    </span>
                 </div>
-                {{-- <a class="mt-2" type="button" data-bs-toggle="collapse" data-bs-target="#detailsToggleDiv"
-                        aria-expanded="false" aria-controls="toggleDiv">See Details./ विवरण देखें</a> --}}
-                <br>
-                <span class="badge border border-secondary text-secondary w-100" id="detailsToggleDiv"
-                    style="font-size: 0.8rem; text-align: left;">
-                    <b>Note :</b>
-                    <ol class="text-break">
-                        <li class="mt-2 text-wrap">The admin can give a rating manually by clicking the action
-                            button./प्रशासक
-                            एक्शन बटन पर क्लिक करके मैन्युअल रूप से रेटिंग दे सकता है।</li>
-                        <li class="mt-1 text-wrap">Once you rate, you can't change the rating afterward./ एक बार रेटिंग
-                            देने के
-                            बाद, आप उसे बदल नहीं सकते।</li>
-                        <li class="mt-1 text-wrap">You can only rate those tasks that are completed with some delay./आप
-                            केवल
-                            उन्हीं कार्यों को रेट कर सकते हैं जो कुछ देरी से पूरे किए गए हों।</li>
-                        <li class="mt-1 text-wrap">Users who send back the task will not receive a rating./
-                            जो उपयोगकर्ता कार्य वापस भेजते हैं उन्हें रेटिंग प्राप्त नहीं होगी।</li>
-                    </ol>
-                </span>
-            </div>
-            <div class=card-body>
-                <div class="table-responsive table-card mb-4">
-                    <table class="table align-middle table-nowrap datatable mb-0" id=tasksTable>
-                        <thead class="table-light text-muted">
-                            <tr>
-                                <th class=sort data-sort=id>S.No.</th>
-                                <th class=sort data-sort=client_name>Task Title</th>
-                                <th class=sort data-sort=client_name>Task Status</th>
-                                <th class=sort data-sort=due_date>Task Due Date</th>
-                                <th class=sort data-sort=submit_date>Task Submit Date</th>
-                                <th class=sort data-sort=client_name>Reply Status</th>
-                                <th class=sort data-sort=client_name>Rating Status</th>
-                                <th class=sort data-sort=client_name>Click for Rating</th>
-                            </tr>
+                <div class=card-body>
+                    <div class="table-responsive table-card mb-4">
+                        <table class="table align-middle table-nowrap datatable mb-0" id=tasksTable>
+                            <thead class="table-light text-muted">
+                                <tr>
+                                    <th class=sort data-sort=id>S.No.</th>
+                                    <th class=sort data-sort=client_name>Task Title</th>
+                                    <th class=sort data-sort=client_name>Task Status</th>
+                                    <th class=sort data-sort=due_date>Task Due Date</th>
+                                    <th class=sort data-sort=submit_date>Task Submit Date</th>
+                                    <th class=sort data-sort=client_name>Reply Status</th>
+                                    <th class=sort data-sort=client_name>Rating Status</th>
+                                    <th class=sort data-sort=client_name>Click for Rating</th>
+                                </tr>
 
-                        </thead>
-                        <tbody id="tBody">
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody id="tBody">
+                            </tbody>
+                        </table>
 
-                    {{-- bootstrap default behaviour change, reason : model interation was disable --}}
-                    <style>
-                        .modal {
-                            z-index: 1055 !important;
-                            pointer-events: auto !important;
-                        }
+                        {{-- bootstrap default behaviour change, reason : model interation was disable --}}
+                        <style>
+                            .modal {
+                                z-index: 1055 !important;
+                                pointer-events: auto !important;
+                            }
 
-                        .modal-backdrop {
-                            z-index: 1050 !important;
-                        }
+                            .modal-backdrop {
+                                z-index: 1050 !important;
+                            }
 
 
-                        .emoji {
-                            cursor: pointer;
-                            font-size: 2rem;
-                            transition: color 0.2s;
-                        }
+                            .emoji {
+                                cursor: pointer;
+                                font-size: 2rem;
+                                transition: color 0.2s;
+                            }
 
-                        .selected,
-                        .emoji:hover {
-                            color: rgb(255, 34, 0) !important;
-                        }
-                    </style>
+                            .selected,
+                            .emoji:hover {
+                                color: rgb(255, 34, 0) !important;
+                            }
+                        </style>
 
 
-                    <!-- Varying modal content -->
-                    <div id="myModal" class="modal fade" aria-labelledby="myModalLabel" data-bs-backdrop="static"
-                        data-bs-keyboard="false">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="myModalLabel">Rate User !</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <div id="basic-rater" dir="ltr" class="d-flex justify-content-center gap-2">
-                                        <input type="hidden" id="starValue" value="0">
-
-                                        <i class="ri ri-emotion-sad-line text-secondary fs-1 emoji" data-value="1"></i>
-                                        <!-- Very Bad 😭 -->
-                                        <i class="ri ri-emotion-unhappy-line text-secondary fs-1 emoji"
-                                            data-value="2"></i> <!-- Bad 😢 -->
-                                        <i class="ri ri-emotion-normal-line text-secondary fs-1 emoji"
-                                            data-value="3"></i> <!-- Neutral 😐 -->
-                                        <i class="ri ri-emotion-happy-line text-secondary fs-1 emoji"
-                                            data-value="4"></i> <!-- Happy 😃 -->
-                                        <i class="ri ri-emotion-laugh-line text-secondary fs-1 emoji"
-                                            data-value="5"></i> <!-- Very Happy 😊 -->
+                        <!-- Varying modal content -->
+                        <div id="myModal" class="modal fade" aria-labelledby="myModalLabel" data-bs-backdrop="static"
+                            data-bs-keyboard="false">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="myModalLabel">Rate User !</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                        </button>
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary"
-                                            data-bs-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary" onclick="submitRating()">Submit
-                                            Rating</button>
-                                    </div>
-                                </div><!-- /.modal-content -->
-                            </div><!-- /.modal-dialog -->
-                        </div><!-- /.modal -->
+                                    <div class="modal-body">
+                                        <div id="basic-rater" dir="ltr" class="d-flex justify-content-center gap-2">
+                                            <input type="hidden" id="starValue" value="0">
 
+                                            <i class="ri ri-emotion-sad-line text-secondary fs-1 emoji" data-value="1"></i>
+                                            <!-- Very Bad 😭 -->
+                                            <i class="ri ri-emotion-unhappy-line text-secondary fs-1 emoji"
+                                                data-value="2"></i> <!-- Bad 😢 -->
+                                            <i class="ri ri-emotion-normal-line text-secondary fs-1 emoji"
+                                                data-value="3"></i> <!-- Neutral 😐 -->
+                                            <i class="ri ri-emotion-happy-line text-secondary fs-1 emoji"
+                                                data-value="4"></i> <!-- Happy 😃 -->
+                                            <i class="ri ri-emotion-laugh-line text-secondary fs-1 emoji"
+                                                data-value="5"></i> <!-- Very Happy 😊 -->
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-primary" onclick="submitRating()">Submit
+                                                Rating</button>
+                                        </div>
+                                    </div><!-- /.modal-content -->
+                                </div><!-- /.modal-dialog -->
+                            </div><!-- /.modal -->
+
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
 @endsection
 @section('scripts')
