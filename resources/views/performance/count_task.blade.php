@@ -48,7 +48,7 @@
                                 <th width="16%" class="sort text-center" data-sort=total><span class="badge bg-success"
                                         style="font-size: 12px">Completed Task</span></th>
                                 <th width="16%" class="sort text-center" data-sort=total><span class="badge bg-warning"
-                                        style="font-size: 12px">No of Reply </span></th>
+                                        style="font-size: 12px">Number of Reply </span></th>
                                 <!-- <th width="16%" class="sort text-center" data-sort=total><span class="badge bg-danger"
                                                         style="font-size: 12px">Pending Task</span></th> -->
 
@@ -79,16 +79,16 @@
             </div><!-- end card header -->
 
             <div class="card-body">
-                <style>
+                <!-- <style>
                     @media (min-width:1281px) {
                         #bar_chart {
                             min-height: 100vh;
                             width: 120vh;
                         }
                     }
-                </style>
-                <div id="bar_chart" data-colors='["--vz-success"]' class="apex-charts" dir="ltr"></div>
-
+                </style> -->
+                <!-- <div id="bar_chart" data-colors='["--vz-success"]' class="apex-charts" dir="ltr"></div> -->
+                <div id="bar_chart" data-chart='{{ $chartData }}' data-colors='["--vz-success", "--vz-warning","--vz-danger","--vz-primary"]'></div>
             </div>
 
         </div>
@@ -112,6 +112,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="{{asset('assets/libs/apexcharts/apexcharts.min.js')}}"></script>
+
 <!-- ====Task Count data Display JS===== -->
 <script>
     $(document).ready(function() {
@@ -122,7 +123,7 @@
                 'X-CSRF-TOKEN': "{{ csrf_token() }}"
             },
             success: function(count_data) {
-                console.log(count_data);
+                // console.log(count_data);
                 $('#tBody').html('');
                 count_data.forEach((value, index) => {
 
@@ -132,7 +133,7 @@
                     <td class="tasks_name">${value.full_name}</td>
                     <td class="total text-center"><b>${value.total_task}</b></td>
                     <td class="total text-center"><b>${value.total_completed}</b></td>
-                    <td class="total text-center"><b>${value.no_of_reply}</b></td>
+                    <td class="total text-center"><b>${value.number_of_reply}</b></td>
 
 
                 </tr>
@@ -161,115 +162,101 @@
     });
 
 
-    // BAR Chart
-    var options1 = {
-        series: [{
-            data: [400, 430, 448, 470, 540, 580, 690]
-        }],
-        chart: {
-            type: 'bar',
-            height: 350
-        },
-        plotOptions: {
-            bar: {
-                borderRadius: 4,
-                borderRadiusApplication: 'end',
-                horizontal: true,
+
+    document.addEventListener("DOMContentLoaded", function() {
+        let chartElement = document.getElementById("bar_chart");
+
+        // Get chart data from data attribute
+        let chartData = JSON.parse(chartElement.getAttribute("data-chart"));
+
+        let categories = chartData.map(user => user.full_name);
+        // let totalTasks = chartData.map(user => user.total_task);
+        let completedTasks = chartData.map(user => user.total_completed);
+        let replies = chartData.map(user => user.number_of_reply);
+        // let noReplies = chartData.map(user => user.no_reply);
+
+        // Extract CSS variable colors dynamically
+        function getChartColorsArray(id) {
+            let element = document.getElementById(id);
+            if (!element) return [];
+            let colors = element.getAttribute("data-colors");
+            if (colors) {
+                colors = JSON.parse(colors.replace(/'/g, '"'));
+                return colors.map(color => getComputedStyle(document.documentElement).getPropertyValue(color).trim());
             }
-        },
-        dataLabels: {
-            enabled: false
-        },
-        xaxis: {
-            categories: ['South Korea', 'Canada', 'United Kingdom', 'India', 'Italy', 'France', 'Japan'],
+            return [];
         }
-    };
 
-    var chart = new ApexCharts(document.querySelector("#bar_charts"), options1);
-    chart.render();
+        let chartColors = getChartColorsArray("bar_chart");
 
-
-
-
-
-    // Stacked Chart
-    var options2 = {
-        series: [{
-            name: 'Marine Sprite',
-            data: [44, 55, 41, 37, 22, 43, 21]
-        }, {
-            name: 'Striking Calf',
-            data: [53, 32, 33, 52, 13, 43, 32]
-        }, {
-            name: 'Tank Picture',
-            data: [12, 17, 11, 9, 15, 11, 20]
-        }, {
-            name: 'Bucket Slope',
-            data: [9, 7, 5, 8, 6, 9, 4]
-        }, {
-            name: 'Reborn Kid',
-            data: [25, 12, 19, 32, 25, 24, 10]
-        }],
-        chart: {
-            type: 'bar',
-            height: 350,
-            stacked: true,
-        },
-        plotOptions: {
-            bar: {
-                horizontal: true,
-                dataLabels: {
-                    total: {
-                        enabled: true,
-                        offsetX: 0,
-                        style: {
-                            fontSize: '13px',
-                            fontWeight: 900
+        var options = {
+            series: [
+                // {
+                //     name: 'Total Tasks',
+                //     data: totalTasks
+                // },
+                {
+                    name: 'Completed Tasks',
+                    data: completedTasks
+                },
+                {
+                    name: 'Replies',
+                    data: replies
+                },
+                // {
+                // name: 'No Replies',
+                // data: noReplies
+                // }
+            ],
+            chart: {
+                type: 'bar',
+                height: 400,
+                stacked: true
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: true,
+                    dataLabels: {
+                        total: {
+                            enabled: true,
+                            style: {
+                                fontSize: '13px',
+                                fontWeight: 900
+                            }
                         }
                     }
                 }
             },
-        },
-        stroke: {
-            width: 1,
-            colors: ['#fff']
-        },
-        title: {
-            text: 'Fiction Books Sales'
-        },
-        xaxis: {
-            categories: [2008, 2009, 2010, 2011, 2012, 2013, 2014],
-            labels: {
-                formatter: function(val) {
-                    return val + "K"
-                }
-            }
-        },
-        yaxis: {
             title: {
-                text: undefined
+                text: 'Task Performance by User'
             },
-        },
-        tooltip: {
-            y: {
-                formatter: function(val) {
-                    return val + "K"
+            xaxis: {
+                categories: categories
+            },
+            yaxis: {
+                title: {
+                    text: ''
                 }
+            },
+            tooltip: {
+                y: {
+                    formatter: val => val
+                }
+            },
+            fill: {
+                opacity: 1
+            },
+            colors: chartColors.length ? chartColors : undefined, // Apply dynamic colors if available
+            legend: {
+                position: 'top',
+                horizontalAlign: 'left',
+                offsetX: 40
             }
-        },
-        fill: {
-            opacity: 1
-        },
-        legend: {
-            position: 'top',
-            horizontalAlign: 'left',
-            offsetX: 40
-        }
-    };
+        };
 
-   
-    var chart = new ApexCharts(document.querySelector("#bar_chart"), options2);
-    chart.render();
+        var chart = new ApexCharts(document.querySelector("#bar_chart"), options);
+        chart.render();
+    });
 </script>
 
 

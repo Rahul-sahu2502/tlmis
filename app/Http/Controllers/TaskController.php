@@ -29,7 +29,7 @@ class TaskController extends Controller
                     'title' => 'required',
                     'fk_dept_id' => 'required',
                     // 'ref_docs'=>'required',
-                    'fk_task_priority_id' => 'required',
+                    // 'fk_task_priority_id' => 'required',
                 ],
                 [
                     'entry_date.date_format' => 'Entry date invalid format',
@@ -469,7 +469,7 @@ class TaskController extends Controller
                     'fk_task_priority_id' => 'required',
                     'title' => 'required',
                     'fk_dept_id' => 'required',
-                    'fk_task_priority_id' => 'required',
+                    // 'fk_task_priority_id' => 'required',
                 ],
                 [
                     'entry_date.date_format' => 'Entry date invalid format',
@@ -875,7 +875,7 @@ WHERE t.created_by =" . session('user_id'));
                                             u.full_name, 
                                             coalesce(tbl1.total_count,0) total_task, 
                                             COALESCE(count_completed,0) total_completed,
-                                            coalesce(tbl2.total_reply,0) no_of_reply FROM tbl_users u 
+                                            coalesce(tbl2.total_reply,0) number_of_reply FROM tbl_users u 
                                                 INNER JOIN  tbl_user_map tum ON u.user_id=tum.fk_user_id and tum.fk_level_id!=1
                                          LEFT JOIN 
                                              (SELECT fk_user_id, COUNT(fk_task_id) total_count, sum(case when t.status='C' then 1 ELSE 0 END )

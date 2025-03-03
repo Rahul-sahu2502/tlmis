@@ -73,7 +73,12 @@
                         }
                     }
                 </style>
-                <div id="bar_chart" data-colors='["--vz-success"]' class="apex-charts" dir="ltr"></div>
+                <div id="bar_chart"
+                    data-colors='["--vz-success", "--vz-warning"]'
+                    data-chart='<?php echo json_encode($chartData, 15, 512) ?>'
+                    class="apex-charts"
+                    dir="ltr">
+                </div>
 
             </div>
 
@@ -156,98 +161,57 @@
     });
 
 
-    // BAR Chart
-    var options1 = {
-        series: [{
-            data: [400, 430, 448, 470, 540, 580, 690]
-        }],
-        chart: {
-            type: 'bar',
-            height: 350
-        },
-        plotOptions: {
-            bar: {
-                borderRadius: 4,
-                borderRadiusApplication: 'end',
-                horizontal: true,
+
+
+
+    document.addEventListener("DOMContentLoaded", function() {
+        let chartElement = document.getElementById("bar_chart");
+        let chartData = chartElement.getAttribute("data-chart");
+
+        // Fix: Ensure JSON is correctly parsed
+        try {
+            chartData = JSON.parse(chartData);
+            if (!Array.isArray(chartData)) {
+                chartData = []; // If it's not an array, set it to an empty array to prevent errors
             }
-        },
-        dataLabels: {
-            enabled: false
-        },
-        xaxis: {
-            categories: ['South Korea', 'Canada', 'United Kingdom', 'India', 'Italy', 'France', 'Japan'],
+        } catch (error) {
+            console.error("Error parsing chartData:", error);
+            chartData = [];
         }
-    };
 
-    var chart = new ApexCharts(document.querySelector("#bar_charts"), options1);
-    chart.render();
+        let categories = chartData.map(user => user.full_name);
+        let avgRatings = chartData.map(user => parseFloat(user.avg_rating) || 0); // Ensure numeric values
 
-
-
-
-
-
-    // Stacked Chart
-    var options2 = {
-        series: [{
-            name: 'Marine Sprite',
-            data: [44, 55, 41, 37, 22, 43, 21]
-        }, {
-            name: 'Striking Calf',
-            data: [53, 32, 33, 52, 13, 43, 32]
-        }, {
-            name: 'Tank Picture',
-            data: [12, 17, 11, 9, 15, 11, 20]
-        }, {
-            name: 'Bucket Slope',
-            data: [9, 7, 5, 8, 6, 9, 4]
-        }, {
-            name: 'Reborn Kid',
-            data: [25, 12, 19, 32, 25, 24, 10]
-        }],
-        chart: {
-            type: 'bar',
-            height: 350,
-            stacked: true,
-            stackType: '100%'
-        },
-        plotOptions: {
-            bar: {
-                horizontal: true,
+        var options = {
+            series: [{
+                name: 'Average Rating',
+                data: avgRatings
+            }],
+            chart: {
+                type: 'bar',
+                height: 400,
+                stacked: true
             },
-        },
-        stroke: {
-            width: 1,
-            colors: ['#fff']
-        },
-        title: {
-            text: '100% Stacked Bar'
-        },
-        xaxis: {
-            categories: [2008, 2009, 2010, 2011, 2012, 2013, 2014],
-        },
-        tooltip: {
-            y: {
-                formatter: function(val) {
-                    return val + "K"
+            plotOptions: {
+                bar: {
+                    horizontal: true
+                }
+            },
+            xaxis: {
+                categories: categories
+            },
+            tooltip: {
+                y: {
+                    formatter: val => val + " / 5"
                 }
             }
-        },
-        fill: {
-            opacity: 1
+        };
 
-        },
-        legend: {
-            position: 'top',
-            horizontalAlign: 'left',
-            offsetX: 40
-        }
-    };
+        var chart = new ApexCharts(document.querySelector("#bar_chart"), options);
+        chart.render();
+    });
 
-    var chart = new ApexCharts(document.querySelector("#bar_chart"), options2);
-    chart.render();
-</script>
 
-<?php $__env->stopSection(); ?>
+
+    <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.layout_admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\wamp64\www\php\vectreProjects\tlmis\resources\views/performance/rating.blade.php ENDPATH**/ ?>

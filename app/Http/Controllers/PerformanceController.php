@@ -13,50 +13,110 @@ class PerformanceController extends Controller
 
     public function delay()
     {
-        $data['title'] = 'Performance Delay';
-        $data['page_title'] = 'Performance Delay';
+        $chartValues = DB::select(
+            "SELECT 
+                    COUNT(t.task_id) AS total_task,
+                   	 SUM(CASE WHEN t.status = 'C' THEN 1 ELSE 0 END) AS Complete_tasks,
+                   	 SUM(CASE WHEN t.status = 'I' THEN 1 ELSE 0 END) AS Inprocess_tasks,
+                   	 SUM(CASE WHEN t.status != 'I' AND t.status != 'C' THEN 1 ELSE 0 END) AS Pending_tasks,
+                   	 SUM(CASE 
+                           WHEN DATEDIFF(t.closed_date, t.due_date) > 0 THEN 1 
+                           ELSE 0 END) AS Delay_tasks
+                   FROM tbl_task t"
+        );
+
+
+
+        $data = [
+            'title' => 'Performance Delay',
+            'page_title' => 'Performance Delay',
+            'chartData' => json_encode($chartValues)
+        ];
+
         return view('performance.delay', $data);
     }
 
 
+
+
+
     public function count_tasks()
     {
+        $chartValues = DB::select(" SELECT DISTINCT
+                                                 u.full_name, 
+                                                 COALESCE(tbl1.total_count, 0) AS total_task,
+                                                 COALESCE(tbl1.count_completed, 0) AS total_completed,
+                                                 COALESCE(tbl2.total_reply, 0) AS number_of_reply,
+                                                 COALESCE(tbl1.total_count, 0) - COALESCE(tbl2.total_reply, 0) AS no_reply
+                                          FROM tbl_users u 
+                                          INNER JOIN tbl_user_map tum  ON u.user_id = tum.fk_user_id AND tum.fk_level_id != 1
+                                          LEFT JOIN (
+                                                      SELECT 
+                                                          fk_user_id, 
+                                                          COUNT(fk_task_id) AS total_count, 
+                                                          SUM(CASE WHEN t.status = 'C' THEN 1 ELSE 0 END) AS count_completed 
+                                                          FROM tbl_task_user_map tum 
+                                                       INNER JOIN tbl_task t ON tum.fk_task_id = t.task_id 
+                                                       GROUP BY fk_user_id
+                                                     ) tbl1 ON u.user_id = tbl1.fk_user_id
+                                          LEFT JOIN (
+                                                      SELECT 
+                                                          created_by, 
+                                                          COUNT(DISTINCT fk_task_id) AS total_reply 
+                                                      FROM tbl_task_reply_trs  
+                                                         GROUP BY created_by
+                                                     ) tbl2 ON u.user_id = tbl2.created_by
+                                         GROUP BY u.full_name, tbl1.total_count, tbl1.count_completed, tbl2.total_reply
+                                 ");
 
-        $chartValues = DB::select("SELECT DISTINCT
-                                   u.full_name,
-                                       AVG(COALESCE(tbl1.total_count, 0)) total_task,
-                                       AVG(COALESCE(count_completed, 0)) total_completed,
-                                       AVG(COALESCE(tbl2.total_reply, 0)) number_of_reply,
-                                       (AVG(COALESCE(count_completed, 0)) - AVG(COALESCE(tbl2.total_reply, 0))) AS no_reply
-                                   FROM tbl_users u
-                                   INNER JOIN tbl_user_map tum ON u.user_id = tum.fk_user_id and tum.fk_level_id != 1
-                                   LEFT JOIN
-                                       (SELECT fk_user_id, COUNT(fk_task_id) total_count, sum(
-                                           case when t.status = 'C'
-                                           then 1 ELSE 0 END) count_completed FROM tbl_task_user_map tum inner JOIN tbl_task t ON tum.fk_task_id = t.task_id GROUP BY fk_user_id) tbl1
-                                   ON u.user_id = tbl1.fk_user_id
-                                   left JOIN
-                                       (SELECT created_by, COUNT(DISTINCT fk_task_id) total_reply FROM tbl_task_reply_trs GROUP BY created_by) tbl2
-                                   ON u.user_id = tbl2.created_by
-                                   GROUP BY u.full_name");
+        // Encode the data as JSON before passing to the view
+        $data = [
+            'title' => 'Count Task',
+            'page_title' => 'count_task',
+            'chartData' => json_encode($chartValues)
+        ];
 
-        // $data['chartValues'] = $chartValues;
-        $data['title'] = 'Count Task';
-        $data['page_title'] = 'count_task';
-        return view('performance.count_task', [$data, 'chartValues' => $chartValues]);
+        return view('performance.count_task', $data);
     }
-
 
 
 
 
 
     public function rating()
+
+
     {
-        $data['title'] = 'Performnace Ratings';
-        $data['page_title'] = 'Performance Ratings';
+        $chartValues = DB::select("SELECT 
+  u.user_id,
+  u.full_name,
+  map.fk_level_id,
+  COUNT(rating.rating) AS total_task_ratings,
+  SUM(rating.rating)AS all_rating,
+  COALESCE( AVG(rating.rating))AS avg_rating
+FROM tbl_users u
+LEFT JOIN tbl_users_rating AS rating ON u.user_id=rating.fk_user_id
+LEFT JOIN tbl_user_map map ON map.fk_user_id=u.user_id
+ WHERE map.fk_level_id !=1
+GROUP BY  u.user_id ,u.full_name,map.fk_level_id");
+
+
+
+        // Encode the data as JSON before passing to the view
+        $data = [
+            'title' => 'Performnace Ratings',
+            'page_title' => 'Performnace Ratings',
+            'chartData' => json_encode($chartValues)
+        ];
+
         return view('performance.rating', $data);
     }
+
+
+
+
+
+
 
     public function give_rating_page()
     {
