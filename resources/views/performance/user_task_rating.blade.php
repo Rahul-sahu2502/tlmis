@@ -2,43 +2,49 @@
 
 
 @section('content')
-<div class=row>
-    <div class=col-lg-12>
-        <div class=card id=tasksList>
-            <div class="card-header border-0">
-                <div class="d-flex align-items-center">
-                    <h5 class="card-title mb-0 flex-grow-1"> User Task Ratings / उपयोगकर्ता कार्य रेटिंग</h5>
-                </div>
-                <a class="mt-2" type="button" data-bs-toggle="collapse" data-bs-target="#detailsToggleDiv"
-                    aria-expanded="false" aria-controls="toggleDiv">See Details./ विवरण देखें</a>
-                <br>
-                <span class="badge border border-secondary text-secondary collapse  w-100" id="detailsToggleDiv"
-                    style="font-size: 0.8rem; text-align: left;">
-                    <b>Note :</b>
-                    <ol class="text-break">
-                        <li class="mt-2">The admin can give a rating manually by clicking the action button./प्रशासक
+    <div class=row>
+        <div class=col-lg-12>
+            <div class=card id=tasksList>
+                <div class="card-header border-0">
+                    <div class="d-flex align-items-center">
+                        <h5 class="card-title mb-0 flex-grow-1" id="userTitle"> User Task Ratings / उपयोगकर्ता कार्य रेटिंग
+                        </h5>
+                    </div>
+                    {{-- <a class="mt-2" type="button" data-bs-toggle="collapse" data-bs-target="#detailsToggleDiv"
+                        aria-expanded="false" aria-controls="toggleDiv">See Details./ विवरण देखें</a> --}}
+                    <br>
+                    <span class="badge border border-secondary text-secondary w-100" id="detailsToggleDiv"
+                        style="font-size: 0.8rem; text-align: left;">
+                        <b>Note :</b>
+                        <ol class="text-break">
+                            <li class="mt-2 text-wrap">The admin can give a rating manually by clicking the action
+                                button./प्रशासक
                                 एक्शन बटन पर क्लिक करके मैन्युअल रूप से रेटिंग दे सकता है।</li>
-                        <li class="mt-1">Once you rate, you can't change the rating afterward./ एक बार रेटिंग देने के
+                            <li class="mt-1 text-wrap">Once you rate, you can't change the rating afterward./ एक बार रेटिंग
+                                देने के
                                 बाद, आप उसे बदल नहीं सकते।</li>
-                        <li class="mt-1">You can only rate those tasks that are completed with some delay./आप केवल
+                            <li class="mt-1 text-wrap">You can only rate those tasks that are completed with some delay./आप
+                                केवल
                                 उन्हीं कार्यों को रेट कर सकते हैं जो कुछ देरी से पूरे किए गए हों।</li>
-                    </ol>
-                </span>
-            </div>
-            <div class=card-body>
-                <div class="table-responsive table-card mb-4">
-                    <table class="table align-middle table-nowrap datatable mb-0" id=tasksTable>
-                        <thead class="table-light text-muted">
-                            <tr>
-                                <th class=sort data-sort=id>S.No.</th>
-                                <th class=sort data-sort=client_name>Task Title</th>
-                                <th class=sort data-sort=client_name>Task Status</th>
-                                <th class=sort data-sort=due_date>Task Due Date</th>
-                                <th class=sort data-sort=submit_date>Task Submit Date</th>
-                                <th class=sort data-sort=client_name>Reply Status</th>
-                                <th class=sort data-sort=client_name>Rating Status</th>
-                                <th class=sort data-sort=client_name>Click for Rating</th>
-                            </tr>
+                            <li class="mt-1 text-wrap">Users who send back the task will not receive a rating./
+                            जो उपयोगकर्ता कार्य वापस भेजते हैं उन्हें रेटिंग प्राप्त नहीं होगी।</li>
+                        </ol>
+                    </span>
+                </div>
+                <div class=card-body>
+                    <div class="table-responsive table-card mb-4">
+                        <table class="table align-middle table-nowrap datatable mb-0" id=tasksTable>
+                            <thead class="table-light text-muted">
+                                <tr>
+                                    <th class=sort data-sort=id>S.No.</th>
+                                    <th class=sort data-sort=client_name>Task Title</th>
+                                    <th class=sort data-sort=client_name>Task Status</th>
+                                    <th class=sort data-sort=due_date>Task Due Date</th>
+                                    <th class=sort data-sort=submit_date>Task Submit Date</th>
+                                    <th class=sort data-sort=client_name>Reply Status</th>
+                                    <th class=sort data-sort=client_name>Rating Status</th>
+                                    <th class=sort data-sort=client_name>Click for Rating</th>
+                                </tr>
 
                             </thead>
                             <tbody id="tBody">
@@ -63,14 +69,16 @@
                                 transition: color 0.2s;
                             }
 
-                            .selected {
-                                color: yellow !important;
+                            .selected,
+                            .emoji:hover {
+                                color: rgb(255, 34, 0) !important;
                             }
                         </style>
 
 
                         <!-- Varying modal content -->
-                        <div id="myModal" class="modal fade" aria-labelledby="myModalLabel">
+                        <div id="myModal" class="modal fade" aria-labelledby="myModalLabel" data-bs-backdrop="static"
+                            data-bs-keyboard="false">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -126,13 +134,16 @@
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 
+        {{-- this script excute when the page load --}}
         <script>
+            let userName = '';
             $(document).ready(function () {
                 //get user_id from url
                 let params = new URLSearchParams(window.location.search);
                 let user_id = params.get("var"); // Replace 'key' with the actual parameter name
                 console.log('this is get user_id = ', user_id);
 
+                // if user_id in null then redirect to back page which is show ratings of all users
                 if (user_id == null) {
                     window.location.href = "{{ route('rating_page') }}";
                 }
@@ -146,9 +157,14 @@
                     data: {
                         id: user_id
                     },
-                    success: function (user_task_list) {
-                        console.log('user_task_list = ', user_task_list);
+                    success: function (user_task_list_details) {
+                        // console.log('user_task_list = ', user_task_list);
                         $('#tBody').html('');
+
+                        let user_task_list = user_task_list_details[0];
+                        userName = user_task_list_details[1][0].full_name;
+                        document.getElementById("userTitle").innerHTML += " (" + userName + ")";
+
 
                         if (user_task_list.length > 0) {
                             user_task_list.forEach((value, index) => {
@@ -160,20 +176,20 @@
 
                                 // this is for check that if task is completed so what about the rating status
                                 if (value.status === 'C') {
-                                    taskStatus="Completed";
+                                    taskStatus = "Completed";
                                     color = "success";
                                     if (value.replied_status === 'No' && value.sendback_status === 'No') {
-                                        userTaskRating = "Partially Contributed";
+                                        userTaskRating = "Done by another User";
                                     } else if (value.replied_status === 'No' && value.sendback_status === 'Yes') {
                                         userTaskRating = "Send Back";
                                     } else if (value.replied_status === 'Yes' || value.sendback_status === 'Yes') {
 
-                                        if (new Date(value.submit_date) > new Date(value.due_date)) {
+                                        if (new Date(value.submit_date) > new Date(value.due_date) && !value.task_rating) {
                                             userTaskRating = 'click_for_rating'; //late submission && Manual_rating
                                             modalButton = ` <button type="button" class="btn btn-warning rate-model-btn " data-bs-toggle="modal" data-bs-target="#myModal"> <i class="ri-star-fill"></i></button>
-                                                                                `;
+                                                                                            `;
 
-                                        } else if (new Date(value.submit_date) <= new Date(value.due_date)) {
+                                        } else if (new Date(value.submit_date) <= new Date(value.due_date) || Number(value.task_rating) != null) {
                                             if (Number(value.task_rating) > 0 && Number(value.task_rating) < 6) {
                                                 let stars = '';
                                                 userTaskRating = Number(value.task_rating)
@@ -195,11 +211,13 @@
                                             console.log(value.title + "Not Submitted/Incomplete");
 
                                         }
+                                    } else if (value.replied_status === 'Yes' && value.sendback_status === 'No') {
+                                        userTaskRating = "Partially Contributed";
                                     }
                                 } else if (value.status === 'I') {
-                                        taskStatus = "Inprogress";
-                                        color = "warning";
-                                        userTaskRating = "Inprogress";
+                                    taskStatus = "Inprogress";
+                                    color = "warning";
+                                    userTaskRating = "Inprogress";
 
                                 } else if (value.status === 'O') {
                                     taskStatus = "Reopen";
@@ -209,7 +227,9 @@
                                 }
 
                                 var new_submit_date = '';
-                                if (value.submit_date === '0') {
+                                if (value.submit_date === '0' && value.status === 'C') {
+                                    new_submit_date = 'Submitted by others';
+                                } else if (value.submit_date === '0') {
                                     new_submit_date = 'Inprocess';
                                 } else if (!isNaN(Date.parse(value.submit_date))) {
                                     new_submit_date = `${new Date(value.submit_date).toLocaleDateString('en-US', {
@@ -220,16 +240,16 @@
                                 }
                                 const statusBadge = `<span class="badge bg-${color}-subtle text-${color} text-uppercase">${taskStatus}</span>`;
                                 const row = `
-                                                                                          <tr>
-                                                                                             <td>${index + 1}</td>
-                                                                                             <td class="tasks_name">${value.title}</td>
-                                                                                             <td class="tasks_name">${statusBadge}</td>  
-                                                                                              <td class="total text-center"><b>${new Date(value.due_date).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' })}</b></td>
-                                                                                             <td class="tasks_name"><b>${new_submit_date}</b></td> 
-                                                                                             <td class="tasks_name">${value.replied_status}</td> 
-                                                                                             <td > ${userTaskRating}</td>
-                                                                                             <td data-map-id="${value.map_id}">${modalButton}</td>
-                                                                                          </tr>`;
+                                                                                                      <tr>
+                                                                                                         <td>${index + 1}</td>
+                                                                                                         <td class="tasks_name">${value.title}</td>
+                                                                                                         <td class="tasks_name">${statusBadge}</td>  
+                                                                                                          <td class="total text-center"><b>${new Date(value.due_date).toLocaleDateString('en-US', { day: '2-digit', month: 'short', year: 'numeric' })}</b></td>
+                                                                                                         <td class="tasks_name"><b>${new_submit_date}</b></td> 
+                                                                                                         <td class="tasks_name">${value.replied_status}</td> 
+                                                                                                         <td > ${userTaskRating}</td>
+                                                                                                         <td data-map-id="${value.map_id}">${modalButton}</td>
+                                                                                                      </tr>`;
 
                                 $('#tBody').append(row);
                             });
@@ -265,11 +285,20 @@
             });
 
             // pass the data to model before opening the model
-            $(document).on("click",".rate-model-btn",function(){
-                selectedMapId=$(this).closest("td").data("map-id");
+            $(document).on("click", ".rate-model-btn", function () {
+                selectedMapId = $(this).closest("td").data("map-id");
                 console.log(selectedMapId);
 
             })
+
+            // Modal Close Event: Reset Selection
+            myModal.addEventListener("hidden.bs.modal", function () {
+                // Remove selected class from emojis
+                emojis.forEach(e => e.classList.remove("selected"));
+
+                // Reset hidden input value
+                starValue.value = "0";
+            });
 
             function submitRating() {
                 const ratingValue = document.getElementById("starValue").value;
@@ -297,10 +326,23 @@
                         _token: "{{ csrf_token() }}"
                     },
                     success: function (response) {
-                         if (response.status === "success") {
-                            alert(response.message);  // Display success message
+                        if (response.status === "success") {
+                            Swal.fire({
+                                title: "Thank You!",
+                                text: "Thank you for rating to " + userName,
+                                icon: "success",
+                                confirmButtonText: "OK",
+                                allowOutsideClick: false,
+                                timer: 2000
+                            }).then((result) => {
+                                // if (result.isConfirmed) 
+                                {
+                                    location.reload(); // Reloads the page only after clicking "OK"
+                                }
+                            })
+                            // alert(response.message);  // Display success message
                             // $('#ratingModal').modal('hide'); // Hide modal after success
-                            location.reload(); // Reload the page to show updated ratings
+                            // location.reload(); // Reload the page to show updated ratings
                         }
                     },
                     error: function (xhr, status, error) {
@@ -314,7 +356,7 @@
                             });
                             alert(errorMessage);
                         } else {
-                            alert("An error occurred. Please try again.");
+                            alert("An error occurred. Please try again." + xhr.status);
                             console.log("Error details:", xhr.responseText);
                         }
                     }

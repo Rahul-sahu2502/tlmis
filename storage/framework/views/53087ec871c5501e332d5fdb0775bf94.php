@@ -7,18 +7,17 @@
                         <h5 class="card-title mb-0 flex-grow-1" title="Date After task Due Date Count As Delay Days "> Task
                             Delay Count / कार्य विलंब गणना</h5>
                     </div>
-                    <a class="mt-2" type="button" data-bs-toggle="collapse" data-bs-target="#detailsToggleDiv"
-                        aria-expanded="false" aria-controls="toggleDiv">See Details./ विवरण देखें</a>
+                    
                     <br>
-                    <span class="badge border border-secondary text-secondary collapse  w-100" id="detailsToggleDiv" style="font-size: 0.8rem; text-align: left;">
+                    <span class="badge border border-secondary text-secondary w-100" id="detailsToggleDiv" style="font-size: 0.8rem; text-align: left;">
                         <b>Note :</b>
                         <ol>
-                            <li class="mt-2">If a task is completed after its due date, the extra days are calculated as a
+                            <li class="mt-2 text-wrap">If a task is completed after its due date, the extra days are calculated as a
                                 delay.
                                 / यदि कोई कार्य अपनी नियत तारीख के बाद पूरा होता है, तो अतिरिक्त दिन देरी के रूप में गणना
                                 किए जाते हैं।</li>
-                            <li class="mt-1">By clicking the action button, you can see how many users have been assigned this task./एक्शन बटन पर क्लिक करके आप देख सकते हैं कि यह कार्य कितने उपयोगकर्ताओं को सौंपा गया है।</li>
-                            
+                            <li class="mt-1 text-wrap">By clicking the action button, you can see how many users have been assigned this task./एक्शन बटन पर क्लिक करके आप देख सकते हैं कि यह कार्य कितने उपयोगकर्ताओं को सौंपा गया है।</li>
+
                         </ol>
                     </span>
                 </div>

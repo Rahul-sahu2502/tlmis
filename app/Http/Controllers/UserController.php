@@ -435,9 +435,19 @@ class UserController extends Controller
             ], 422);
         }
 
+        $userData = GetDataUtility::getUserTaskId($request->user_map_id);
+
+        $data = [];
+        if (!empty($userData)) {
+            // Extracting actual values (handles stdClass and arrays)
+            $data['fk_user_id'] = $userData[0]->fk_user_id;
+            $data['fk_task_id'] = $userData[0]->fk_task_id;
+        }
+
         // Check if rating already exists for this map_id
         $existingRating = DB::table('tbl_users_rating')
-            ->where('fk_tu_map_id', $request->user_map_id)
+            ->where('fk_user_id', $data['fk_user_id'])
+            ->where('fk_task_id', $data['fk_task_id'])
             ->exists();
 
         if ($existingRating) {
@@ -448,12 +458,13 @@ class UserController extends Controller
         }
 
         // Prepare data for insertion
-        $data = [
+        $data = array_merge($data, [
             'rating' => $request->final_rating,
-            'fk_tu_map_id' => $request->user_map_id,
             'created_at' => now(),
-            'created_ip' => $request->ip()
-        ];
+            'created_ip' => $request->ip(),
+        ]);
+
+        // dd($data);
 
         try {
             // Insert rating into database
@@ -477,8 +488,25 @@ class UserController extends Controller
 
 
     // this function is use for direct input the rating 5, check the condition that the task is completed or not if completed then check that there is no delay.
-    public function directEntry()
+    public function directEntry($task_id)
     {
+        // $data = DB::select("SELECT 
+        //                                 tr.created_by AS user_id, 
+        //                                 tr.fk_task_id AS task_id, 
+        //                                 tr.created_datetime AS last_comment, 
+        //                                 tbl1.due_date AS due_date,
+        //                                 tbl1.status AS status
+        //                             FROM tbl_task_reply_trs tr
+        //                             JOIN tbl_task tbl1 
+        //                                ON tr.fk_task_id = tbl1.task_id
+        //                             WHERE tbl1.status = 'C'
+        //                             AND tr.created_datetime = (
+        //                                SELECT MAX(created_datetime) 
+        //                                FROM tbl_task_reply_trs 
+        //                                WHERE fk_task_id = tbl1.task_id 
+        //                                AND created_by = tr.created_by)"
+        // );
+
         $data = DB::select("SELECT 
                                         tr.created_by AS user_id, 
                                         tr.fk_task_id AS task_id, 
@@ -487,14 +515,16 @@ class UserController extends Controller
                                         tbl1.status AS status
                                     FROM tbl_task_reply_trs tr
                                     JOIN tbl_task tbl1 
-                                       ON tr.fk_task_id = tbl1.task_id
+                                        ON tr.fk_task_id = tbl1.task_id
                                     WHERE tbl1.status = 'C'
+                                    AND tr.fk_task_id = ?
                                     AND tr.created_datetime = (
-                                       SELECT MAX(created_datetime) 
-                                       FROM tbl_task_reply_trs 
-                                       WHERE fk_task_id = tbl1.task_id 
-                                       AND created_by = tr.created_by)"
-                            );
+                                        SELECT MAX(created_datetime) 
+                                        FROM tbl_task_reply_trs 
+                                        WHERE fk_task_id = tbl1.task_id 
+                                        AND created_by = tr.created_by , [$task_id
+                                    )"
+        );
 
 
         if (!empty($data)) {
@@ -519,6 +549,9 @@ class UserController extends Controller
 
             }
         }
-        dd($data);
+       return response()->json([
+            "status" => "success",
+            "message" => "Task processing complete"
+        ]);
     }
 }
