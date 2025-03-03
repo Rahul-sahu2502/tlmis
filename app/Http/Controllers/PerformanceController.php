@@ -68,8 +68,6 @@ class PerformanceController extends Controller
                                                      ) tbl2 ON u.user_id = tbl2.created_by
                                          GROUP BY u.full_name, tbl1.total_count, tbl1.count_completed, tbl2.total_reply
                                  ");
-
-        // Encode the data as JSON before passing to the view
         $data = [
             'title' => 'Count Task',
             'page_title' => 'count_task',
@@ -84,29 +82,10 @@ class PerformanceController extends Controller
 
 
     public function rating()
-
-
     {
-        $chartValues = DB::select("SELECT 
-  u.user_id,
-  u.full_name,
-  map.fk_level_id,
-  COUNT(rating.rating) AS total_task_ratings,
-  SUM(rating.rating)AS all_rating,
-  COALESCE( AVG(rating.rating))AS avg_rating
-FROM tbl_users u
-LEFT JOIN tbl_users_rating AS rating ON u.user_id=rating.fk_user_id
-LEFT JOIN tbl_user_map map ON map.fk_user_id=u.user_id
- WHERE map.fk_level_id !=1
-GROUP BY  u.user_id ,u.full_name,map.fk_level_id");
-
-
-
-        // Encode the data as JSON before passing to the view
         $data = [
             'title' => 'Performnace Ratings',
-            'page_title' => 'Performnace Ratings',
-            'chartData' => json_encode($chartValues)
+            'page_title' => 'Performnace Ratings'
         ];
 
         return view('performance.rating', $data);

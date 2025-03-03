@@ -82,7 +82,6 @@
                         }
                     }
                 </style> -->
-                <!-- <div id="bar_chart" data-colors='["--vz-success"]' class="apex-charts" dir="ltr"></div> -->
                 <div id="bar_chart" data-chart='{{ $chartData }}' data-colors='["--vz-success", "--vz-warning","--vz-danger","--vz-primary"]'></div>
             </div>
 

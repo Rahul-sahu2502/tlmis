@@ -64,7 +64,7 @@
             </div><!-- end card header -->
 
             <div class="card-body">
-                <!-- <style>
+                 <!-- <style>
                     @media (min-width:1281px) {
                         #bar_chart {
                             min-height: 100vh;
@@ -72,9 +72,7 @@
                         }
                     }
                 </style> -->
-                <!-- <div id="bar_chart" data-colors='["--vz-success"]' class="apex-charts" dir="ltr"></div> -->
-                <!-- <div id="bar_chart" data-chart='{{ $chartData }}' data-colors='["--vz-success", "--vz-warning","--vz-danger","--vz-primary"]'></div> -->
-                <div id="bar_chart"></div>
+               <div id="bar_chart"></div>
             </div>
 
 
@@ -250,7 +248,7 @@
             fill: {
                 opacity: 1
             },
-            colors: chartColors.length ? chartColors : ['#008FFB'],
+            colors: chartColors.length ? chartColors : ['#ffcc00'],
             legend: {
                 position: 'top',
                 horizontalAlign: 'left',
