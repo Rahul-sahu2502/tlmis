@@ -522,10 +522,10 @@ class UserController extends Controller
                                         SELECT MAX(created_datetime) 
                                         FROM tbl_task_reply_trs 
                                         WHERE fk_task_id = tbl1.task_id 
-                                        AND created_by = tr.created_by , [$task_id
-                                    )"
+                                        AND created_by = tr.created_by 
+                                    )",
+            [$task_id]
         );
-
 
         if (!empty($data)) {
             foreach ($data as $row) {
@@ -545,11 +545,11 @@ class UserController extends Controller
                         'created_at' => now() // Current timestamp
                     ]);
                 }
-                echo "User ID: {$row->user_id}, Task ID: {$row->task_id}, Delay: {$diff_days} days <br>";
+
 
             }
         }
-       return response()->json([
+        return response()->json([
             "status" => "success",
             "message" => "Task processing complete"
         ]);

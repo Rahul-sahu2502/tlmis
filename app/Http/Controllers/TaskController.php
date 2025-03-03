@@ -445,13 +445,11 @@ class TaskController extends Controller
             $sts = DB::table('tbl_task_closed_trs')->insert($closed_data);
             if ($sts) {
                 $sts = DB::table('tbl_task_reopen_trs')->where('fk_task_id', $task_id)->whereNull('closed_by')->update($closed_data);
-                $this->response = ["sts" => 1, "message" => "Successfully Closed",];
 
-                // check the task completion or delay. based on this insert rating.
-                dispatch(function () use ($task_id) {
-                    $UserController = new UserController();
-                    $UserController->directEntry($task_id);
-                });
+                $UserController = new UserController();
+                $UserController->directEntry($task_id);
+
+                $this->response = ["sts" => 1, "message" => "Successfully Closed",];
                 DB::commit();
             } else {
                 $this->response = ["sts" => 2, "message" => "Please try again"];
