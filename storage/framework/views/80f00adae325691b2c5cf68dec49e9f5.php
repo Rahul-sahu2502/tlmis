@@ -88,168 +88,171 @@
 </div>
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('scripts'); ?>
-<script src="<?php echo e(asset('assets/libs/list.js/list.min.js')); ?>"></script>
-<script src="<?php echo e(asset('assets/libs/list.pagination.js/list.pagination.min.js')); ?>"></script>
-<script src="<?php echo e(asset('assets/libs/datatable/jquery.dataTables.min.js')); ?>"></script>
-<script src="<?php echo e(asset('assets/libs/datatable/dataTables.buttons.min.js')); ?>"></script>
-<script src="<?php echo e(asset('assets/libs/datatable/buttons.flash.min.js')); ?>"></script>
-<script src="<?php echo e(asset('assets/libs/datatable/buttons.html5.min.js')); ?>"></script>
-<script src="<?php echo e(asset('assets/libs/datatable/buttons.print.min.js')); ?>"></script>
-<script src="<?php echo e(asset('assets/libs/datatable/jszip.min.js')); ?>"></script>
-<script src="<?php echo e(asset('assets/libs/datatable/pdfmake.min.js')); ?>"></script>
-<script src="<?php echo e(asset('assets/libs/datatable/vfs_fonts.js')); ?>"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-    integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="<?php echo e(asset('assets/libs/apexcharts/apexcharts.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('assets/libs/list.js/list.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('assets/libs/list.pagination.js/list.pagination.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('assets/libs/datatable/jquery.dataTables.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('assets/libs/datatable/dataTables.buttons.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('assets/libs/datatable/buttons.flash.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('assets/libs/datatable/buttons.html5.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('assets/libs/datatable/buttons.print.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('assets/libs/datatable/jszip.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('assets/libs/datatable/pdfmake.min.js')); ?>"></script>
+    <script src="<?php echo e(asset('assets/libs/datatable/vfs_fonts.js')); ?>"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="<?php echo e(asset('assets/libs/apexcharts/apexcharts.min.js')); ?>"></script>
 
-<!-- ====Task Count data Display JS===== -->
-<script>
-    $(document).ready(function() {
-        $.ajax({
-            url: "<?php echo e(route('user_count_task')); ?>",
-            type: "POST",
-            headers: {
-                'X-CSRF-TOKEN': "<?php echo e(csrf_token()); ?>"
-            },
-            success: function(count_data) {
-                // console.log(count_data);
-                $('#tBody').html('');
-                count_data.forEach((value, index) => {
+    <!-- ====Task Count data Display JS===== -->
+    <script>
+        $(document).ready(function() {
+            $.ajax({
+                url: "<?php echo e(route('user_count_task')); ?>",
+                type: "POST",
+                headers: {
+                    'X-CSRF-TOKEN': "<?php echo e(csrf_token()); ?>"
+                },
+                success: function(count_data) {
+                    // console.log(count_data);
+                    $('#tBody').html('');
+                    count_data.forEach((value, index) => {
 
-                    const row = `
-                <tr>
-                    <td>${index + 1}</td>
-                    <td class="tasks_name">${value.full_name}</td>
-                    <td class="total text-center"><b>${value.total_task}</b></td>
-                    <td class="total text-center"><b>${value.total_completed}</b></td>
-                    <td class="total text-center"><b>${value.number_of_reply}</b></td>
+                        const row = `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td class="tasks_name">${value.full_name}</td>
+                        <td class="total text-center"><b>${value.total_task}</b></td>
+                        <td class="total text-center"><b>${value.total_completed}</b></td>
+                        <td class="total text-center"><b>${value.number_of_reply}</b></td>
 
 
-                </tr>
-                `;
-                    $('#tBody').append(row);
-                });
-            }
-        })
-    });
-</script>
+                    </tr>
+                    `;
+                        $('#tBody').append(row);
+                    });
+
+                   $('#tasksTable').DataTable({
+                        paginate: true,
+                        language: {
+                           search: "Search:",
+                       },
+                    });
+                }
+            })
+        });
+    </script>
 
 
 
-<!-- ====Task Chart Display data JS===== -->
-<script>
-    $(document).ready(function() {
-        $('#viewChart').click(function() {
-            $('#tasksList').hide();
-            $('#chartContainer').show();
+    <!-- ====Task Chart Display data JS===== -->
+    <script>
+        $(document).ready(function() {
+            $('#viewChart').click(function() {
+                $('#tasksList').hide();
+                $('#chartContainer').show();
+            });
+
+            $('#closeChart').click(function() {
+                $('#tasksList').show();
+                $('#chartContainer').hide();
+            });
         });
 
-        $('#closeChart').click(function() {
-            $('#tasksList').show();
-            $('#chartContainer').hide();
-        });
-    });
 
 
+        document.addEventListener("DOMContentLoaded", function() {
+            let chartElement = document.getElementById("bar_chart");
 
-    document.addEventListener("DOMContentLoaded", function() {
-        let chartElement = document.getElementById("bar_chart");
+            // Get chart data from data attribute
+            let chartData = JSON.parse(chartElement.getAttribute("data-chart"));
 
-        // Get chart data from data attribute
-        let chartData = JSON.parse(chartElement.getAttribute("data-chart"));
+            let categories = chartData.map(user => user.full_name);
+            // let totalTasks = chartData.map(user => user.total_task);
+            let completedTasks = chartData.map(user => user.total_completed);
+            let replies = chartData.map(user => user.number_of_reply);
+            // let noReplies = chartData.map(user => user.no_reply);
 
-        let categories = chartData.map(user => user.full_name);
-        // let totalTasks = chartData.map(user => user.total_task);
-        let completedTasks = chartData.map(user => user.total_completed);
-        let replies = chartData.map(user => user.number_of_reply);
-        // let noReplies = chartData.map(user => user.no_reply);
-
-        // Extract CSS variable colors dynamically
-        function getChartColorsArray(id) {
-            let element = document.getElementById(id);
-            if (!element) return [];
-            let colors = element.getAttribute("data-colors");
-            if (colors) {
-                colors = JSON.parse(colors.replace(/'/g, '"'));
-                return colors.map(color => getComputedStyle(document.documentElement).getPropertyValue(color).trim());
+            // Extract CSS variable colors dynamically
+            function getChartColorsArray(id) {
+                let element = document.getElementById(id);
+                if (!element) return [];
+                let colors = element.getAttribute("data-colors");
+                if (colors) {
+                    colors = JSON.parse(colors.replace(/'/g, '"'));
+                    return colors.map(color => getComputedStyle(document.documentElement).getPropertyValue(color).trim());
+                }
+                return [];
             }
-            return [];
-        }
 
-        let chartColors = getChartColorsArray("bar_chart");
+            let chartColors = getChartColorsArray("bar_chart");
 
-        var options = {
-            series: [
-                // {
-                //     name: 'Total Tasks',
-                //     data: totalTasks
-                // },
-                {
-                    name: 'Completed Tasks',
-                    data: completedTasks
+            var options = {
+                series: [
+                    // {
+                    //     name: 'Total Tasks',
+                    //     data: totalTasks
+                    // },
+                    {
+                        name: 'Completed Tasks',
+                        data: completedTasks
+                    },
+                    {
+                        name: 'Replies',
+                        data: replies
+                    },
+                    // {
+                    // name: 'No Replies',
+                    // data: noReplies
+                    // }
+                ],
+                chart: {
+                    type: 'bar',
+                    height: 400,
+                    stacked: true
                 },
-                {
-                    name: 'Replies',
-                    data: replies
-                },
-                // {
-                // name: 'No Replies',
-                // data: noReplies
-                // }
-            ],
-            chart: {
-                type: 'bar',
-                height: 400,
-                stacked: true
-            },
-            plotOptions: {
-                bar: {
-                    horizontal: true,
-                    dataLabels: {
-                        total: {
-                            enabled: false,
-                            style: {
-                                fontSize: '13px',
-                                fontWeight: 900
+                plotOptions: {
+                    bar: {
+                        horizontal: true,
+                        dataLabels: {
+                            total: {
+                                enabled: false,
+                                style: {
+                                    fontSize: '13px',
+                                    fontWeight: 900
+                                }
                             }
                         }
                     }
-                }
-            },
-            title: {
-                text: 'Task Performance by User'
-            },
-            xaxis: {
-                categories: categories
-            },
-            yaxis: {
+                },
                 title: {
-                    text: ''
+                    text: 'Task Performance by User'
+                },
+                xaxis: {
+                    categories: categories
+                },
+                yaxis: {
+                    title: {
+                        text: ''
+                    }
+                },
+                tooltip: {
+                    y: {
+                        formatter: val => val
+                    }
+                },
+                fill: {
+                    opacity: 1
+                },
+                colors: chartColors.length ? chartColors : undefined, // Apply dynamic colors if available
+                legend: {
+                    position: 'top',
+                    horizontalAlign: 'left',
+                    offsetX: 40
                 }
-            },
-            tooltip: {
-                y: {
-                    formatter: val => val
-                }
-            },
-            fill: {
-                opacity: 1
-            },
-            colors: chartColors.length ? chartColors : undefined, // Apply dynamic colors if available
-            legend: {
-                position: 'top',
-                horizontalAlign: 'left',
-                offsetX: 40
-            }
-        };
+            };
 
-        var chart = new ApexCharts(document.querySelector("#bar_chart"), options);
-        chart.render();
-    });
-</script>
+            var chart = new ApexCharts(document.querySelector("#bar_chart"), options);
+            chart.render();
+        });
+    </script>
 
 
 

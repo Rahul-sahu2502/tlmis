@@ -231,7 +231,10 @@
                 categories: categories,
                 title: {
                     text: 'Rating'
-                }
+                },
+                min:0,
+                max:5,
+                tickAmount:5
             },
             yaxis: {
                 title: {

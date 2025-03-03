@@ -84,8 +84,8 @@ class PerformanceController extends Controller
     public function rating()
     {
         $data = [
-            'title' => 'Performnace Ratings',
-            'page_title' => 'Performnace Ratings'
+            'title' => 'performance ratings',
+            'page_title' => 'performance ratings'
         ];
 
         return view('performance.rating', $data);
