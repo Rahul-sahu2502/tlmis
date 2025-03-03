@@ -66,4 +66,5 @@ return [
     'count_task' => 'कार्य गिनें',
     'performance delay'=> 'प्रदर्शन में देरी',
     'performance ratings' => 'प्रदर्शन रेटिंग',
+    'give user task rating' => 'उपयोगकर्ता कार्य रेटिंग दें'
 ];
