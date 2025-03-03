@@ -650,3 +650,4 @@
 >>>>>>> 02fc4e8e28248c7f0a58d54b235b61a2e8e59869
 [2025-03-03 16:40:17] development.INFO: Language switched {"requested_locale":"hi","session_locale":"hi","app_locale":"hi","config_locale":"hi"} 
 [2025-03-03 16:40:22] development.INFO: Language switched {"requested_locale":"en","session_locale":"en","app_locale":"en","config_locale":"en"} 
+[2025-03-03 17:10:09] development.INFO: Notifications are disabled; event not triggered.  
