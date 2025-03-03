@@ -140,7 +140,7 @@
         //get user_id from url
         let params = new URLSearchParams(window.location.search);
         let user_id = params.get("var"); // Replace 'key' with the actual parameter name
-        console.log('this is get user_id = ', user_id);
+        // console.log('this is get user_id = ', user_id);
 
         // if user_id in null then redirect to back page which is show ratings of all users
         if (user_id == null) {
@@ -259,13 +259,6 @@
                         },
                     });
 
-                    $('#Tasktable').datatable({
-                        pagination: true,
-                        language: {
-                            search: "Search"
-                        }
-
-                    });
                 } else {
                     $('#tBody').append('<tr><td colspan="5">No tasks found</td></tr>');
                 }

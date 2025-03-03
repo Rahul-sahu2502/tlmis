@@ -155,7 +155,7 @@
                     },
                 });
 
-                console.log("Chart Data Array " + JSON.stringify(arrChartData));
+                // console.log("Chart Data Array " + JSON.stringify(arrChartData));
 
                 // Initialize chart 
                 initializeChart();

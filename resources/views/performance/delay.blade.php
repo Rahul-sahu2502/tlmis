@@ -120,7 +120,7 @@
                 let delay_data = response;
 
 
-                console.log('dealy data = ', delay_data);
+                // console.log('dealy data = ', delay_data);
                 $('#tBody').html('');
                 delay_data.forEach((value, index) => {
 
