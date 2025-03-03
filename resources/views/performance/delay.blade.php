@@ -2,45 +2,45 @@
 
 
 @section('content')
-    <div class=row>
-        <div class=col-lg-12>
-            <div class=card id=tasksList>
-                <div class="card-header border-0">
-                    <div class="d-flex align-items-center">
-                        <h5 class="card-title mb-0 flex-grow-1" title="Date After task Due Date Count As Delay Days "> Task
-                            Delay Count / कार्य विलंब गणना</h5>
-                            <div class="d-flex flex-wrap gap-2">
+<div class=row>
+    <div class=col-lg-12>
+        <div class=card id=tasksList>
+            <div class="card-header border-0">
+                <div class="d-flex align-items-center">
+                    <h5 class="card-title mb-0 flex-grow-1" title="Date After task Due Date Count As Delay Days "> Task
+                        Delay Count / कार्य विलंब गणना</h5>
+                    <div class="d-flex flex-wrap gap-2">
                         <button type="button" id="viewChart" class="btn btn-danger add-btn"><i
                                 class="ri-eye-line align-bottom me-1"></i>View Chart</button>
                     </div>
-                    </div>
-                    {{-- <a class="mt-2" type="button" data-bs-toggle="collapse" data-bs-target="#detailsToggleDiv"
-                        aria-expanded="false" aria-controls="toggleDiv">See Details./ विवरण देखें</a> --}}
-                    <br>
-                    <span class="badge border border-secondary text-secondary w-100" id="detailsToggleDiv" style="font-size: 0.8rem; text-align: left;">
-                        <b>Note :</b>
-                        <ol>
-                            <li class="mt-2 text-wrap">If a task is completed after its due date, the extra days are calculated as a
-                                delay.
-                                / यदि कोई कार्य अपनी नियत तारीख के बाद पूरा होता है, तो अतिरिक्त दिन देरी के रूप में गणना
-                                किए जाते हैं।</li>
-                            <li class="mt-1 text-wrap">By clicking the action button, you can see how many users have been assigned this task./एक्शन बटन पर क्लिक करके आप देख सकते हैं कि यह कार्य कितने उपयोगकर्ताओं को सौंपा गया है।</li>
-
-                        </ol>
-                    </span>
                 </div>
-                <div class=card-body>
-                    <div class="table-responsive table-card mb-4">
-                        <table class="table align-middle table-nowrap datatable mb-0" id=tasksTable>
-                            <thead class="table-light text-muted">
-                                <tr>
-                                    <th class=sort data-sort=id>S.No.</th>
-                                    <th class=sort data-sort=client_name>Task</th>
-                                    <th class=sort data-sort=entry_date>Task Entry Date</th>
-                                    <th class=sort data-sort=due_date>Task Due Date</th>
-                                    <th class=sort data-sort=submit_date>Submit Date</th>
-                                    <th class=sort data-sort=delay_date>Total Delay (days)</th>
-                                    <th>Action</th>
+                {{-- <a class="mt-2" type="button" data-bs-toggle="collapse" data-bs-target="#detailsToggleDiv"
+                        aria-expanded="false" aria-controls="toggleDiv">See Details./ विवरण देखें</a> --}}
+                <br>
+                <span class="badge border border-secondary text-secondary w-100" id="detailsToggleDiv" style="font-size: 0.8rem; text-align: left;">
+                    <b>Note :</b>
+                    <ol>
+                        <li class="mt-2 text-wrap">If a task is completed after its due date, the extra days are calculated as a
+                            delay.
+                            / यदि कोई कार्य अपनी नियत तारीख के बाद पूरा होता है, तो अतिरिक्त दिन देरी के रूप में गणना
+                            किए जाते हैं।</li>
+                        <li class="mt-1 text-wrap">By clicking the action button, you can see how many users have been assigned this task./एक्शन बटन पर क्लिक करके आप देख सकते हैं कि यह कार्य कितने उपयोगकर्ताओं को सौंपा गया है।</li>
+
+                    </ol>
+                </span>
+            </div>
+            <div class=card-body>
+                <div class="table-responsive table-card mb-4">
+                    <table class="table align-middle table-nowrap datatable mb-0" id=tasksTable>
+                        <thead class="table-light text-muted">
+                            <tr>
+                                <th class=sort data-sort=id>S.No.</th>
+                                <th class=sort data-sort=client_name>Task</th>
+                                <th class=sort data-sort=entry_date>Task Entry Date</th>
+                                <th class=sort data-sort=due_date>Task Due Date</th>
+                                <th class=sort data-sort=submit_date>Submit Date</th>
+                                <th class=sort data-sort=delay_date>Total Delay (days)</th>
+                                <th>Action</th>
 
                             </tr>
                         </thead>

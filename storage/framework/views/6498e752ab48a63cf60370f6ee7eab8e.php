@@ -60,14 +60,14 @@
             </div><!-- end card header -->
 
             <div class="card-body">
-                <!-- <style>
+                 <style>
                     @media (min-width:1281px) {
                         #bar_chart {
                             min-height: 100vh;
                             width: 120vh;
                         }
                     }
-                </style> -->
+                </style>
                 <!-- <div id="bar_chart" data-colors='["--vz-success"]' class="apex-charts" dir="ltr"></div> -->
                 <!-- <div id="bar_chart" data-chart='<?php echo e($chartData); ?>' data-colors='["--vz-success", "--vz-warning","--vz-danger","--vz-primary"]'></div> -->
                 <div id="bar_chart"></div>
@@ -93,189 +93,10 @@
     integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="<?php echo e(asset('assets/libs/apexcharts/apexcharts.min.js')); ?>"></script>
-<!-- 
-<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
 
 
 
-
-<!-- <script>
-    // // Get Data Of Avg rating of All Users
-
-    // var arrChartData = []; // Global variable for chart data
-
-    // $(document).ready(function() {
-    //     $.ajax({
-    //         url: "<?php echo e(route('show_user_rating')); ?>",
-    //         type: "POST",
-    //         headers: {
-    //             'X-CSRF-TOKEN': "<?php echo e(csrf_token()); ?>"
-    //         },
-    //         success: function(rating_data) {
-    //             // console.log('rating data = ', rating_data);
-    //             $('#tBody').html('');
-    //             // var arrChartData = [];
-    //             rating_data.forEach((value, index) => {
-
-
-    //                 let ratingArr = value.total_rating.split(',').map(Number);
-    //                 let avgRating = 0;
-    //                 let stars = '';
-
-    //                 if (ratingArr.length > 0) {
-    //                     let eachRating = '';
-    //                     for (let i = 0; i < ratingArr.length; i++) {
-    //                         eachRating = ratingArr[i];
-    //                         avgRating = avgRating + eachRating;
-
-    //                     }
-    //                     avgRating = avgRating / ratingArr.length;
-    //                 }
-
-
-
-    //                 // var roundedAvg = Math.round(avgRating);
-    //                 var roundedAvg = value.avg_rating !== null && value.avg_rating !== undefined ?
-    //                     Math.round(value.avg_rating) : null;
-    //                 var chartRoundedAvg = roundedAvg === null ? 0 : roundedAvg;
-
-    //                 arrChartData.push({
-    //                     'userName': value.full_name,
-    //                     'userAvgRating': chartRoundedAvg
-    //                 });
-
-    //                 for (let i = 0; i < avgRating; i++) {
-    //                     stars += '⭐ '; // Append stars
-    //                 }
-
-    //                 const viewButton = `<a class="btn btn-info btn-xm" title="View" href="/performance/give-ratings?var=${btoa(value.user_id)}"><i class="ri-eye-line"></i></a>`;
-
-    //                 const row = `
-    //                         <tr>
-    //                                     <td>${index + 1}</td>
-    //                                     <td class="tasks_name">${value.full_name}</td>
-    //                                     <td class="tasks_name">${value.total_task}</td>
-    //                                     <td class="tasks_name" >${stars}</td>
-    //                                      <td>${viewButton}</td>
-    //                         </tr>
-    //                             `;
-    //                 $('#tBody').append(row);
-    //             });
-
-    //             console.log("Chart Data Array " + JSON.stringify(arrChartData));
-    //         }
-    //     })
-    // });
-
-
-
-
-
-    // // ==== Task Chart Display data JS =====
-
-    // $(document).ready(function() {
-    //     $('#viewChart').click(function() {
-    //         $('#tasksList').hide();
-    //         $('#chartContainer').show();
-    //     });
-
-    //     $('#closeChart').click(function() {
-    //         $('#tasksList').show();
-    //         $('#chartContainer').hide();
-    //     });
-    // });
-
-
-
-    // document.addEventListener("DOMContentLoaded", function() {
-    //     let chartElement = document.getElementById("bar_chart");
-
-    //     // Get chart data from data attribute
-    //     let chartData = arrChartData;
-
-    //     let categories = chartData.map(user => user.userName);
-    //     let ratings = chartData.map(user => user.avgRating);
-
-    //     // Extract CSS variable colors dynamically
-    //     function getChartColorsArray(id) {
-    //         let element = document.getElementById(id);
-    //         if (!element) return [];
-    //         let colors = element.getAttribute("data-colors");
-    //         if (colors) {
-    //             colors = JSON.parse(colors.replace(/'/g, '"'));
-    //             return colors.map(color => getComputedStyle(document.documentElement).getPropertyValue(color).trim());
-    //         }
-    //         return [];
-    //     }
-
-    //     let chartColors = getChartColorsArray("bar_chart");
-
-    //     var options = {
-    //         series: [{
-    //             name: 'Average Rating',
-    //             data: ratings
-    //         }],
-
-    //         chart: {
-    //             type: 'bar',
-    //             height: 400,
-    //             stacked: true
-    //         },
-    //         plotOptions: {
-    //             bar: {
-    //                 horizontal: true,
-    //                 dataLabels: {
-    //                     total: {
-    //                         enabled: true,
-    //                         style: {
-    //                             fontSize: '13px',
-    //                             fontWeight: 900
-    //                         }
-    //                     }
-    //                 }
-    //             }
-    //         },
-    //         title: {
-    //             text: 'User Ratings'
-    //         },
-    //         xaxis: {
-    //             categories: categories
-    //         },
-    //         yaxis: {
-    //             title: {
-    //                 text: 'Rating'
-    //             }
-    //         },
-    //         tooltip: {
-    //             y: {
-    //                 formatter: val => val
-    //             }
-    //         },
-    //         fill: {
-    //             opacity: 1
-    //         },
-    //         colors: chartColors.length ? chartColors : undefined, // Apply dynamic colors if available
-    //         legend: {
-    //             position: 'top',
-    //             horizontalAlign: 'left',
-    //             offsetX: 40
-    //         }
-    //     };
-
-    //     var chart = new ApexCharts(document.querySelector("#bar_chart"), options);
-    //     chart.render();
-    // });
-</script> -->
-
-
-
-
-
-<!-- new script ### -->
-
-<!-- Required HTML elements -->
-
+<!-- Rating  Script ### -->
 
 <script>
     let arrChartData = [];
@@ -335,7 +156,8 @@
                 });
 
                 console.log("Chart Data Array " + JSON.stringify(arrChartData));
-                // Initialize chart after data is loaded
+
+                // Initialize chart 
                 initializeChart();
             }
         });
@@ -358,7 +180,6 @@
     function initializeChart() {
         let chartElement = document.getElementById("bar_chart");
 
-        // Use arrChartData directly instead of stringifying
         let categories = arrChartData.map(user => user.userName);
         let ratings = arrChartData.map(user => user.userAvgRating);
 
@@ -425,7 +246,7 @@
             fill: {
                 opacity: 1
             },
-            colors: chartColors.length ? chartColors : ['#008FFB'],
+            colors: chartColors.length ? chartColors : ['#ffcc00'],
             legend: {
                 position: 'top',
                 horizontalAlign: 'left',

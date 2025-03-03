@@ -1,38 +1,42 @@
 <?php $__env->startSection('content'); ?>
-    <div class=row>
-        <div class=col-lg-12>
-            <div class=card id=tasksList>
-                <div class="card-header border-0">
-                    <div class="d-flex align-items-center">
-                        <h5 class="card-title mb-0 flex-grow-1" title="Date After task Due Date Count As Delay Days "> Task
-                            Delay Count / कार्य विलंब गणना</h5>
+<div class=row>
+    <div class=col-lg-12>
+        <div class=card id=tasksList>
+            <div class="card-header border-0">
+                <div class="d-flex align-items-center">
+                    <h5 class="card-title mb-0 flex-grow-1" title="Date After task Due Date Count As Delay Days "> Task
+                        Delay Count / कार्य विलंब गणना</h5>
+                    <div class="d-flex flex-wrap gap-2">
+                        <button type="button" id="viewChart" class="btn btn-danger add-btn"><i
+                                class="ri-eye-line align-bottom me-1"></i>View Chart</button>
                     </div>
-                    
-                    <br>
-                    <span class="badge border border-secondary text-secondary w-100" id="detailsToggleDiv" style="font-size: 0.8rem; text-align: left;">
-                        <b>Note :</b>
-                        <ol>
-                            <li class="mt-2 text-wrap">If a task is completed after its due date, the extra days are calculated as a
-                                delay.
-                                / यदि कोई कार्य अपनी नियत तारीख के बाद पूरा होता है, तो अतिरिक्त दिन देरी के रूप में गणना
-                                किए जाते हैं।</li>
-                            <li class="mt-1 text-wrap">By clicking the action button, you can see how many users have been assigned this task./एक्शन बटन पर क्लिक करके आप देख सकते हैं कि यह कार्य कितने उपयोगकर्ताओं को सौंपा गया है।</li>
-
-                        </ol>
-                    </span>
                 </div>
-                <div class=card-body>
-                    <div class="table-responsive table-card mb-4">
-                        <table class="table align-middle table-nowrap datatable mb-0" id=tasksTable>
-                            <thead class="table-light text-muted">
-                                <tr>
-                                    <th class=sort data-sort=id>S.No.</th>
-                                    <th class=sort data-sort=client_name>Task</th>
-                                    <th class=sort data-sort=entry_date>Task Entry Date</th>
-                                    <th class=sort data-sort=due_date>Task Due Date</th>
-                                    <th class=sort data-sort=submit_date>Submit Date</th>
-                                    <th class=sort data-sort=delay_date>Total Delay (days)</th>
-                                    <th>Action</th>
+                
+                <br>
+                <span class="badge border border-secondary text-secondary w-100" id="detailsToggleDiv" style="font-size: 0.8rem; text-align: left;">
+                    <b>Note :</b>
+                    <ol>
+                        <li class="mt-2 text-wrap">If a task is completed after its due date, the extra days are calculated as a
+                            delay.
+                            / यदि कोई कार्य अपनी नियत तारीख के बाद पूरा होता है, तो अतिरिक्त दिन देरी के रूप में गणना
+                            किए जाते हैं।</li>
+                        <li class="mt-1 text-wrap">By clicking the action button, you can see how many users have been assigned this task./एक्शन बटन पर क्लिक करके आप देख सकते हैं कि यह कार्य कितने उपयोगकर्ताओं को सौंपा गया है।</li>
+
+                    </ol>
+                </span>
+            </div>
+            <div class=card-body>
+                <div class="table-responsive table-card mb-4">
+                    <table class="table align-middle table-nowrap datatable mb-0" id=tasksTable>
+                        <thead class="table-light text-muted">
+                            <tr>
+                                <th class=sort data-sort=id>S.No.</th>
+                                <th class=sort data-sort=client_name>Task</th>
+                                <th class=sort data-sort=entry_date>Task Entry Date</th>
+                                <th class=sort data-sort=due_date>Task Due Date</th>
+                                <th class=sort data-sort=submit_date>Submit Date</th>
+                                <th class=sort data-sort=delay_date>Total Delay (days)</th>
+                                <th>Action</th>
 
                             </tr>
                         </thead>
@@ -65,15 +69,18 @@
                 <style>
                     @media (min-width:1281px) {
                         #bar_chart {
-                            min-height: 100vh;
-                            width: 120vh;
+                            min-height: 80vh;
+                            width: 80vh;
                         }
                     }
                 </style>
-                <div id="bar_chart" data-colors='["--vz-success"]' class="apex-charts" dir="ltr"></div>
+                <div id="bar_chart"
+                    data-chart='<?php echo e($chartData); ?>'
+                    data-colors='["#28a745", "#007bff", "#ffc107", "#dc3545"]'>
+                </div>
+
 
             </div>
-
         </div>
     </div>
     <!-- end col -->
@@ -168,100 +175,74 @@
     });
 
 
-    // BAR Chart
-    var options = {
-        series: [{
-            data: [400, 430, 448, 470, 540, 580, 690]
-        }],
-        chart: {
-            type: 'bar',
-            height: 350
-        },
-        plotOptions: {
-            bar: {
-                borderRadius: 4,
-                borderRadiusApplication: 'end',
-                horizontal: true,
-            }
-        },
-        dataLabels: {
-            enabled: false
-        },
-        xaxis: {
-            categories: ['South Korea', 'Canada', 'United Kingdom', 'India', 'Italy', 'France', 'Japan'],
-        }
-    };
-
-    var chart = new ApexCharts(document.querySelector("#bar_chart"), options);
-    chart.render();
 
 
+    document.addEventListener("DOMContentLoaded", function() {
+        let chartElement = document.getElementById("bar_chart");
 
-    // Stacked Chart
-    var options = {
-        series: [{
-            name: 'Marine Sprite',
-            data: [44, 55, 41, 37, 22, 43, 21]
-        }, {
-            name: 'Striking Calf',
-            data: [53, 32, 33, 52, 13, 43, 32]
-        }, {
-            name: 'Tank Picture',
-            data: [12, 17, 11, 9, 15, 11, 20]
-        }, {
-            name: 'Bucket Slope',
-            data: [9, 7, 5, 8, 6, 9, 4]
-        }, {
-            name: 'Reborn Kid',
-            data: [25, 12, 19, 32, 25, 24, 10]
-        }],
-        chart: {
-            type: 'bar',
-            height: 350,
-            stacked: true,
-            stackType: '100%'
-        },
-        plotOptions: {
-            bar: {
-                horizontal: true,
+        if (!chartElement) return;
+
+        // Get chart data from the div attributes
+        let chartData = JSON.parse(chartElement.getAttribute("data-chart"))[0]; // Get first object since query returns an array
+        let chartColors = JSON.parse(chartElement.getAttribute("data-colors"));
+
+        // Extracting task counts
+        let seriesData = [
+            chartData.Complete_tasks || 0,
+            chartData.Inprocess_tasks || 0,
+            chartData.Pending_tasks || 0,
+            chartData.Delay_tasks || 0
+        ];
+
+        let categories = ["Completed Tasks", "In Progress Tasks", "Pending Tasks", "Delayed Tasks"];
+
+        let options = {
+            series: [{
+                name: "Tasks Count",
+                data: seriesData
+            }],
+            chart: {
+                type: 'bar',
+                height: 400,
+                stacked: false
             },
-        },
-        stroke: {
-            width: 1,
-            colors: ['#fff']
-        },
-        title: {
-            text: '100% Stacked Bar'
-        },
-        xaxis: {
-            categories: [2008, 2009, 2010, 2011, 2012, 2013, 2014],
-        },
-        tooltip: {
-            y: {
-                formatter: function(val) {
-                    return val + "K"
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    columnWidth: '60%',
+                    distributed: true // Different colors for each bar
                 }
+            },
+            colors: chartColors, // Apply colors dynamically
+            title: {
+                text: 'Task Performance Overview',
+                align: 'center'
+            },
+            xaxis: {
+                categories: categories
+            },
+            yaxis: {
+                title: {
+                    text: 'Status of Tasks'
+                }
+            },
+            tooltip: {
+                y: {
+                    formatter: function(val) {
+                        return val + " tasks";
+                    }
+                }
+            },
+            legend: {
+                show: false // Hide legend since colors are already set per category
             }
-        },
-        fill: {
-            opacity: 1
+        };
 
-        },
-        legend: {
-            position: 'top',
-            horizontalAlign: 'left',
-            offsetX: 40
-        }
-    };
-
-    var chart = new ApexCharts(document.querySelector("#bar_charts"), options);
-    chart.render();
+        var chart = new ApexCharts(chartElement, options);
+        chart.render();
+    });
 </script>
-
-
-
-
-
+</script>
 
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.layout_admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\laravel_projects\TLMIS original code\TLMIS\resources\views/performance/delay.blade.php ENDPATH**/ ?>
