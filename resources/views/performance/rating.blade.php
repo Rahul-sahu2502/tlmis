@@ -64,7 +64,7 @@
             </div><!-- end card header -->
 
             <div class="card-body">
-                 <!-- <style>
+                <!-- <style>
                     @media (min-width:1281px) {
                         #bar_chart {
                             min-height: 100vh;
@@ -72,7 +72,7 @@
                         }
                     }
                 </style> -->
-               <div id="bar_chart"></div>
+                <div id="bar_chart"></div>
             </div>
 
 
@@ -91,12 +91,8 @@
 <script src="{{asset('assets/libs/datatable/jszip.min.js')}}"></script>
 <script src="{{asset('assets/libs/datatable/pdfmake.min.js')}}"></script>
 <script src="{{asset('assets/libs/datatable/vfs_fonts.js')}}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-    integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="{{asset('assets/libs/apexcharts/apexcharts.min.js')}}"></script>
-
-
 
 <!-- Rating  Script ### -->
 
@@ -156,6 +152,12 @@
                 `;
                     $('#tBody').append(row);
                 });
+                $('#tasksTable').DataTable({
+                    paginate: true,
+                    language: {
+                        search: "Search:",
+                    },
+                });
 
                 console.log("Chart Data Array " + JSON.stringify(arrChartData));
 
@@ -178,15 +180,15 @@
     });
 
 
-    // Chart initialization function
+    // Chart Implement JS
     function initializeChart() {
         let chartElement = document.getElementById("bar_chart");
 
         let categories = arrChartData.map(user => user.userName);
         let ratings = arrChartData.map(user => user.userAvgRating);
 
-        console.log('categories ::' + categories);
-        console.log('ratings ::' + ratings);
+        // console.log('categories ::' + categories);
+        // console.log('ratings ::' + ratings);
 
 
         function getChartColorsArray(id) {

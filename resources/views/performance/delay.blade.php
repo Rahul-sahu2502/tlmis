@@ -7,8 +7,7 @@
         <div class=card id=tasksList>
             <div class="card-header border-0">
                 <div class="d-flex align-items-center">
-                    <h5 class="card-title mb-0 flex-grow-1" title="Date After task Due Date Count As Delay Days "> Task
-                        Delay Count / कार्य विलंब गणना</h5>
+                    <h5 class="card-title mb-0 flex-grow-1"> Task Delay Count / कार्य विलंब गणना</h5>
                     <div class="d-flex flex-wrap gap-2">
                         <button type="button" id="viewChart" class="btn btn-danger add-btn"><i
                                 class="ri-eye-line align-bottom me-1"></i>View Chart</button>
@@ -102,10 +101,6 @@
 <script src="{{asset('assets/libs/datatable/jszip.min.js')}}"></script>
 <script src="{{asset('assets/libs/datatable/pdfmake.min.js')}}"></script>
 <script src="{{asset('assets/libs/datatable/vfs_fonts.js')}}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-    integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="{{asset('assets/libs/apexcharts/apexcharts.min.js')}}"></script>
 
@@ -158,15 +153,17 @@
                                 `;
                     $('#tBody').append(row);
                 });
+                $('#tasksTable').DataTable({
+                    paginate: true,
+                    language: {
+                        search: "Search:",
+                    },
+                });
             }
         })
-    });
-</script>
 
 
-<!-- ====Task Chart Display data JS===== -->
-<script>
-    $(document).ready(function() {
+        // Chart show/hide controls
         $('#viewChart').click(function() {
             $('#tasksList').hide();
             $('#chartContainer').show();
@@ -176,11 +173,12 @@
             $('#tasksList').show();
             $('#chartContainer').hide();
         });
+
     });
 
 
 
-
+    // Chart Implement JS
     document.addEventListener("DOMContentLoaded", function() {
         let chartElement = document.getElementById("bar_chart");
 
@@ -245,7 +243,6 @@
         var chart = new ApexCharts(chartElement, options);
         chart.render();
     });
-</script>
 </script>
 
 @endsection
