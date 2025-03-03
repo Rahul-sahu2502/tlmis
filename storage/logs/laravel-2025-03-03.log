@@ -525,6 +525,7 @@
 #61 {main}
 >>>>>>> 2a2fd4675ee83ffad6c3763d8a39ca6a8c6e23b6
 "} 
+<<<<<<< HEAD
 [2025-03-03 16:29:23] development.ERROR: SQLSTATE[HY000] [1045] Access denied for user 'root'@'localhost' (using password: YES) (Connection: mysql, SQL: select * from `sessions` where `id` = Vg4UT5iYN08HMMo2Ak6SE9DLW6ez8cxf4Pkq9ABP limit 1) {"exception":"[object] (Illuminate\\Database\\QueryException(code: 1045): SQLSTATE[HY000] [1045] Access denied for user 'root'@'localhost' (using password: YES) (Connection: mysql, SQL: select * from `sessions` where `id` = Vg4UT5iYN08HMMo2Ak6SE9DLW6ez8cxf4Pkq9ABP limit 1) at C:\\wamp64\\www\\php\\vectreProjects\\tlmis\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php:825)
 [stacktrace]
 #0 C:\\wamp64\\www\\php\\vectreProjects\\tlmis\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(779): Illuminate\\Database\\Connection->runQueryCallback('select * from `...', Array, Object(Closure))
@@ -644,3 +645,8 @@
 #59 C:\\wamp64\\www\\php\\vectreProjects\\tlmis\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(23): require_once('C:\\\\wamp64\\\\www\\\\p...')
 #60 {main}
 "} 
+=======
+[2025-03-03 16:34:56] development.INFO: Language switched {"requested_locale":"hi","session_locale":"hi","app_locale":"hi","config_locale":"hi"} 
+>>>>>>> 02fc4e8e28248c7f0a58d54b235b61a2e8e59869
+[2025-03-03 16:40:17] development.INFO: Language switched {"requested_locale":"hi","session_locale":"hi","app_locale":"hi","config_locale":"hi"} 
+[2025-03-03 16:40:22] development.INFO: Language switched {"requested_locale":"en","session_locale":"en","app_locale":"en","config_locale":"en"} 

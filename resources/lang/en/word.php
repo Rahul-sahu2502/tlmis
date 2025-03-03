@@ -66,5 +66,6 @@ return [
     'count_task'=>'Count Tasks',
     'performance delay'=> 'Performance Delay',
     'performance ratings' => 'Performance Ratings',
+    'give user task rating'=>'Give User Task Rating'
 
 ];

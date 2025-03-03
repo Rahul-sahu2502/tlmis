@@ -101,7 +101,7 @@ class PerformanceController extends Controller
     {
         // $data['var']= $req->var;
         $data['title'] = 'User Task Rating';
-        $data['page_title'] = 'Give User Task Rating ';
+        $data['page_title'] = 'Give User Task Rating';
         return view('performance.user_task_rating', $data);
     }
 }
