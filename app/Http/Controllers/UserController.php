@@ -127,10 +127,10 @@ class UserController extends Controller
             $pass_keys = (new UtilController())->create_password('tlmis@2024');
             if (
                 tbl_users::where('mobile', $request->mobile)
-                    ->when($request->existing_user_id > 0, function ($query) use ($request) {
-                        return $query->where('user_id', '!=', $request->existing_user_id);
-                    })
-                    ->exists()
+                ->when($request->existing_user_id > 0, function ($query) use ($request) {
+                    return $query->where('user_id', '!=', $request->existing_user_id);
+                })
+                ->exists()
             ) {
                 return response()->json(['success' => false, 'message' => 'User with this mobile number already exists']);
             }
@@ -138,10 +138,10 @@ class UserController extends Controller
             if ($request->has('email') && !empty($request->email)) {
                 if (
                     tbl_users::where('email', $request->email)
-                        ->when($request->existing_user_id > 0, function ($query) use ($request) {
-                            return $query->where('user_id', '!=', $request->existing_user_id);
-                        })
-                        ->exists()
+                    ->when($request->existing_user_id > 0, function ($query) use ($request) {
+                        return $query->where('user_id', '!=', $request->existing_user_id);
+                    })
+                    ->exists()
                 ) {
                     return response()->json(['success' => false, 'message' => 'User with this email address already exists']);
                 }
@@ -229,8 +229,7 @@ class UserController extends Controller
                         DB::rollback();
                         return response()->json(['success' => false, 'message' => 'User not found']);
                     }
-                } catch
-                (\Exception $e) {
+                } catch (\Exception $e) {
                     DB::rollback();
                     return response()->json(['success' => false, 'message' => 'Failed to update user: ' . $e->getMessage()]);
                 }
@@ -273,7 +272,6 @@ class UserController extends Controller
                     return response()->json(['success' => false, 'message' => 'An error occurred. Please try again.'], 500);
                 }
             }
-
         }
         /*  if ((Session::get('level_id') == 1 && !empty(Session::get('department_id'))) ||
               (Session::get('level_id') == 2 && !empty(Session::get('department_id')))) {
@@ -507,7 +505,8 @@ class UserController extends Controller
         //                                AND created_by = tr.created_by)"
         // );
 
-        $data = DB::select("SELECT 
+        $data = DB::select(
+            "SELECT 
                                         tr.created_by AS user_id, 
                                         tr.fk_task_id AS task_id, 
                                         tr.created_datetime AS last_comment, 
@@ -522,10 +521,10 @@ class UserController extends Controller
                                         SELECT MAX(created_datetime) 
                                         FROM tbl_task_reply_trs 
                                         WHERE fk_task_id = tbl1.task_id 
-                                        AND created_by = tr.created_by , [$task_id
-                                    )"
+                                        AND created_by = tr.created_by 
+                                    )",
+            [$task_id]
         );
-
 
         if (!empty($data)) {
             foreach ($data as $row) {
@@ -545,11 +544,9 @@ class UserController extends Controller
                         'created_at' => now() // Current timestamp
                     ]);
                 }
-                echo "User ID: {$row->user_id}, Task ID: {$row->task_id}, Delay: {$diff_days} days <br>";
-
             }
         }
-       return response()->json([
+        return response()->json([
             "status" => "success",
             "message" => "Task processing complete"
         ]);

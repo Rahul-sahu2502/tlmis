@@ -2,92 +2,92 @@
 
 
 @section('content')
-<div class=row>
-    <div class=col-lg-12>
-        <div class=card id=tasksList>
-            <div class="card-header border-0">
-                <div class="d-flex align-items-center">
-                    <h5 class="card-title mb-0 flex-grow-1"> Task Delay Count / कार्य विलंब गणना</h5>
-                    <div class="d-flex flex-wrap gap-2">
-                        <button type="button" id="viewChart" class="btn btn-danger add-btn"><i
-                                class="ri-eye-line align-bottom me-1"></i>View Chart</button>
-                    </div>
-                </div>
-                {{-- <a class="mt-2" type="button" data-bs-toggle="collapse" data-bs-target="#detailsToggleDiv"
-                        aria-expanded="false" aria-controls="toggleDiv">See Details./ विवरण देखें</a> --}}
-                <br>
-                <span class="badge border border-secondary text-secondary w-100" id="detailsToggleDiv" style="font-size: 0.8rem; text-align: left;">
-                    <b>Note :</b>
-                    <ol>
-                        <li class="mt-2 text-wrap">If a task is completed after its due date, the extra days are calculated as a
-                            delay.
-                            / यदि कोई कार्य अपनी नियत तारीख के बाद पूरा होता है, तो अतिरिक्त दिन देरी के रूप में गणना
-                            किए जाते हैं।</li>
-                        <li class="mt-1 text-wrap">By clicking the action button, you can see how many users have been assigned this task./एक्शन बटन पर क्लिक करके आप देख सकते हैं कि यह कार्य कितने उपयोगकर्ताओं को सौंपा गया है।</li>
-
-                    </ol>
-                </span>
-            </div>
-            <div class=card-body>
-                <div class="table-responsive table-card mb-4">
-                    <table class="table align-middle table-nowrap datatable mb-0" id=tasksTable>
-                        <thead class="table-light text-muted">
-                            <tr>
-                                <th class=sort data-sort=id>S.No.</th>
-                                <th class=sort data-sort=client_name>Task</th>
-                                <th class=sort data-sort=entry_date>Task Entry Date</th>
-                                <th class=sort data-sort=due_date>Task Due Date</th>
-                                <th class=sort data-sort=submit_date>Submit Date</th>
-                                <th class=sort data-sort=delay_date>Total Delay (days)</th>
-                                <th>Action</th>
-
-                            </tr>
-                        </thead>
-                        <tbody id="tBody">
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-
-        <!-- ### Chart Container ###-->
-        <div class="card" id="chartContainer" style="display: none;">
-            <div class="card-header">
-
-                <div class="d-flex align-items-center">
-                    <h5 class="card-title mb-0 flex-grow-1"> Task Delay Chart </h5>
-                    @if(Session::get('level_id') == "1")
-                    <div class=flex-shrink-0>
+    <div class=row>
+        <div class=col-lg-12>
+            <div class=card id=tasksList>
+                <div class="card-header border-0">
+                    <div class="d-flex align-items-center">
+                        <h5 class="card-title mb-0 flex-grow-1"> Task Delay Count / कार्य विलंब गणना</h5>
                         <div class="d-flex flex-wrap gap-2">
-                            <button type="button" id="closeChart" class="btn btn-secondary add-btn"><i
-                                    class="ri-eye-line align-bottom me-1"></i>View Task Table</button>
+                            <button type="button" id="viewChart" class="btn btn-danger add-btn"><i
+                                    class="ri-eye-line align-bottom me-1"></i>View Chart</button>
                         </div>
                     </div>
-                    @endif
-                </div>
-            </div><!-- end card header -->
+                    {{-- <a class="mt-2" type="button" data-bs-toggle="collapse" data-bs-target="#detailsToggleDiv"
+                            aria-expanded="false" aria-controls="toggleDiv">See Details./ विवरण देखें</a> --}}
+                    <br>
+                    <span class="badge border border-secondary text-secondary w-100" id="detailsToggleDiv" style="font-size: 0.8rem; text-align: left;">
+                        <b>Note :</b>
+                        <ol>
+                            <li class="mt-2 lh-base text-wrap">If a task is completed after its due date, the extra days are calculated as a
+                                delay.
+                                / यदि कोई कार्य अपनी नियत तारीख के बाद पूरा होता है, तो अतिरिक्त दिन देरी के रूप में गणना
+                                किए जाते हैं।</li>
+                            <li class="mt-1 lh-base text-wrap">By clicking the action button, you can see how many users have been assigned this task./एक्शन बटन पर क्लिक करके आप देख सकते हैं कि यह कार्य कितने उपयोगकर्ताओं को सौंपा गया है।</li>
 
-            <div class="card-body">
-                <style>
-                    @media (min-width:1281px) {
-                        #bar_chart {
-                            min-height: 80vh;
-                            width: 80vh;
+                        </ol>
+                    </span>
+                </div>
+                <div class=card-body>
+                    <div class="table-responsive table-card mb-4">
+                        <table class="table align-middle table-nowrap datatable mb-0" id=tasksTable>
+                            <thead class="table-light text-muted">
+                                <tr>
+                                    <th class=sort data-sort=id>S.No.</th>
+                                    <th class=sort data-sort=client_name>Task</th>
+                                    <th class=sort data-sort=entry_date>Task Entry Date</th>
+                                    <th class=sort data-sort=due_date>Task Due Date</th>
+                                    <th class=sort data-sort=submit_date>Submit Date</th>
+                                    <th class=sort data-sort=delay_date>Total Delay (days)</th>
+                                    <th>Action</th>
+
+                                </tr>
+                            </thead>
+                            <tbody id="tBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- ### Chart Container ###-->
+            <div class="card" id="chartContainer" style="display: none;">
+                <div class="card-header">
+
+                    <div class="d-flex align-items-center">
+                        <h5 class="card-title mb-0 flex-grow-1"> Task Delay Chart </h5>
+                        @if(Session::get('level_id') == "1")
+                        <div class=flex-shrink-0>
+                            <div class="d-flex flex-wrap gap-2">
+                                <button type="button" id="closeChart" class="btn btn-secondary add-btn"><i
+                                        class="ri-eye-line align-bottom me-1"></i>View Task Table</button>
+                            </div>
+                        </div>
+                        @endif
+                    </div>
+                </div><!-- end card header -->
+
+                <div class="card-body">
+                    <style>
+                        @media (min-width:1281px) {
+                            #bar_chart {
+                                min-height: 80vh;
+                                width: 80vh;
+                            }
                         }
-                    }
-                </style>
-                <div id="bar_chart"
-                    data-chart='{{ $chartData }}'
-                    data-colors='["#28a745", "#007bff", "#ffc107", "#dc3545"]'>
+                    </style>
+                    <div id="bar_chart"
+                        data-chart='{{ $chartData }}'
+                        data-colors='["#28a745", "#007bff", "#ffc107", "#dc3545"]'>
+                    </div>
+
+
                 </div>
-
-
             </div>
         </div>
+        <!-- end col -->
     </div>
-    <!-- end col -->
-</div>
 
 @endsection
 @section('scripts')
@@ -120,7 +120,7 @@
                 let delay_data = response;
 
 
-                console.log('dealy data = ', delay_data);
+                // console.log('dealy data = ', delay_data);
                 $('#tBody').html('');
                 delay_data.forEach((value, index) => {
 

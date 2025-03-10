@@ -1,112 +1,112 @@
 @extends('layouts.layout_admin')
 @section('styles')
 <link rel="stylesheet" href="{{asset('assets/libs/datatable/dataTables.bootstrap5.min.css')}}" />
-<link rel="stylesheet" href="{{asset('assets/libs/datatable/buttons.dataTables.min.css')}}"/>
+<link rel="stylesheet" href="{{asset('assets/libs/datatable/buttons.dataTables.min.css')}}" />
 @endsection
 @section('content')
 <div class=row>
-<div class=col-lg-12>
-    <div class=card id=tasksList>
-        <div class="card-header border-0">
-            <div class="d-flex align-items-center">
-                <h5 class="card-title mb-0 flex-grow-1">Task List / <small> कार्य सूची</small></h5>
-                @if(Session::get('level_id') == "1")
-                <div class=flex-shrink-0>
-                    <div class="d-flex flex-wrap gap-2">
-                        <a href="{{route('task_add')}}" class="btn btn-danger add-btn"><i
-                                class="ri-add-line align-bottom me-1"></i>Add New</a>
+    <div class=col-lg-12>
+        <div class=card id=tasksList>
+            <div class="card-header border-0">
+                <div class="d-flex align-items-center">
+                    <h5 class="card-title mb-0 flex-grow-1">Task List / <small> कार्य सूची</small></h5>
+                    @if(Session::get('level_id') == "1")
+                    <div class=flex-shrink-0>
+                        <div class="d-flex flex-wrap gap-2">
+                            <a href="{{route('task_add')}}" class="btn btn-danger add-btn"><i
+                                    class="ri-add-line align-bottom me-1"></i>Add New</a>
+                        </div>
                     </div>
+                    @endif
                 </div>
-                @endif
             </div>
-        </div>
-        <div class="card-body border border-dashed border-end-0 border-start-0">
-            <form id="search_form">
-                <div class="row g-3">
-                    <div class="col-xxl-3 col-sm-12">
-                        <label>Task title</label>
-                        <div class=search-box>
-                            <input type=text id="title" class="form-control search bg-light border-light"
-                                placeholder="Search for tasks" >
-                            <i class="ri-search-line search-icon"></i>
-                        </div>
-                    </div>
-                    <div class="col-xxl-2 col-sm-4">
-                        <label>Due date (From)</label>
-                        <input type=date class="form-control bg-light border-light" title="From Due date"
-                            id=from_date data-provider=flatpickr data-date-format="d M, Y"
-                            data-range-date=true placeholder="Select date range">
-                    </div>
-                    <div class="col-xxl-2 col-sm-4">
-                        <label>Due date (To)</label>
-                        <input type=date class="form-control bg-light border-light" title="To Due date"
-                            id=to_date data-provider=flatpickr data-date-format="d M, Y"
-                            data-range-date=true placeholder="Select date range">
-                    </div>
-                    <div class="col-xxl-3 col-sm-4">
-                        <div class=input-light>
-                            <label>Task status</label>
-                            <select class=form-control data-choices data-choices-search-false
-                                name=choices-single-default id=idStatus>
-                                <option value>Select</option>
-                                <option value="0">All</option>
-                                <option value="I">Inprogress</option>
-                                <option value="C">Completed</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-xxl-2 col-sm-4">
-                        <div class="row mt-4">
-                            <div class="col-lg-6">
-                                <button type=button id="filter" class="btn btn-primary m-1">
-                                    <i class="ri-equalizer-fill me-1 align-bottom"></i>Filter
-                                </button>
-                            </div>
-                            <div class="col-lg-6">
-                                <button type=button id="reset" class="btn btn-info m-1">
-                                    <i class="ri-refresh-fill me-1 align-bottom"></i>Reset
-                                </button>
+            <div class="card-body border border-dashed border-end-0 border-start-0">
+                <form id="search_form">
+                    <div class="row g-3">
+                        <div class="col-xxl-3 col-sm-12">
+                            <label>Task title</label>
+                            <div class=search-box>
+                                <input type=text id="title" class="form-control search bg-light border-light"
+                                    placeholder="Search for tasks">
+                                <i class="ri-search-line search-icon"></i>
                             </div>
                         </div>
+                        <div class="col-xxl-2 col-sm-4">
+                            <label>Due date (From)</label>
+                            <input type=date class="form-control bg-light border-light" title="From Due date"
+                                id=from_date data-provider=flatpickr data-date-format="d M, Y"
+                                data-range-date=true placeholder="Select date range">
+                        </div>
+                        <div class="col-xxl-2 col-sm-4">
+                            <label>Due date (To)</label>
+                            <input type=date class="form-control bg-light border-light" title="To Due date"
+                                id=to_date data-provider=flatpickr data-date-format="d M, Y"
+                                data-range-date=true placeholder="Select date range">
+                        </div>
+                        <div class="col-xxl-3 col-sm-4">
+                            <div class=input-light>
+                                <label>Task status</label>
+                                <select class=form-control data-choices data-choices-search-false
+                                    name=choices-single-default id=idStatus>
+                                    <option value>Select</option>
+                                    <option value="0">All</option>
+                                    <option value="I">Inprogress</option>
+                                    <option value="C">Completed</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-xxl-2 col-sm-4">
+                            <div class="row mt-4">
+                                <div class="col-lg-6">
+                                    <button type=button id="filter" class="btn btn-primary m-1">
+                                        <i class="ri-equalizer-fill me-1 align-bottom"></i>Filter
+                                    </button>
+                                </div>
+                                <div class="col-lg-6">
+                                    <button type=button id="reset" class="btn btn-info m-1">
+                                        <i class="ri-refresh-fill me-1 align-bottom"></i>Reset
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </form>
-        </div>
+                </form>
+            </div>
 
-        <div class=card-body>
-            <div class="table-responsive table-card mb-4">
-                <table class="table align-middle table-nowrap datatable mb-0" id=tasksTable>
-                    <thead class="table-light text-muted">
-                        <tr>
-                            <th class=sort data-sort=id>S.No.</th>
-                            <th class=sort data-sort=tasks_name>Task</th>
-                            <th class=sort data-sort=client_name>Offices</th>
-                            <th class=sort data-sort=entry_date>Task Entry Date</th>
-                            <th class=sort data-sort=due_date>Task Due Date</th>
-                            <th class=sort data-sort=status>Status</th>
-                            <th class=sort data-sort=priority>Priority</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tBody" class="list form-check-all">
-                        <!-- Labels Example -->
-                    </tbody>
-                </table>
-            </div>
-            <div class="text-center" id="loader">
-                <div class="spinner-grow text-primary" role="status">
-                    <span class="sr-only">Loading...</span>
+            <div class=card-body>
+                <div class="table-responsive table-card mb-4">
+                    <table class="table align-middle table-nowrap datatable mb-0" id=tasksTable>
+                        <thead class="table-light text-muted">
+                            <tr>
+                                <th class=sort data-sort=id>S.No.</th>
+                                <th class=sort data-sort=tasks_name>Task</th>
+                                <th class=sort data-sort=client_name>Offices</th>
+                                <th class=sort data-sort=entry_date>Task Entry Date</th>
+                                <th class=sort data-sort=due_date>Task Due Date</th>
+                                <th class=sort data-sort=status>Status</th>
+                                <th class=sort data-sort=priority>Priority</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tBody" class="list form-check-all">
+                            <!-- Labels Example -->
+                        </tbody>
+                    </table>
                 </div>
-                <div class="spinner-grow text-primary" role="status">
-                    <span class="sr-only">Loading...</span>
-                </div>
-                <div class="spinner-grow text-primary" role="status">
-                    <span class="sr-only">Loading...</span>
+                <div class="text-center" id="loader">
+                    <div class="spinner-grow text-primary" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                    <div class="spinner-grow text-primary" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                    <div class="spinner-grow text-primary" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 </div>
 @endsection
 @section('scripts')
@@ -124,59 +124,77 @@
     $(jQuery).ready(function() {
         $('.datatable').DataTable({
             dom: '<"dt-top"lfB>rtip',
-            buttons: ['copy', 'excel', 'print',{extend: 'pdf',customize: function(doc) {pdfMake.fonts = {unicode: {normal: 'unicode.ttf',bold: 'unicode.ttf',italics: 'unicode.ttf',bolditalics: 'unicode.ttf'}};doc.defaultStyle.font = "unicode";}}],
+            buttons: ['copy', 'excel', 'print', {
+                extend: 'pdf',
+                customize: function(doc) {
+                    pdfMake.fonts = {
+                        unicode: {
+                            normal: 'unicode.ttf',
+                            bold: 'unicode.ttf',
+                            italics: 'unicode.ttf',
+                            bolditalics: 'unicode.ttf'
+                        }
+                    };
+                    doc.defaultStyle.font = "unicode";
+                }
+            }],
             language: {
                 search: "Search:",
             },
         });
-        let search={};
-        $('#filter').click(function(){
-            let sts=false;
-            search={};
-            if($("#idStatus").val()!=""){
+        let search = {};
+        $('#filter').click(function() {
+            let sts = false;
+            search = {};
+            if ($("#idStatus").val() != "") {
                 search['sts'] = $("#idStatus").val();
-                sts=true;
+                sts = true;
             }
-            if($("#title").val()!=""){
+            if ($("#title").val() != "") {
                 search['var'] = $("#title").val();
-                sts=true;
+                sts = true;
             }
-            if($("#from_date").val()!=""){
+            if ($("#from_date").val() != "") {
                 search['fdate'] = $("#from_date").val();
-                sts=true;
+                sts = true;
             }
-            if($("#to_date").val()!=""){
+            if ($("#to_date").val() != "") {
                 search['tdate'] = $("#to_date").val();
-                sts=true;
+                sts = true;
             }
-            if(sts){
+            if (sts) {
                 get_task_list(search);
             }
         });
-        $("#reset").click(function(){
-            if($("#idStatus").val()!=""||$("#title").val()!=""|| $("#from_date").val()!="" ||$("#to_date").val()!=""){
+        $("#reset").click(function() {
+            if ($("#idStatus").val() != "" || $("#title").val() != "" || $("#from_date").val() != "" || $("#to_date").val() != "") {
                 $('select').val('');
                 $("input").val('');
                 get_task_list();
             }
         });
-        $("#from_date").change(function () {
+        $("#from_date").change(function() {
             $("#to_date").val('');
             $("#to_date").attr('min', $(this).val());
         });
         get_task_list();
-        const level_id = {{ Session::get('level_id') }};
-        function get_task_list(sData={}){
+        const level_id = {
+            {
+                Session::get('level_id')
+            }
+        };
+
+        function get_task_list(sData = {}) {
             $('.datatable').DataTable().destroy();
             $.ajax({
                 url: "{{ route('task_view_status_ajax') }}",
                 type: "POST",
-                data:sData,
+                data: sData,
                 headers: {
                     'X-CSRF-TOKEN': "{{ csrf_token() }}"
                 },
-                dataType:'json',
-                beforeSend: function(){
+                dataType: 'json',
+                beforeSend: function() {
                     $('#loader').show();
                 },
                 success: function(response) {
@@ -191,8 +209,7 @@
                         } else if (value.status === "C") {
                             sts = "Completed";
                             color = "success";
-                        }
-                        else if (value.status === "O") {
+                        } else if (value.status === "O") {
                             sts = "Reopened";
                             color = "warning";
                         }
@@ -204,9 +221,9 @@
 
                         const viewButton = `<a class="btn btn-info btn-xm" title="View" href="/task-overview?var=${btoa(value.task_id)}&v=${value.is_viewed}"><i class="ri-eye-line"></i></a>`;
 
-                        const editButton = level_id == '1' && value.status != "C" && value.is_replied =="N"?`<a class="btn btn-primary btn-xm" title="Edit" href="/task-details?var=${btoa(value.task_id)}"><i class="ri-edit-2-fill"></i></a>`: '';
+                        const editButton = level_id == '1' && value.status != "C" && value.is_replied == "N" ? `<a class="btn btn-primary btn-xm" title="Edit" href="/task-details?var=${btoa(value.task_id)}"><i class="ri-edit-2-fill"></i></a>` : '';
 
-                        const reopenButton = level_id == '1' && value.status == "C"?`<button class="btn btn-warning btn-xm reopen" type="button" title="Reopen" value="${btoa(value.task_id)}">Reopen</button>`: '';
+                        const reopenButton = level_id == '1' && value.status == "C" ? `<button class="btn btn-warning btn-xm reopen" type="button" title="Reopen" value="${btoa(value.task_id)}">Reopen</button>` : '';
 
                         const row = `
                             <tr>
@@ -226,13 +243,26 @@
                     });
                     $('.datatable').DataTable({
                         dom: '<"dt-top"lfB>rtip',
-                        buttons: ['copy', 'excel', 'print',{extend: 'pdf',customize: function(doc) {pdfMake.fonts = {unicode: {normal: 'unicode.ttf',bold: 'unicode.ttf',italics: 'unicode.ttf',bolditalics: 'unicode.ttf'}};doc.defaultStyle.font = "unicode";}}],
+                        buttons: ['copy', 'excel', 'print', {
+                            extend: 'pdf',
+                            customize: function(doc) {
+                                pdfMake.fonts = {
+                                    unicode: {
+                                        normal: 'unicode.ttf',
+                                        bold: 'unicode.ttf',
+                                        italics: 'unicode.ttf',
+                                        bolditalics: 'unicode.ttf'
+                                    }
+                                };
+                                doc.defaultStyle.font = "unicode";
+                            }
+                        }],
                         language: {
                             search: "Search:",
                         },
                     });
                 },
-                complete: function(){
+                complete: function() {
                     $('#loader').hide();
                 },
                 error: function(xhr) {
@@ -273,12 +303,12 @@
                             if (sts == 1) {
                                 icon = "hrtsficn.json";
                                 msg = "Task reopened successfully";
-                                swal_alert(icon, msg,1);
+                                swal_alert(icon, msg, 1);
                                 // location.reload();
                             } else if (sts == 2) {
                                 icon = "azxkyjta.json";
                                 msg = "Please try again";
-                                swal_alert(icon, msg,2);
+                                swal_alert(icon, msg, 2);
                             }
                         },
                         error: function(xhr) {
@@ -290,6 +320,7 @@
                 }
             });
         });
+
         function swal_alert(icon, msg, sts) {
             SwalWithCustomSettings.fire({
                 html: `<div class="mt-3">

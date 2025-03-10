@@ -2,83 +2,83 @@
 
 
 @section('content')
-<div class=row>
-    <div class=col-lg-12>
-        <div class=card id=tasksList>
-            <div class="card-header border-0">
-                <div class="d-flex align-items-center">
-                    <h5 class="card-title mb-0 flex-grow-1"> User Ratings / उपयोगकर्ता रेटिंग</h5>
-                    <div class="d-flex flex-wrap gap-2">
-                        <button type="button" id="viewChart" class="btn btn-danger add-btn"><i
-                                class="ri-eye-line align-bottom me-1"></i>View Chart</button>
-                    </div>
-                </div>
-                {{-- <a class="mt-2" type="button" data-bs-toggle="collapse" data-bs-target="#detailsToggleDiv" aria-expanded="false"
-                        aria-controls="toggleDiv">See Details./ विवरण देखें</a> --}}
-                <br>
-                <span class="badge border border-secondary text-secondary w-100" id="detailsToggleDiv"
-                    style="font-size: 0.8rem; text-align: left;">
-                    <b>Note :</b>
-                    <ol class="text-break">
-                        <li class="mt-2 text-wrap">Total number of tasks assigned to each individual user./प्रत्येक उपयोगकर्ता को सौंपे गए कार्यों की कुल संख्या।</li>
-                        <li class="mt-1 text-wrap">Average rating according to the total tasks./ कुल कार्यों के अनुसार औसत रेटिंग।</li>
-                        <li class="mt-1 text-wrap">Click the action button to view assigned tasks./आवंटित कार्य देखने के लिए एक्शन बटन पर क्लिक करें।</li>
-                    </ol>
-                </span>
-            </div>
-            <div class=card-body>
-                <div class="table-responsive table-card mb-4">
-                    <table class="table align-middle table-nowrap datatable mb-0" id=tasksTable>
-                        <thead class="table-light text-muted">
-                            <tr>
-                                <th class=sort data-sort=id>S.No.</th>
-                                <th class=sort data-sort=client_name>User Name</th>
-                                <th class=sort data-sort=client_name>Total Task</th>
-                                <th class=sort data-sort=client_name>Average Rating</th>
-                                <th class=sort data-sort=client_name>Give Rating</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tBody">
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-
-        <!-- ### Chart Container ###-->
-        <div class="card" id="chartContainer" style="display: none;">
-            <div class="card-header">
-
-                <div class="d-flex align-items-center">
-                    <h5 class="card-title mb-0 flex-grow-1"> User Task Chart </h5>
-                    @if(Session::get('level_id') == "1")
-                    <div class=flex-shrink-0>
+    <div class=row>
+        <div class=col-lg-12>
+            <div class=card id=tasksList>
+                <div class="card-header border-0">
+                    <div class="d-flex align-items-center">
+                        <h5 class="card-title mb-0 flex-grow-1"> User Ratings / उपयोगकर्ता रेटिंग</h5>
                         <div class="d-flex flex-wrap gap-2">
-                            <button type="button" id="closeChart" class="btn btn-secondary add-btn"><i
-                                    class="ri-eye-line align-bottom me-1"></i>View Task Table</button>
+                            <button type="button" id="viewChart" class="btn btn-danger add-btn"><i
+                                    class="ri-eye-line align-bottom me-1"></i>View Chart</button>
                         </div>
                     </div>
-                    @endif
+                    {{-- <a class="mt-2" type="button" data-bs-toggle="collapse" data-bs-target="#detailsToggleDiv" aria-expanded="false"
+                            aria-controls="toggleDiv">See Details./ विवरण देखें</a> --}}
+                    <br>
+                    <span class="badge border border-secondary text-secondary w-100" id="detailsToggleDiv"
+                        style="font-size: 0.8rem; text-align: left;">
+                        <b>Note :</b>
+                        <ol class="text-break">
+                            <li class="mt-2 lh-base text-wrap">Total number of tasks assigned to each individual user./प्रत्येक उपयोगकर्ता को सौंपे गए कार्यों की कुल संख्या।</li>
+                            <li class="mt-1 lh-base text-wrap">Average rating according to the total tasks./ कुल कार्यों के अनुसार औसत रेटिंग।</li>
+                            <li class="mt-1 lh-base text-wrap">Click the action button to view assigned tasks./आवंटित कार्य देखने के लिए एक्शन बटन पर क्लिक करें।</li>
+                        </ol>
+                    </span>
                 </div>
-            </div><!-- end card header -->
-
-            <div class="card-body">
-                <!-- <style>
-                    @media (min-width:1281px) {
-                        #bar_chart {
-                            min-height: 100vh;
-                            width: 120vh;
-                        }
-                    }
-                </style> -->
-                <div id="bar_chart"></div>
+                <div class=card-body>
+                    <div class="table-responsive table-card mb-4">
+                        <table class="table align-middle table-nowrap datatable mb-0" id=tasksTable>
+                            <thead class="table-light text-muted">
+                                <tr>
+                                    <th class=sort data-sort=id>S.No.</th>
+                                    <th class=sort data-sort=client_name>User Name</th>
+                                    <th class=sort data-sort=client_name>Total Task</th>
+                                    <th class=sort data-sort=client_name>Average Rating</th>
+                                    <th class=sort data-sort=client_name>Give Rating</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
 
 
+            <!-- ### Chart Container ###-->
+            <div class="card" id="chartContainer" style="display: none;">
+                <div class="card-header">
+
+                    <div class="d-flex align-items-center">
+                        <h5 class="card-title mb-0 flex-grow-1"> User Task Chart </h5>
+                        @if(Session::get('level_id') == "1")
+                        <div class=flex-shrink-0>
+                            <div class="d-flex flex-wrap gap-2">
+                                <button type="button" id="closeChart" class="btn btn-secondary add-btn"><i
+                                        class="ri-eye-line align-bottom me-1"></i>View Task Table</button>
+                            </div>
+                        </div>
+                        @endif
+                    </div>
+                </div><!-- end card header -->
+
+                <div class="card-body">
+                    <!-- <style>
+                        @media (min-width:1281px) {
+                            #bar_chart {
+                                min-height: 100vh;
+                                width: 120vh;
+                            }
+                        }
+                    </style> -->
+                    <div id="bar_chart"></div>
+                </div>
+
+
+            </div>
         </div>
     </div>
-</div>
 @endsection
 @section('scripts')
 <script src="{{asset('assets/libs/list.js/list.min.js')}}"></script>
@@ -159,7 +159,7 @@
                     },
                 });
 
-                console.log("Chart Data Array " + JSON.stringify(arrChartData));
+                // console.log("Chart Data Array " + JSON.stringify(arrChartData));
 
                 // Initialize chart 
                 initializeChart();
